@@ -14,7 +14,7 @@ Installazione sul telefono:
 |---|---|
 | `index.html` | L'app (versione Nocciola del 20/11/2026) |
 | `offers.json` | Le offerte che l'app mostra (solo quelle valide il giorno in cui la apri) |
-| `manifest.webmanifest`, `sw.js`, `icon-*.png`, `apple-touch-icon.png` | Installazione sul telefono e funzionamento offline |
+| `manifest.webmanifest`, `sw.js`, `icon-*.png`, `favicon-48.png`, `apple-touch-icon.png` | Installazione sul telefono e funzionamento offline |
 | `volantini/` | Carica qui i PDF dei volantini: vengono letti e poi cancellati da soli |
 | `pipeline/` | Script che legge volantini e pagine ufficiali e aggiorna `offers.json` |
 | `.github/workflows/update-offers.yml` | Avvio automatico dello script (lun, mer, gio, ven alle 05:00 UTC) |

@@ -1,1 +1,22 @@
-{"name":"Nocciola – la spesa furba · Wien","short_name":"Nocciola","description":"Menu settimanale equilibrato, sostenibile e su misura per la tua famiglia, costruito sulle offerte dei supermercati di Vienna.","lang":"it","start_url":"./","scope":"./","display":"standalone","background_color":"#fff8ef","theme_color":"#94501f","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},{"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}]}
+{
+ "id": "./",
+ "name": "Nocciola – la spesa furba · Wien",
+ "short_name": "Nocciola",
+ "description": "Menu settimanale equilibrato, sostenibile e su misura per la tua famiglia, costruito sulle offerte dei supermercati di Vienna.",
+ "lang": "it",
+ "dir": "ltr",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "display_override": ["standalone", "minimal-ui"],
+ "orientation": "portrait",
+ "background_color": "#fff8ef",
+ "theme_color": "#94501f",
+ "categories": ["food", "lifestyle", "shopping"],
+ "icons": [
+  {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+  {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+  {"src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+  {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+ ]
+}
