@@ -1,0 +1,13 @@
+{"chains":[
+ {"store":"Billa","kind":"page_pdf","page":"https://www.billa.at/unsere-aktionen/flugblatt",
+  "pdf_regex":"https://assets-eu-01\\.kc-usercontent\\.com/[A-Za-z0-9/_-]+/BILLA(?:_PLUS)?_FB_KW\\d+_\\d{4}_Wien\\.pdf",
+  "nota":"Pagina ufficiale dei volantini Billa: link 'Flugblatt als PDF downloaden'. Verificata."},
+ {"store":"Hofer","kind":"page_text","pages":["https://www.hofer.at/flugblatt/tiefpreis-aktionen"],
+  "nota":"Pagina ufficiale HOFER con prezzi e date in testo. Verificata."},
+ {"store":"Penny","kind":"page_text","pages":["https://www.penny.at/kategorie/alle-angebote-99000000?page={n}"],"max_pages":20,
+  "nota":"Pagina ufficiale PENNY con tutti i prodotti in offerta (prezzo, prezzo al kg, validita'), paginata. Verificata la prima pagina."},
+ {"store":"Norma","kind":"pdf_template","pdf_urls":["https://www.norma-online.de/at/angebote/online-prospekt/{yyyy}-{kw2}_AT.pdf"],
+  "nota":"Volantino PDF ufficiale Norma Austria, nome file con anno e settimana. Schema dedotto da file passati: non verificato per questa settimana."},
+ {"store":"Spar","kind":"todo","nota":"Pagina ufficiale https://www.spar.at/aktionen/wien non leggibile dal mio strumento (errore del sito). Servono i PDF a mano nella cartella volantini/."},
+ {"store":"Lidl","kind":"todo","nota":"Il volantino ufficiale e' solo un visualizzatore di immagini (nessun testo ne' PDF trovato). Servono i PDF a mano nella cartella volantini/."}
+]}

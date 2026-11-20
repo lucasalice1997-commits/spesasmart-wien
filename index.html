@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nocciola</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Nocciola: menu settimanale equilibrato, sostenibile e su misura per la tua famiglia, costruito sulle offerte dei supermercati di Vienna.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#94501f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nocciola">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,600&display=swap">
+<style>
+/* Brand identity "Nocciola – la spesa furba · Wien" (sistema visivo):
+   Crema #FFF8EF sfondo · Pesca #F8D1AE scheda attiva · Nocciola #94501F marchio e azioni · Inchiostro #30221B testo · Salvia #386443 esiti positivi.
+   Tema scuro: sfondo #251912, schede #39271E, testo #FFF8EF, accento #E3A466 con testo scuro per le azioni, positivi #A9C8A4.
+   Tipografia: Bricolage Grotesque 800 per marchio minuscolo e titoli; DM Sans 400/600 per testi, prezzi e navigazione. Mobile: titoli 28, testo 16, etichette 12 px.
+   Contrasto: crema su nocciola per il pulsante primario; inchiostro su pesca per la scheda attiva. */
+:root{
+  --brand:#94501f;--brand-ink:#fff8ef;--brand-soft:#f8d1ae;--brand-deep:#6e3a14;
+  --tab-on:#f8d1ae;--tab-on-ink:#30221b;--peach:#f8d1ae;
+  --bg:#fff8ef;--surface:#fffdf9;--sunk:#f6e9da;--ink:#30221b;--muted:#76655a;--line:#ecdcca;
+  --pine:#386443;--pine-ink:#fff8ef;--hazel:#94501f;--hazel-soft:#f6e9da;
+  --good:#386443;--good-ink:#fff8ef;--good-soft:#e4eee0;--warn:#a5561b;--warn-soft:#fbe6d2;--bad:#a8392b;--bad-soft:#f8ded8;
+  --shadow:0 1px 2px rgba(48,34,27,.06),0 6px 20px rgba(48,34,27,.07);
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:18px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --brand:#e3a466;--brand-ink:#251912;--brand-soft:#4a3224;--brand-deep:#f2c08f;
+  --tab-on:#e3a466;--tab-on-ink:#251912;--peach:#5a3a28;
+  --bg:#251912;--surface:#39271e;--sunk:#2e1f17;--ink:#fff8ef;--muted:#cfbaa8;--line:#4d372b;
+  --pine:#a9c8a4;--pine-ink:#251912;--hazel:#e3a466;--hazel-soft:#4a3224;
+  --good:#a9c8a4;--good-ink:#251912;--good-soft:#2f3b2c;--warn:#efa063;--warn-soft:#4a3020;--bad:#f08a78;--bad-soft:#4a2620;
+  --shadow:0 1px 2px rgba(0,0,0,.35);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --brand:#e3a466;--brand-ink:#251912;--brand-soft:#4a3224;--brand-deep:#f2c08f;
+  --tab-on:#e3a466;--tab-on-ink:#251912;--peach:#5a3a28;
+  --bg:#251912;--surface:#39271e;--sunk:#2e1f17;--ink:#fff8ef;--muted:#cfbaa8;--line:#4d372b;
+  --pine:#a9c8a4;--pine-ink:#251912;--hazel:#e3a466;--hazel-soft:#4a3224;
+  --good:#a9c8a4;--good-ink:#251912;--good-soft:#2f3b2c;--warn:#efa063;--warn-soft:#4a3020;--bad:#f08a78;--bad-soft:#4a2620;
+  --shadow:0 1px 2px rgba(0,0,0,.35);color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--hazel);outline-offset:2px;border-radius:6px}
+.num{font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:.875rem}
+
+/* testata */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:10px;padding-block:8px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none}
+.brand .logo{width:44px;height:44px;flex:none}
+.brand .wm{display:block;font-family:var(--f-display);font-weight:800;font-size:1.75rem;line-height:.95;letter-spacing:-.04em;color:var(--ink)}
+.brand small{display:block;font:400 .82rem/1.2 var(--f-body);color:var(--ink);margin-top:3px;opacity:.85}
+.tabs{margin-left:auto;display:flex;gap:4px;background:var(--sunk);padding:4px;border-radius:999px}
+.tab{border:0;background:transparent;padding:7px 14px;border-radius:999px;font-weight:600;font-size:.92rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.tab[aria-selected="true"]{background:var(--tab-on);color:var(--tab-on-ink)}
+.tab .ic{width:18px;height:18px;flex:none}
+@media (max-width:720px){
+  .tabs{position:fixed;left:0;right:0;bottom:0;margin:0;border-radius:0;justify-content:space-around;background:var(--surface);border-top:1px solid var(--line);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));z-index:6}
+  .tab{flex:1;padding:7px 2px;font-size:.75rem;flex-direction:column;gap:3px;border-radius:14px}
+  .tab .ic{width:22px;height:22px}
+  main{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+@media (min-width:721px){.tab .ic{display:none}}
+/* lingua: IT / EN */
+.lang{order:3;display:inline-flex;flex:none;background:var(--sunk);border-radius:999px;padding:3px;gap:2px}
+.lang button{border:0;background:transparent;border-radius:999px;padding:5px 9px;font-weight:600;font-size:.8rem;line-height:1.2;color:var(--muted);min-width:34px}
+.lang button[aria-pressed="true"]{background:var(--tab-on);color:var(--tab-on-ink)}
+@media (max-width:720px){.lang{margin-left:auto}}
+
+/* hero */
+.hero{padding-block:22px 6px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.hero .mascot{width:132px;height:132px;flex:none}
+.hero .mascot{border:0;background:none;padding:0;cursor:pointer}
+.hero .mascot svg{width:100%;height:100%;display:block}
+@media (prefers-reduced-motion:no-preference){
+  .critter .ears{transform-origin:60px 40px;animation:sniff 3.2s ease-in-out infinite}
+  .critter .tailw{transform-origin:80px 104px;animation:wag 2.6s ease-in-out infinite}
+  .critter.hungry .belly-r{animation:rumble .5s ease-in-out infinite alternate}
+  .gain{animation:pop .6s ease-out}
+}
+@keyframes sniff{0%,100%{transform:rotate(0)}50%{transform:rotate(-4deg)}}
+@keyframes wag{0%,100%{transform:rotate(0)}50%{transform:rotate(6deg)}}
+@keyframes rumble{from{transform:translateX(-1px)}to{transform:translateX(1px)}}
+@keyframes pop{0%{transform:scale(.9);opacity:.4}100%{transform:scale(1);opacity:1}}
+.bubble{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px 16px;box-shadow:var(--shadow);min-width:0}
+.bubble::before{content:"";position:absolute;left:-9px;top:34px;width:16px;height:16px;background:var(--surface);border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
+.bubble h1{font-size:1.75rem;line-height:1.1;margin-bottom:8px;color:var(--ink)}
+.bubble ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.bubble li{display:flex;gap:8px;align-items:flex-start}
+.bubble li b{color:var(--ink)}
+.dot{flex:none;width:8px;height:8px;border-radius:50%;margin-top:.55em;background:var(--hazel)}
+.dot.good{background:var(--good)}.dot.warn{background:var(--warn)}
+.linkbtn{border:0;background:none;padding:0;color:var(--brand);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:560px){.hero{grid-template-columns:1fr;justify-items:center;text-align:left}.hero .mascot{width:104px;height:104px}.bubble::before{left:50%;top:-9px;transform:translateX(-50%) rotate(135deg)}}
+
+/* numeri chiave */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding-block:14px}
+@media (max-width:720px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;min-width:0}
+.kpi .l{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.kpi .v{font-family:var(--f-display);font-weight:800;font-size:1.6rem;line-height:1.15;margin-top:2px}
+.kpi .s{font-size:.84rem;color:var(--muted)}
+.kpi.save .v{color:var(--good)}
+
+/* pannello famiglia */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-block:4px 16px}
+.panel h2{font-size:1.1rem;margin-bottom:12px}
+.fam{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:720px){.fam{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.who{border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.who .t{font-weight:700;line-height:1.2}.who .t small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.step{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.step button{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:1.2rem;font-weight:700;line-height:1}
+.step button:disabled{opacity:.35;cursor:default}
+.step output{font-family:var(--f-display);font-weight:800;font-size:1.4rem;min-width:2ch;text-align:center}
+.opts{display:flex;flex-wrap:wrap;gap:14px 22px;margin-top:14px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:5px;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.seg{display:inline-flex;background:var(--sunk);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 12px;font-weight:600;font-size:.9rem;text-transform:none;letter-spacing:0;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--tab-on);color:var(--tab-on-ink)}
+input[type=date]{padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-weight:600;text-transform:none;letter-spacing:0}
+.toggle{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px 8px;font-size:.95rem;font-weight:700;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer;padding-block:6px}
+.toggle .small{font-weight:400}
+.toggle input{width:20px;height:20px;accent-color:var(--brand)}
+.need{margin-top:12px;font-size:.9rem;color:var(--muted)}
+
+/* sezioni */
+.view{padding-bottom:28px}
+.view>h2{font-size:1.75rem;line-height:1.1;margin-block:10px 6px}
+.sumbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;background:var(--sunk);border-radius:var(--r);padding:8px 8px 8px 16px;margin-bottom:12px}
+.sumbar .lab{font-weight:600}
+.sumbar .tot{margin-left:auto;display:inline-flex;align-items:center;gap:8px;background:var(--good-soft);color:var(--good);border-radius:14px;padding:8px 14px;font-weight:600;font-size:1.25rem}
+.sumbar .tot svg{width:22px;height:22px}
+.sumbar .sv{flex-basis:100%;font-size:.88rem;color:var(--muted);padding-right:8px}
+.sumbar .sv b{color:var(--good)}
+.x.chg{background:var(--peach);border-color:transparent;color:var(--ink);font-weight:600}
+.view>.lead{margin:0 0 14px;color:var(--muted);max-width:68ch}
+.day{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.dayh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.dayh h3{font-size:1.1rem;text-transform:capitalize}
+.dayh .meta{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 9px;font-size:.8rem;font-weight:700;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)}.pill.warn{background:var(--warn-soft);color:var(--warn)}.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.pill.deal{background:var(--hazel-soft);color:var(--hazel)}
+.meal{display:grid;grid-template-columns:92px 1fr auto;gap:4px 12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.meal:last-child{border-bottom:0}
+.meal .slot{font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.meal .slot i{display:block;font-style:normal;font-weight:600;letter-spacing:0;text-transform:none}
+.meal .body{min-width:0}
+.meal .name{font-weight:700;font-size:1.02rem}
+.meal .extra{font-size:.9rem;color:var(--muted)}
+.meal .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.meal .side{text-align:right;font-size:.85rem;color:var(--muted);white-space:nowrap}
+.x{border:1px solid var(--line);background:transparent;border-radius:999px;padding:2px 9px;font-size:.78rem;color:var(--muted);margin-top:6px}
+.x:hover{color:var(--bad);border-color:var(--bad)}
+details.rec summary{cursor:pointer;color:var(--brand);font-weight:700;font-size:.88rem;margin-top:6px;width:max-content}
+details.rec .in{margin-top:6px;font-size:.9rem;background:var(--bg);border-radius:10px;padding:10px 12px}
+details.rec ol{margin:6px 0 0;padding-left:20px}
+@media (max-width:560px){
+  .meal{grid-template-columns:minmax(0,1fr);gap:6px}
+  .meal .slot{display:flex;justify-content:space-between;gap:8px;padding:0}
+  .meal .side{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;white-space:normal;text-align:left}
+  .meal .side br,.meal .side:empty{display:none}
+  .meal .side button{margin-top:0}
+  .meal .side > .num{margin-right:auto}
+  .meal .pill{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+  .meal details.rec summary{max-width:100%}
+}
+.exl{font-size:.9rem;color:var(--muted)}
+
+/* lista */
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.btn{border:0;border-radius:999px;padding:9px 16px;font-weight:700;background:var(--brand);color:var(--brand-ink)}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.5;cursor:default;filter:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.store{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px}
+.store h3{display:flex;justify-content:space-between;gap:10px;font-size:1.05rem;padding:12px 16px;border-bottom:1px solid var(--line)}
+.item{display:flex;gap:12px;align-items:flex-start;padding:10px 16px;border-bottom:1px solid var(--line);cursor:pointer}
+.item:last-child{border-bottom:0}
+.item input{width:22px;height:22px;margin-top:1px;accent-color:var(--pine);flex:none}
+.item .t{flex:1;min-width:0}
+.item .t b{font-weight:700}
+.item .t span{display:block;font-size:.85rem;color:var(--muted)}
+.item .p{font-weight:700;white-space:nowrap}
+.item input:checked~.t b,.item input:checked~.p{text-decoration:line-through;color:var(--muted)}
+textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--bg);margin-bottom:12px}
+
+/* equilibrio */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.card h3{font-size:1.05rem;margin-bottom:10px}
+.freq{display:grid;grid-template-columns:120px 1fr 74px;gap:8px 10px;align-items:center;font-size:.92rem}
+.track{position:relative;height:12px;background:var(--sunk);border-radius:999px}
+.track .zone{position:absolute;top:0;bottom:0;background:var(--good-soft);border-radius:999px;border:1px dashed var(--good)}
+.track .fill{position:absolute;top:2px;bottom:2px;left:2px;border-radius:999px;background:var(--pine)}
+.track .fill.warn{background:var(--warn)}.track .fill.bad{background:var(--bad)}
+.stat{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.stat:last-child{border-bottom:0}
+.note{font-size:.85rem;color:var(--muted);margin-top:12px;max-width:75ch}
+
+/* offerte */
+.tw{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+tr.later td{color:var(--muted)}
+@media (max-width:900px){ /* tabella offerte a schede fino a 900 px: tra 721 e 900 px la tabella intera non ci stava */
+  .tw thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .tw tbody{display:block}
+  .tw tbody tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:4px 12px;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .tw tbody tr:last-child{border-bottom:0}
+  .tw td{padding:0;border:0;white-space:normal;overflow-wrap:anywhere}
+  .tw td:nth-child(even){text-align:right}
+  .tw td:nth-child(2),.tw td:nth-child(3){font-weight:700}
+  .tw td[colspan]{grid-column:1/-1}
+  .tw .pill{max-width:100%;white-space:normal}
+}
+.add{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-top:12px}
+.add select,.add input{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.msg{font-size:.9rem;color:var(--bad);margin-top:6px}
+.foot{padding-block:10px 30px;font-size:.82rem;color:var(--muted);max-width:80ch}
+
+/* v06: impostazioni bloccate, settimana confermata, dispensa, budget */
+fieldset{border:0;margin:0;padding:0;min-width:0}
+fieldset:disabled{opacity:.5}
+fieldset:disabled button,fieldset:disabled input{cursor:not-allowed}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lock{margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--good-soft);color:var(--ink);font-size:.92rem}
+.eurin{display:flex;align-items:center;gap:6px;text-transform:none;letter-spacing:0;color:var(--ink);font-size:.95rem;font-weight:700}
+.eurin input{width:110px;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-weight:600}
+.seg.multi button[aria-pressed="true"]{background:var(--good-soft);color:var(--good);box-shadow:none}
+.wk{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;margin-bottom:12px;font-size:.95rem}
+.wk.on{border-color:var(--good);background:var(--good-soft)}
+.wk .acts{display:flex;gap:8px;flex-wrap:wrap}
+.kpi.over{border-color:var(--bad)}.kpi.over .s{color:var(--bad);font-weight:700}
+.meal.out .name{color:var(--muted);font-weight:600}
+#pantry{margin-top:12px}
+.pl{list-style:none;margin:0 0 12px;padding:0}
+.pl li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.pl li:last-child{border-bottom:0}
+
+/* v07: cambia piatto, dispensa modificabile */
+.alts{margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:12px;background:var(--bg);display:grid;gap:8px;font-size:.92rem}
+.alt{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line)}
+.alt .name{font-weight:700}
+.btn.small{padding:6px 12px;font-size:.88rem}
+.linkbtn.small{font-size:.88rem;justify-self:start}
+.pq{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.pq input{width:84px;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.pq .x{margin:0}
+#pantry .add{margin-top:6px}
+
+/* v08: la tana di Nocciola */
+.cook{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 10px;font-size:.82rem;font-weight:700;color:var(--muted);margin-top:6px}
+.cook[aria-pressed="true"]{background:var(--good);border-color:var(--good);color:var(--good-ink)}
+.cook:disabled{opacity:.45;cursor:default}
+.meal.done .name{text-decoration:line-through;text-decoration-color:var(--good);text-decoration-thickness:2px}
+.tana-top{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px}
+@media (max-width:720px){.tana-top{grid-template-columns:1fr}}
+.scene{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.scene svg.den{display:block;width:100%;height:auto}
+.scene .cap{padding:10px 16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;border-top:1px solid var(--line)}
+.scene .cap b{font-family:var(--f-display);font-size:1.2rem}
+.meter{display:grid;grid-template-columns:90px 1fr 48px;gap:10px;align-items:center;font-size:.92rem;padding:6px 0}
+.meter .bar{margin:0;height:12px;border-radius:999px;background:var(--sunk);overflow:hidden}
+.meter .bar span{display:block;height:100%;border-radius:999px;background:var(--good)}
+.meter .bar span.warn{background:var(--warn)}.meter .bar span.bad{background:var(--bad)}
+.berries{font-family:var(--f-display);font-weight:800;font-size:2rem;line-height:1}
+.gainbox{background:var(--good-soft);border-radius:12px;padding:8px 12px;font-size:.92rem;margin-top:8px}
+.shop{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sitem{border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--bg);display:flex;flex-direction:column;gap:6px;font-size:.9rem}
+.sitem b{font-size:.95rem}
+.album{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.card2{border-radius:12px;padding:10px;font-size:.85rem;border:1px solid var(--line);background:var(--bg);min-height:92px}
+.card2.on{background:var(--good-soft);border-color:var(--good)}
+.card2 b{display:block;font-size:.95rem;margin-bottom:2px}
+.card2.off{color:var(--muted)}
+.log{list-style:none;margin:0;padding:0;font-size:.9rem}
+.log li{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
+.log li:last-child{border-bottom:0}
+.tgrid{display:grid;gap:12px;margin-top:12px}
+.sfida h3{display:flex;align-items:center;gap:8px}.sfida h3 svg{width:26px;height:26px;color:var(--good)}
+/* la tana è il "mondo" del marchio: sfondo nocciola scuro come nel mockup */
+.scene{background:#4a2a14;border-color:#4a2a14;color:#fff8ef}
+.scene .cap{border-top-color:rgba(255,248,239,.15)}
+.scene .cap .small{color:#f3dcc4}
+#v-tana>h2{color:var(--ink)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- logo: testa del topino Nocciola dentro un tondo color nocciola, con la fogliolina della nocciola -->
+  <symbol id="logo" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="32" style="fill:var(--brand)"/>
+    <circle cx="18" cy="21" r="10" fill="#f6e6d2"/><circle cx="18" cy="21" r="6" fill="#f2aaa6"/>
+    <circle cx="46" cy="21" r="10" fill="#f6e6d2"/><circle cx="46" cy="21" r="6" fill="#f2aaa6"/>
+    <ellipse cx="32" cy="36" rx="17" ry="15.5" fill="#f6e6d2"/>
+    <circle cx="25.5" cy="33" r="2.8" fill="#2a1a12"/><circle cx="38.5" cy="33" r="2.8" fill="#2a1a12"/>
+    <circle cx="26.4" cy="32" r=".9" fill="#fff"/><circle cx="39.4" cy="32" r=".9" fill="#fff"/>
+    <ellipse cx="32" cy="39.5" rx="2.6" ry="2" fill="#e07f86"/>
+    <path d="M29 43 Q30.5 44.8 32 43.2 Q33.5 44.8 35 43" fill="none" stroke="#2a1a12" stroke-width="1.1" stroke-linecap="round"/>
+    <g stroke="#30221b" stroke-width=".9" stroke-linecap="round" opacity=".7"><path d="M23 40 L13 38 M23 43 L13 44 M41 40 L51 38 M41 43 L51 44"/></g>
+    <path d="M42 9 Q50 1 56 8 Q48 13 42 9 Z" fill="#5f9a46"/><path d="M42 9 Q48 7 54 7.5" fill="none" stroke="#3f7a32" stroke-width=".8"/>
+  </symbol>
+  <symbol id="nocciola" viewBox="0 0 120 120">
+    <path d="M92 86 C106 88 114 96 112 108" fill="none" stroke="#9b7358" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="82" cy="100" rx="9" ry="4.5" fill="#e7a6a0"/>
+    <ellipse cx="68" cy="80" rx="32" ry="23" fill="#7d5a45"/>
+    <ellipse cx="62" cy="88" rx="20" ry="13" fill="#c8a88e"/>
+    <ellipse cx="46" cy="101" rx="8" ry="4" fill="#e7a6a0"/>
+    <ellipse cx="40" cy="66" rx="21" ry="18" fill="#7d5a45"/>
+    <path d="M24 58 Q12 63 7 69 Q11 75 25 77 Z" fill="#8f6a52"/>
+    <circle cx="7.5" cy="69.5" r="3.6" fill="#ef8f93"/>
+    <g stroke="#3a2a20" stroke-width=".8" stroke-linecap="round" opacity=".6"><path d="M14 66 L2 62"/><path d="M14 70 L1 71"/><path d="M15 73 L3 78"/></g>
+    <ellipse cx="50" cy="51" rx="7" ry="6" fill="#6a4a37"/><ellipse cx="50" cy="52" rx="4" ry="3.4" fill="#e7a6a0"/>
+    <circle cx="33" cy="62" r="3.3" fill="#1f1510"/><circle cx="34.2" cy="60.8" r="1.1" fill="#fff"/>
+    <ellipse cx="30" cy="70" rx="4" ry="2.6" fill="#ef8f93" opacity=".5"/>
+    <path d="M18 75 Q22 78 26 76" fill="none" stroke="#3a2a20" stroke-width="1.3" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand" aria-label="Nocciola, la spesa furba a Vienna" data-ia="aria-label:brand"><svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><use href="#logo"/></svg><div><span class="wm">nocciola</span><small data-i="payoff">la spesa furba · Wien</small></div></div>
+    <div class="lang" id="lang" role="group" aria-label="Lingua / Language"><button type="button" data-lang="it" lang="it" aria-label="Italiano">IT</button><button type="button" data-lang="en" lang="en" aria-label="English">EN</button></div>
+    <nav class="tabs" role="tablist" aria-label="Sezioni" data-ia="aria-label:sections">
+      <button class="tab" role="tab" id="t-menu" data-tab="menu"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span data-i="tMenu">Menu</span></button>
+      <button class="tab" role="tab" id="t-spesa" data-tab="spesa"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.5l2.2 10.5h10.6L20.5 7H7"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg><span data-i="tSpesa">Spesa</span></button>
+      <button class="tab" role="tab" id="t-equilibrio" data-tab="equilibrio"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M7 20h10M5 7h14M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z"/></svg><span data-i="tEq">Equilibrio</span></button>
+      <button class="tab" role="tab" id="t-offerte" data-tab="offerte"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1.5 1.5 0 0 1 0 2.1l-6.2 6.2a1.5 1.5 0 0 1-2.1 0z"/><circle cx="8" cy="8" r="1.5"/></svg><span data-i="tOff">Offerte</span></button>
+      <button class="tab" role="tab" id="t-tana" data-tab="tana"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-4.5a2 2 0 0 1 4 0V20"/></svg><span data-i="tTana">Tana</span></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero" aria-label="Consigli di Nocciola" data-ia="aria-label:heroA">
+    <button class="mascot" id="hero-mascot" type="button" aria-label="Nocciola, il topino: apri la tana" data-ia="aria-label:mascotA"></button>
+    <div class="bubble"><h1 id="hello">Ciao, sono Nocciola!</h1><ul id="tips"></ul></div>
+  </section>
+
+  <section class="kpis" id="kpis" aria-label="Riepilogo" data-ia="aria-label:kpisA"></section>
+
+  <section class="panel" aria-labelledby="fam-h">
+    <h2 id="fam-h" data-i="famH">Chi mangia a casa?</h2>
+    <p class="lock" id="lock" hidden></p>
+    <fieldset id="cfg">
+    <legend class="sr" data-i="cfgL">Impostazioni del menu</legend>
+    <div class="fam" id="fam"></div>
+    <div class="opts">
+      <div class="field"><span data-i="actL">Attività fisica (adulti e ragazzi)</span><div class="seg" id="act"></div></div>
+      <div class="field"><span data-i="daysL">Giorni di menu</span><div class="seg" id="days"></div></div>
+      <label class="field" for="dt"><span data-i="dtL">Giorno della spesa</span><input id="dt" type="date"></label>
+      <label class="field" for="bud"><span data-i="budL">Budget della settimana</span><span class="eurin"><input id="bud" type="number" min="0" step="any" inputmode="decimal" placeholder="nessuno" data-ia="placeholder:budP"> €</span></label>
+      <div class="field"><span data-i="outL">Pranzo dal lunedì al venerdì</span><div class="seg" id="out"></div></div>
+      <div class="field"><span data-i="shopsL">Negozi da girare</span><div class="seg" id="shops"></div></div>
+      <div class="field"><span data-i="prioL">Priorità</span><div class="seg" id="prio"></div></div>
+      <div class="field"><span data-i="dietL">Esigenze alimentari</span><div class="seg multi" id="diet"></div></div>
+      <label class="toggle" for="vg"><input id="vg" type="checkbox"> <span data-i="vgL">Solo vegetariano</span></label>
+      <label class="toggle" for="bc"><input id="bc" type="checkbox"> <span data-i="bcL">Cucina una volta, mangia due <span class="muted small">(cena in doppia dose, il giorno dopo a pranzo)</span></span></label>
+    </div>
+    <p class="need" id="need"></p>
+    </fieldset>
+  </section>
+
+  <section class="view" id="v-menu" role="tabpanel" aria-labelledby="t-menu">
+    <h2 data-i="menuH">Menu della settimana</h2>
+    <div class="sumbar" id="sumbar"></div>
+    <p class="lead" data-i="menuLead">Porzioni già calcolate per la tua famiglia. Tocca “Ricetta” per ingredienti e passaggi, oppure “Non mi piace” per cambiare piatto. Quando ti va bene, confermalo: così resta uguale per tutta la settimana.</p>
+    <div class="wk" id="wk"></div>
+    <div id="menu"></div>
+    <p class="exl" id="exl"></p>
+  </section>
+
+  <section class="view" id="v-spesa" role="tabpanel" aria-labelledby="t-spesa" hidden>
+    <h2 data-i="listH">Lista della spesa</h2>
+    <p class="lead" data-i="listLead">Confezioni intere, divise per negozio. Spunta quello che hai già nel carrello.</p>
+    <div class="bar"><button class="btn" id="cp" data-i="cpB">Copia la lista</button><button class="btn ghost" id="rs" data-i="rsB">Togli le spunte</button><span class="small muted" id="cpmsg" role="status"></span></div>
+    <div id="list"></div>
+    <div id="pantry"></div>
+  </section>
+
+  <section class="view" id="v-equilibrio" role="tabpanel" aria-labelledby="t-equilibrio" hidden>
+    <h2 data-i="eqH">Equilibrio e sostenibilità</h2>
+    <p class="lead" data-i="eqLead">Come si distribuiscono i piatti nella settimana rispetto alle frequenze consigliate, e quanto pesa il menu sull’ambiente.</p>
+    <div class="grid2">
+      <div class="card"><h3 data-i="freqH">Frequenze nella settimana</h3><div class="freq" id="freq"></div><p class="note" data-i="freqN">La zona verde è l’intervallo consigliato per il numero di giorni scelto. Conta i piatti principali (e le uova anche a colazione).</p></div>
+      <div class="card"><h3 data-i="dailyH">Ogni giorno, per persona adulta</h3><div id="daily"></div></div>
+    </div>
+    <p class="note" data-i="eqNote">Riferimenti indicativi: linee guida italiane per una sana alimentazione (CREA) e piramide alimentare austriaca. Fabbisogno di un adulto con attività media ≈ 2.100 kcal al giorno (media fra donne e uomini); ragazzi ×1,1, bambini 4–10 anni ×0,7, piccoli 1–3 anni ×0,45. Calorie, proteine e CO₂ sono stime basate su valori medi degli ingredienti. Non è un piano dietetico personalizzato: per esigenze particolari, gravidanza o malattie chiedi a un medico o a un dietista.</p>
+  </section>
+
+  <section class="view" id="v-tana" role="tabpanel" aria-labelledby="t-tana" hidden>
+    <h2 data-i="tanaH">La tana di Nocciola</h2>
+    <p class="lead" data-i="tanaLead">Nocciola è un topino previdente: mette da parte nocciole per l’inverno. Ogni pasto che cucini dal menu confermato fa crescere la sua scorta.</p>
+    <div id="tana"></div>
+  </section>
+
+  <section class="view" id="v-offerte" role="tabpanel" aria-labelledby="t-offerte" hidden>
+    <h2 data-i="offH">Offerte</h2>
+    <p class="lead" id="src"></p>
+    <div class="tw"><table role="table" aria-label="Offerte" data-ia="aria-label:offH"><thead role="rowgroup"><tr role="row"><th scope="col" data-i="thShop">Negozio</th><th scope="col" data-i="thProd">Prodotto</th><th scope="col" data-i="thPrice">Prezzo</th><th scope="col" data-i="thDisc">Sconto</th><th scope="col" data-i="thEnd">Scadenza</th><th scope="col" aria-label="Azioni" data-ia="aria-label:thAct"></th></tr></thead><tbody id="ob" role="rowgroup"></tbody></table></div>
+    <p class="small muted" id="hid"></p>
+    <details style="margin-top:12px"><summary class="linkbtn" style="width:max-content;max-width:100%" data-i="addS">Aggiungi un’offerta vista in negozio</summary>
+      <div class="add">
+        <label class="field" for="ns"><span data-i="thShop">Negozio</span><select id="ns"></select></label>
+        <label class="field" for="ni"><span data-i="thProd">Prodotto</span><select id="ni"></select></label>
+        <label class="field" for="np"><span id="np-u">€ al kg</span><input id="np" type="number" step="0.01" min="0.1" inputmode="decimal" style="width:100px"></label>
+        <label class="field" for="nd"><span data-i="fromL">Dal</span><input id="nd" type="date"></label>
+        <label class="field" for="na"><span data-i="toL">Al</span><input id="na" type="date"></label>
+        <button class="btn" id="add" data-i="addB">Aggiungi</button>
+      </div>
+      <p class="msg" id="addmsg" role="alert"></p>
+    </details>
+  </section>
+
+  <details class="panel" id="dati"><summary class="linkbtn" style="max-width:100%" data-i="datiS">I tuoi dati su questo dispositivo: salva o ripristina</summary>
+    <p class="small muted" data-i="datiP">Profilo, settimana confermata, dispensa, tana, offerte aggiunte da te e piatti esclusi restano solo in questo browser. Salvali per passarli a un altro telefono o browser, o prima di cancellare i dati di navigazione.</p>
+    <div class="bar"><button class="btn" id="exp" data-i="expB">Prepara i dati da salvare</button><button class="btn ghost" id="exp-file" hidden data-i="expFB">Scarica come file</button><span class="small muted" id="expmsg" role="status"></span></div>
+    <label class="field" for="io"><span data-i="ioL">Dati (copia questo testo, oppure incolla qui quello salvato)</span><textarea id="io" rows="5" spellcheck="false" style="text-transform:none;letter-spacing:0;font-weight:400"></textarea></label>
+    <div class="bar"><label class="btn ghost" style="cursor:pointer"><span data-i="ioF">Apri un file salvato</span><input id="io-file" type="file" accept=".json,application/json,text/plain" hidden></label><button class="btn ghost" id="imp" data-i="impB">Ripristina questi dati</button><button class="btn" id="imp-yes" hidden data-i="impY">Sì, sostituisci i dati attuali</button></div>
+    <p class="msg" id="impmsg" role="alert"></p>
+  </details>
+
+  <p class="foot" data-i="foot">Prezzi di riferimento stimati per Vienna; le offerte arrivano dai siti e dai volantini di Vienna di Billa, Hofer, Lidl, Penny e Spar (senza offerte con tessere o app) e valgono solo nei giorni indicati. Le offerte che aggiungi tu e le tue preferenze restano solo su questo dispositivo.</p>
+</main>
+
+<script>
+// Offerte incorporate: usate quando offers.json non è raggiungibile (es. sito pubblicato come pagina singola).
+// Aggiornate ogni settimana insieme a offers.json. Formato: s=negozio, i=ingrediente, p=€/kg, d=dal, a=al.
+/*OFFERTE*/const BASE={"updated":"2026-11-20","offers":[{"s":"Lidl","i":"tacchino","p":8.49,"d":"2026-11-19","a":"2026-11-21","g":1000},{"s":"Lidl","i":"maiale","p":7.49,"d":"2026-11-19","a":"2026-11-21","g":800},{"s":"Lidl","i":"salmone","p":16.49,"d":"2026-11-19","a":"2026-11-21","g":1000},{"s":"Lidl","i":"mele","p":1.19,"d":"2026-11-19","a":"2026-11-21","g":1500},{"s":"Lidl","i":"pane","p":2.98,"d":"2026-11-19","a":"2026-11-21","g":500},{"s":"Lidl","i":"formaggio","p":7.24,"d":"2026-11-19","a":"2026-11-21","g":800},{"s":"Lidl","i":"tonno","p":6.47,"d":"2026-11-19","a":"2026-11-21","g":740},{"s":"Lidl","i":"banane","p":1.11,"d":"2026-11-23","a":"2026-11-25","g":0},{"s":"Lidl","i":"broccoli","p":2.58,"d":"2026-11-23","a":"2026-11-25","g":500},{"s":"Lidl","i":"funghi","p":2.78,"d":"2026-11-23","a":"2026-11-25","g":500},{"s":"Lidl","i":"pollo","p":9.99,"d":"2026-11-23","a":"2026-11-25","g":700},{"s":"Lidl","i":"cosce","p":5.61,"d":"2026-11-23","a":"2026-11-25","g":800},{"s":"Lidl","i":"formaggio","p":9.95,"d":"2026-11-23","a":"2026-11-25","g":200},{"s":"Lidl","i":"yogurt","p":1.89,"d":"2026-11-23","a":"2026-11-25","g":1000},{"s":"Spar","i":"maiale","p":7.99,"d":"2026-11-19","a":"2026-12-02","g":0},{"s":"Spar","i":"maiale","p":5.99,"d":"2026-11-20","a":"2026-11-21","g":0},{"s":"Spar","i":"pane","p":2.58,"d":"2026-11-19","a":"2026-12-02","g":500},{"s":"Spar","i":"pollo","p":10.84,"d":"2026-11-19","a":"2026-12-02","g":700},{"s":"Spar","i":"cosce","p":4.19,"d":"2026-11-19","a":"2026-12-02","g":0},{"s":"Spar","i":"tacchino","p":12.99,"d":"2026-11-19","a":"2026-12-02","g":0},{"s":"Spar","i":"tacchino","p":9.74,"d":"2026-11-20","a":"2026-11-21","g":0},{"s":"Spar","i":"manzo","p":7.98,"d":"2026-11-19","a":"2026-12-02","g":500},{"s":"Spar","i":"formaggio","p":9.9,"d":"2026-11-19","a":"2026-12-02","g":0},{"s":"Spar","i":"salmone","p":21.97,"d":"2026-11-19","a":"2026-12-02","g":300},{"s":"Spar","i":"mandarini","p":2.67,"d":"2026-11-19","a":"2026-11-21","g":750},{"s":"Billa","i":"pollo","p":6.99,"d":"2026-11-19","a":"2026-11-25","g":0},{"s":"Billa","i":"manzo","p":9.98,"d":"2026-11-19","a":"2026-11-25","g":500},{"s":"Billa","i":"maiale","p":6.98,"d":"2026-11-19","a":"2026-11-25","g":500},{"s":"Billa","i":"salmone","p":21.97,"d":"2026-11-19","a":"2026-11-25","g":300},{"s":"Billa","i":"formaggio","p":7.49,"d":"2026-11-19","a":"2026-11-25","g":700},{"s":"Billa","i":"cavolo","p":0.79,"d":"2026-11-19","a":"2026-11-25","g":0},{"s":"Billa","i":"carote","p":0.99,"d":"2026-11-19","a":"2026-11-25","g":1000},{"s":"Billa","i":"mandarini","p":2.68,"d":"2026-11-19","a":"2026-11-25","g":1300},{"s":"Hofer","i":"zucca","p":1.0,"d":"2026-11-20","a":"2026-11-21","g":0},{"s":"Hofer","i":"mele","p":2.0,"d":"2026-11-20","a":"2026-11-21","g":0},{"s":"Hofer","i":"cosce","p":4.49,"d":"2026-11-20","a":"2026-11-21","g":0},{"s":"Hofer","i":"maiale","p":5.99,"d":"2026-11-20","a":"2026-11-21","g":0},{"s":"Hofer","i":"yogurt","p":1.38,"d":"2026-11-20","a":"2026-11-21","g":500},{"s":"Hofer","i":"ricotta","p":3.96,"d":"2026-11-20","a":"2026-11-21","g":250},{"s":"Hofer","i":"soffritto","p":2.0,"d":"2026-11-20","a":"2026-11-21","g":500},{"s":"Hofer","i":"arance","p":0.85,"d":"2026-11-23","a":"2026-11-26","g":2000},{"s":"Hofer","i":"pollo","p":7.49,"d":"2026-11-23","a":"2026-11-26","g":800},{"s":"Hofer","i":"formaggio","p":8.95,"d":"2026-11-23","a":"2026-11-26","g":200},{"s":"Hofer","i":"pasta","p":0.79,"d":"2026-11-23","a":"2026-11-26","g":1000},{"s":"Hofer","i":"cavoletti","p":1.98,"d":"2026-11-23","a":"2026-11-26","g":500},{"s":"Penny","i":"yogurt","p":1.89,"d":"2026-11-19","a":"2026-11-25","g":1000},{"s":"Penny","i":"yogurt","p":1.78,"d":"2026-11-26","a":"2026-12-02","g":500},{"s":"Penny","i":"latte","p":1.29,"d":"2026-11-26","a":"2026-12-02","g":1000},{"s":"Penny","i":"formaggio","p":6.36,"d":"2026-10-29","a":"2026-12-02","g":250},{"s":"Penny","i":"uova","p":3.32,"d":"2026-11-26","a":"2026-12-02","g":900},{"s":"Penny","i":"cosce","p":2.99,"d":"2026-11-19","a":"2026-11-21","g":1000},{"s":"Penny","i":"cosce","p":5.99,"d":"2026-11-26","a":"2026-12-02","g":1000},{"s":"Penny","i":"pollo","p":6.99,"d":"2026-11-19","a":"2026-11-25","g":1000},{"s":"Penny","i":"pollo","p":8.74,"d":"2026-11-26","a":"2026-12-02","g":800},{"s":"Penny","i":"tacchino","p":8.99,"d":"2026-11-27","a":"2026-11-28","g":1000},{"s":"Penny","i":"tacchino","p":10.89,"d":"2026-11-26","a":"2026-12-02","g":550},{"s":"Penny","i":"maiale","p":5.49,"d":"2026-11-19","a":"2026-11-25","g":1000},{"s":"Penny","i":"maiale","p":5.99,"d":"2026-11-26","a":"2026-12-02","g":1000},{"s":"Penny","i":"manzo","p":3.99,"d":"2026-11-20","a":"2026-11-21","g":1000},{"s":"Penny","i":"manzo","p":8.99,"d":"2026-11-19","a":"2026-11-25","g":1000},{"s":"Penny","i":"manzo","p":4.99,"d":"2026-11-26","a":"2026-11-28","g":1000},{"s":"Penny","i":"manzo","p":11.98,"d":"2026-11-26","a":"2026-12-02","g":500},{"s":"Penny","i":"salmone","p":15.97,"d":"2026-11-26","a":"2026-12-02","g":375},{"s":"Penny","i":"pasta","p":0.94,"d":"2026-11-20","a":"2026-11-21","g":1000},{"s":"Penny","i":"pasta","p":1.39,"d":"2026-11-30","a":"2026-12-02","g":1000},{"s":"Penny","i":"pane","p":2.58,"d":"2026-11-26","a":"2026-11-28","g":500},{"s":"Penny","i":"patate","p":0.83,"d":"2026-11-19","a":"2026-11-25","g":2500},{"s":"Penny","i":"patate","p":1.33,"d":"2026-11-26","a":"2026-11-28","g":1500},{"s":"Penny","i":"zucca","p":1.69,"d":"2026-11-23","a":"2026-11-25","g":0},{"s":"Penny","i":"arance","p":1.5,"d":"2026-11-19","a":"2026-11-21","g":2000},{"s":"Penny","i":"mele","p":1.1,"d":"2026-11-19","a":"2026-11-25","g":2000},{"s":"Penny","i":"noci","p":11.95,"d":"2026-11-19","a":"2026-11-25","g":200},{"s":"Penny","i":"noci","p":8.95,"d":"2026-11-26","a":"2026-12-02","g":200},{"s":"Penny","i":"prosciutto","p":11.37,"d":"2026-11-19","a":"2026-11-25","g":175},{"s":"Penny","i":"soffritto","p":2.38,"d":"2026-11-26","a":"2026-11-28","g":500},{"s":"Penny","i":"mandarini","p":2.69,"d":"2026-11-26","a":"2026-12-02","g":1300}],"rev":"2026-11-20T17:11:59"};/*FINE_OFFERTE*/
+
+// ---------- ingredienti ----------
+// chiave: [nome, prezzo di riferimento €/kg (latte €/l), confezione g, kcal/100 g, proteine g/100 g, kg CO2e per kg, giorni di conservazione dopo l'apertura (0 = lunga), gruppo v=verdura f=frutta x=altro]
+const I={
+pasta:["Pasta",1.8,500,355,12,1.3,0,"x"],riso:["Riso",2.4,1000,350,7,3.5,0,"x"],passata:["Passata di pomodoro",1.5,500,30,1.3,1,0,"v"],
+formaggio:["Formaggio",11,250,380,26,9,0,"x"],funghi:["Funghi champignon",7,250,22,3,1,4,"v"],pollo:["Petto di pollo",12.99,700,110,23,6,2,"x"],
+cosce:["Pollo (cosce o intero)",6.5,1000,160,17,5.5,2,"x"],maiale:["Lonza di maiale",10,600,140,22,7,2,"x"],zucchine:["Zucchine",3,500,17,1.3,.4,5,"v"],
+patate:["Patate",1.6,1000,80,2,.3,0,"x"],uova:["Uova",4.2,600,140,12.5,4.5,0,"x"],cipolle:["Cipolle",1.5,1000,40,1,.3,0,"v"],
+lenticchie:["Lenticchie secche",3.5,500,330,24,1,0,"x"],carote:["Carote",1.5,1000,40,1,.3,0,"v"],ceci:["Ceci (scatola)",3,400,120,7,1,0,"x"],
+peperoni:["Peperoni",5,500,30,1,.6,5,"v"],tonno:["Tonno in scatola",14,160,180,25,6,0,"x"],manzo:["Faschiertes (manzo o misto)",15,500,250,18,20,2,"x"],
+spinaci:["Spinaci",5,500,25,3,.5,3,"v"],pane:["Pane",4.5,500,260,8.5,1,3,"x"],latte:["Latte",1.3,1000,64,3.4,1.3,0,"x"],
+yogurt:["Yogurt",2.4,500,70,3.8,1.6,10,"x"],avena:["Fiocchi d’avena",3,500,370,13,1,0,"x"],arance:["Arance",1.85,2000,45,1,.6,0,"f"],
+mele:["Mele",2.5,1000,52,.3,.4,0,"f"],salmone:["Filetto di salmone",25,250,200,20,7,2,"x"],merluzzo:["Filetto di merluzzo (Seelachs)",14,400,80,17,4,2,"x"],
+tacchino:["Petto di tacchino",14,400,110,24,6,2,"x"],prosciutto:["Prosciutto cotto",15,150,130,19,8,4,"x"],mozzarella:["Mozzarella",8,125,250,18,7,4,"x"],
+fagioli:["Fagioli (scatola)",3,400,100,7,1,0,"x"],tofu:["Tofu",8,200,140,13,2,5,"x"],gnocchi:["Gnocchi",4,500,160,4,.8,0,"x"],
+couscous:["Couscous",4,500,360,13,1.3,0,"x"],broccoli:["Broccoli",4,500,34,3,.5,4,"v"],cavolfiore:["Cavolfiore",3.5,1000,25,2,.4,0,"v"],
+cavolo:["Cavolo cappuccio",1.5,1000,25,1.3,.3,0,"v"],pomodori:["Pomodori",3.5,500,18,1,.6,5,"v"],insalata:["Insalata",6,200,15,1.3,.5,3,"v"],
+cetrioli:["Cetrioli",3,400,12,.6,.5,5,"v"],zucca:["Zucca",2.5,1000,26,1,.3,0,"v"],banane:["Banane",1.8,1000,90,1.1,.9,5,"f"],
+pere:["Pere",3,1000,57,.4,.4,0,"f"],noci:["Frutta secca (noci, mandorle)",18,200,620,18,2.3,0,"x"],
+ricotta:["Ricotta",6.4,250,150,9,4,4,"x"],cavoletti:["Cavoletti di Bruxelles",3.5,500,43,3.4,.5,5,"v"],soffritto:["Verdure da brodo (Suppengemüse)",3.3,500,35,1.2,.4,5,"v"],
+porri:["Porri",3,500,31,1.5,.4,7,"v"],mandarini:["Mandarini o clementine",3.2,1000,47,.8,.6,0,"f"]};
+// stagionalità in Austria (mesi): fuori stagione la verdura viene da serre riscaldate o da lontano
+const SEAS={zucchine:"6-9",peperoni:"7-10",pomodori:"7-9",cetrioli:"6-9",insalata:"5-10",spinaci:"3-5,9-11",broccoli:"6-11",cavolfiore:"6-11",cavolo:"7-3",zucca:"8-12",funghi:"1-12",carote:"1-12",cipolle:"1-12",mele:"1-12",pere:"8-2",arance:"11-4",cavoletti:"10-2",porri:"9-4",soffritto:"1-12",mandarini:"11-2"};
+const ANIMAL=new Set(["pollo","cosce","maiale","manzo","tonno","salmone","merluzzo","tacchino","prosciutto","uova","formaggio","mozzarella","ricotta","latte","yogurt"]);
+
+// ---------- ricette ----------
+// n nome, s pasto (b colazione, p pranzo, s spuntino, c cena), k categoria, v vegetariana, g grammi per un adulto (prima dell'adattamento al fabbisogno), t tempo, d dispensa, p passaggi
+const RC=[
+{n:"Porridge di avena e mela",s:"b",k:"col",v:1,g:{avena:60,latte:250,mele:120},t:"10 min",d:"cannella, miele (facoltativi)",p:["Versa avena e latte in un pentolino.","Cuoci a fuoco basso 5 minuti, mescolando, finché si addensa.","Taglia la mela a dadini e aggiungila sopra, con cannella e miele se vuoi."]},
+{n:"Porridge con pera",s:"b",k:"col",v:1,g:{avena:60,latte:250,pere:120},t:"10 min",d:"cannella (facoltativa)",p:["Cuoci avena e latte in un pentolino a fuoco basso per 5 minuti, mescolando.","Taglia la pera a dadini.","Servi il porridge con la pera sopra e un pizzico di cannella."]},
+{n:"Yogurt, avena e arancia",s:"b",k:"col",v:1,g:{yogurt:170,avena:50,arance:150},t:"5 min",d:"miele (facoltativo)",p:["Sbuccia le arance e tagliale a pezzetti.","Versa lo yogurt in una ciotola e aggiungi l’avena.","Completa con l’arancia e un filo di miele."]},
+{n:"Yogurt con banana e avena",s:"b",k:"col",v:1,g:{yogurt:170,banane:120,avena:50},t:"5 min",d:"cannella o miele (facoltativi)",p:["Taglia la banana a rondelle.","Versa lo yogurt in una ciotola, aggiungi l’avena e la banana.","Completa con cannella o un filo di miele."]},
+{n:"Uova strapazzate con pane",s:"b",k:"uova",v:1,g:{uova:120,pane:80,formaggio:15},t:"10 min",d:"burro o olio, sale, pepe",p:["Sbatti le uova con sale e pepe.","Scalda il burro in padella a fuoco basso e versa le uova.","Mescola piano finché sono cremose e a fine cottura unisci il formaggio.","Servi con il pane, anche tostato."]},
+{n:"Pane, formaggio e arancia",s:"b",k:"col",v:1,g:{pane:90,formaggio:30,arance:150},t:"5 min",d:"burro (facoltativo)",p:["Taglia il pane a fette e tostalo se ti piace.","Affetta il formaggio e mettilo sul pane.","Servi con le arance sbucciate a spicchi."]},
+{n:"Toast prosciutto e formaggio",s:"b",k:"proc",v:0,g:{pane:90,prosciutto:40,formaggio:25},t:"10 min",d:"burro (facoltativo)",p:["Farcisci le fette di pane con prosciutto e formaggio.","Tostale in padella o nel tostapane 2-3 minuti per lato, finché il formaggio si scioglie."]},
+
+{n:"Pasta al pomodoro",s:"p",k:"cereali",v:1,g:{pasta:100,passata:150,formaggio:20},t:"25 min",d:"olio, aglio, sale, basilico",p:["Scalda l’olio con uno spicchio d’aglio, poi aggiungi la passata e un pizzico di sale.","Cuoci il sugo a fuoco medio per 15 minuti.","Lessa la pasta al dente in acqua salata e tieni un mestolo d’acqua di cottura.","Unisci pasta e sugo in padella per 1 minuto, aggiungendo l’acqua se serve.","Servi con basilico e formaggio grattugiato."]},
+{n:"Risotto ai funghi",s:"p",k:"cereali",v:1,g:{riso:90,funghi:120,formaggio:20},t:"30 min",d:"cipolla, brodo, olio",p:["Affetta i funghi e saltali in padella con olio e sale per 5 minuti. Mettili da parte.","Tosta il riso 2 minuti con mezza cipolla tritata.","Aggiungi il brodo caldo un mestolo alla volta e cuoci circa 16 minuti, mescolando.","Unisci i funghi e, a fuoco spento, manteca con il formaggio."]},
+{n:"Pasta e ceci",s:"p",k:"legumi",v:1,g:{pasta:80,ceci:120,passata:60},t:"30 min",d:"olio, aglio, rosmarino, sale",p:["Soffriggi uno spicchio d’aglio in olio, poi aggiungi passata, ceci scolati e un bicchiere d’acqua.","Cuoci 10 minuti schiacciando alcuni ceci con la forchetta.","Aggiungi la pasta corta e acqua calda a poco a poco, come per un risotto, per circa 10 minuti.","Lascia riposare 2 minuti e servi."]},
+{n:"Pasta e fagioli",s:"p",k:"legumi",v:1,g:{pasta:70,fagioli:150,passata:60,carote:40},t:"35 min",d:"olio, cipolla, rosmarino, sale",p:["Soffriggi cipolla e carota a dadini in olio per 5 minuti.","Aggiungi fagioli scolati, passata, rosmarino e acqua calda a coprire. Cuoci 10 minuti.","Frulla metà dei fagioli per rendere cremosa la minestra.","Aggiungi la pasta corta e cuocila nella minestra, aggiungendo acqua se serve."]},
+{n:"Spaghetti al tonno",s:"p",k:"pesce",v:0,g:{pasta:100,tonno:60,passata:120},t:"20 min",d:"olio, aglio, prezzemolo, sale",p:["Soffriggi uno spicchio d’aglio in olio e aggiungi la passata. Cuoci 10 minuti.","Unisci il tonno sgocciolato e cuoci altri 2 minuti.","Lessa gli spaghetti al dente e saltali nel sugo.","Finisci con prezzemolo tritato."]},
+{n:"Insalata di riso",s:"p",k:"pesce",v:0,g:{riso:80,tonno:50,carote:60,uova:60},t:"30 min",d:"olio, limone, sale",p:["Lessa il riso, scolalo e raffreddalo sotto acqua fredda.","Cuoci le uova sode per 9 minuti, sbucciale e tagliale a spicchi.","Taglia le carote a julienne.","Mescola tutto con il tonno sgocciolato, olio, succo di limone e sale. Servi fredda."]},
+{n:"Zuppa di lenticchie",s:"p",k:"legumi",v:1,g:{lenticchie:80,carote:80,cipolle:40,passata:50},t:"45 min",d:"olio, alloro, sale",p:["Soffriggi cipolla e carote a dadini in olio per 5 minuti.","Aggiungi le lenticchie sciacquate, la passata, una foglia di alloro e acqua a coprire abbondante.","Cuoci a fuoco medio-basso 30-40 minuti, finché le lenticchie sono morbide.","Sala a fine cottura e servi con un filo d’olio."]},
+{n:"Frittata di patate e cipolle",s:"p",k:"uova",v:1,g:{uova:120,patate:200,cipolle:50},t:"35 min",d:"olio, sale",p:["Affetta sottili le patate e la cipolla.","Cuocile in padella con olio, sale e coperchio per 15 minuti, finché sono morbide.","Sbatti le uova con un pizzico di sale e versale sulle patate.","Cuoci coperto a fuoco basso 8 minuti, gira con un piatto e cuoci altri 4 minuti."]},
+{n:"Gnocchi al pomodoro e mozzarella",s:"p",k:"formaggi",v:1,g:{gnocchi:250,passata:120,mozzarella:60},t:"20 min",d:"olio, aglio, basilico, sale",p:["Scalda l’olio con uno spicchio d’aglio, aggiungi la passata e un pizzico di sale e cuoci 10 minuti.","Lessa gli gnocchi in acqua salata e scolali quando salgono a galla.","Saltali nel sugo e aggiungi la mozzarella a cubetti a fuoco spento.","Copri 1 minuto perché la mozzarella fili e servi con basilico."]},
+{n:"Couscous con verdure e ceci",s:"p",k:"legumi",v:1,g:{couscous:70,ceci:100,zucchine:100,peperoni:80},t:"20 min",d:"olio, sale, cumino o curry (facoltativi)",p:["Taglia zucchine e peperoni a dadini e saltali in padella con olio e sale per 8 minuti.","Aggiungi i ceci scolati e scalda 2 minuti, con un pizzico di cumino se ti piace.","Versa sul couscous lo stesso volume di acqua bollente salata, copri 5 minuti e sgrana con la forchetta.","Mescola il couscous con verdure e ceci."]},
+{n:"Insalata di fagioli e tonno",s:"p",k:"pesce",v:0,g:{fagioli:150,tonno:50,cipolle:30,insalata:50},t:"10 min",d:"olio, aceto, sale",p:["Sciacqua e scola i fagioli.","Affetta sottile la cipolla e lasciala 5 minuti in acqua fredda per renderla più delicata.","Mescola fagioli, tonno sgocciolato, cipolla e insalata.","Condisci con olio, aceto e sale."]},
+{n:"Caprese con pane",s:"p",k:"formaggi",v:1,g:{mozzarella:125,pomodori:200,pane:60},t:"10 min",d:"olio, origano o basilico, sale",p:["Affetta pomodori e mozzarella.","Alternali nel piatto e condisci con olio, sale e basilico o origano.","Servi con il pane."]},
+{n:"Pasta e broccoli",s:"p",k:"cereali",v:1,g:{pasta:100,broccoli:200,formaggio:15},t:"25 min",d:"olio, aglio, peperoncino (facoltativo), sale",p:["Dividi i broccoli in cimette e lessale 5 minuti nell’acqua salata della pasta.","Aggiungi la pasta nella stessa acqua e cuocila al dente.","Intanto scalda olio, aglio e peperoncino in padella.","Scola pasta e broccoli, saltali in padella schiacciando un po’ i broccoli, e servi con il formaggio."]},
+{n:"Minestrone",s:"p",k:"legumi",v:1,g:{patate:100,carote:80,zucchine:80,fagioli:80,cavolo:80,passata:40,pasta:30},t:"50 min",d:"olio, brodo o dado, sale",p:["Taglia tutte le verdure a dadini.","Soffriggile 5 minuti in olio, poi aggiungi passata e brodo caldo a coprire abbondante.","Cuoci 30 minuti a fuoco medio-basso.","Aggiungi fagioli scolati e pasta piccola e cuoci altri 10 minuti. Sala e servi con un filo d’olio."]},
+{n:"Vellutata di zucca con ceci croccanti",s:"p",k:"legumi",v:1,g:{zucca:300,patate:80,cipolle:40,ceci:80},t:"35 min",d:"olio, brodo, paprika, sale, pepe",p:["Sbuccia la zucca e le patate e tagliale a cubetti.","Soffriggi la cipolla in olio, aggiungi zucca e patate e copri con brodo caldo. Cuoci 20-25 minuti.","Intanto asciuga i ceci e tostali in padella con un filo d’olio e paprika finché sono croccanti.","Frulla la zuppa, regola di sale e pepe e servi con i ceci sopra."]},
+{n:"Insalata di couscous, pomodori e cetrioli",s:"p",k:"cereali",v:1,g:{couscous:70,pomodori:120,cetrioli:100,formaggio:30},t:"15 min",d:"olio, limone, menta o prezzemolo, sale",p:["Versa sul couscous lo stesso volume di acqua bollente salata, copri 5 minuti e sgrana con la forchetta. Lascialo raffreddare.","Taglia pomodori, cetrioli e formaggio a dadini.","Mescola tutto con olio, succo di limone, erbe e sale."]},
+{n:"Pasta ricotta e spinaci",s:"p",k:"formaggi",v:1,g:{pasta:100,ricotta:80,spinaci:150},t:"20 min",d:"olio, aglio, noce moscata, sale, pepe",p:["Salta gli spinaci in padella con olio e aglio per 3-4 minuti.","In una ciotola schiaccia la ricotta con sale, pepe, noce moscata e un mestolo d’acqua calda della pasta.","Lessa la pasta al dente e scolala.","Mescola pasta, spinaci e crema di ricotta e servi subito."]},
+{n:"Pasta zucca e ricotta",s:"p",k:"formaggi",v:1,g:{pasta:90,zucca:200,ricotta:60},t:"30 min",d:"olio, cipolla, salvia o rosmarino, sale",p:["Taglia la zucca a dadini e cuocila in padella con olio, cipolla, salvia e un po’ d’acqua per 15 minuti, finché è morbida.","Schiacciala in parte con la forchetta per fare una crema.","Lessa la pasta al dente, uniscila alla zucca con un mestolo d’acqua di cottura.","A fuoco spento aggiungi la ricotta a cucchiaiate e servi."]},
+{n:"Ragù di lenticchie",s:"p",k:"legumi",v:1,g:{pasta:90,lenticchie:50,soffritto:100,passata:100},t:"45 min",d:"olio, alloro, sale",p:["Trita finemente le verdure da brodo (carota, sedano, porro, prezzemolo) e soffriggile in olio per 5 minuti.","Aggiungi le lenticchie sciacquate, la passata, l’alloro e acqua a coprire.","Cuoci 30 minuti a fuoco basso, aggiungendo acqua se serve, finché le lenticchie sono morbide. Sala.","Lessa la pasta al dente e condiscila con il ragù."]},
+{n:"Zuppa di porri, patate e fagioli",s:"p",k:"legumi",v:1,g:{porri:150,patate:150,fagioli:120},t:"35 min",d:"olio, brodo, alloro, sale, pepe",p:["Lava bene i porri e tagliali a rondelle; taglia le patate a cubetti.","Stufa i porri in olio per 5 minuti, poi aggiungi patate, alloro e brodo caldo a coprire.","Cuoci 20 minuti, aggiungi i fagioli scolati e cuoci altri 5 minuti.","Frulla una parte della zuppa per renderla cremosa, regola di sale e pepe."]},
+
+{n:"Pollo al forno con patate",s:"c",k:"bianca",v:0,g:{cosce:250,patate:250},t:"70 min",d:"olio, rosmarino, aglio, sale, pepe",p:["Scalda il forno a 200 °C.","Taglia le patate a pezzi e mettile in teglia con le cosce di pollo, olio, sale, pepe, rosmarino e aglio.","Cuoci 50-60 minuti, girando tutto a metà cottura.","Il pollo è pronto quando il succo che esce è limpido e la pelle dorata."]},
+{n:"Lonza di maiale con patate",s:"c",k:"rossa",v:0,g:{maiale:150,patate:250,cipolle:50},t:"55 min",d:"olio, rosmarino, aglio, sale",p:["Scalda il forno a 200 °C. Taglia patate e cipolle a spicchi e mettile in teglia con olio, sale e rosmarino per 15 minuti.","Rosola la lonza 3 minuti per lato in padella.","Appoggiala sulle patate e cuoci 25-30 minuti (circa 70 °C al cuore).","Lascia riposare 5 minuti prima di affettarla."]},
+{n:"Riso con pollo e peperoni",s:"c",k:"bianca",v:0,g:{riso:80,pollo:120,peperoni:120},t:"35 min",d:"olio, cipolla, paprika, sale",p:["Taglia il pollo a bocconcini e i peperoni a listarelle.","Rosola il pollo in olio con la cipolla e un cucchiaino di paprika per 6 minuti.","Aggiungi i peperoni e cuoci 5-7 minuti, salando.","Lessa il riso circa 12 minuti, scolalo, uniscilo in padella e salta 2 minuti."]},
+{n:"Parmigiana di zucchine",s:"c",k:"formaggi",v:1,g:{zucchine:250,passata:100,formaggio:60},t:"50 min",d:"olio, basilico, sale",p:["Scalda il forno a 190 °C.","Taglia le zucchine a fette lunghe, condiscile con olio e sale e cuocile in forno 10 minuti.","Cuoci la passata 10 minuti con basilico e sale.","In una teglia alterna zucchine, sugo e formaggio, finendo con formaggio.","Inforna 25 minuti finché è dorata."]},
+{n:"Polpette al sugo",s:"c",k:"rossa",v:0,g:{manzo:120,passata:120,uova:20},t:"45 min",d:"pane raffermo, latte, prezzemolo, aglio, olio, sale",p:["Ammolla un po’ di pane raffermo nel latte e strizzalo.","Impasta la carne con il pane, l’uovo, prezzemolo e sale, e forma delle palline.","Rosolale in olio 5 minuti, poi aggiungi la passata con uno spicchio d’aglio.","Cuoci coperte a fuoco basso 20 minuti."]},
+{n:"Gulasch viennese",s:"c",k:"rossa",v:0,g:{manzo:150,patate:200,cipolle:60,peperoni:80},t:"60 min",d:"olio, paprika dolce, aglio, cumino, brodo, sale",p:["Soffriggi le cipolle a fettine in olio per 8 minuti.","Aggiungi un cucchiaio di paprika dolce, poi la carne e rosola per 5 minuti.","Unisci peperoni e patate a cubetti, aglio, cumino e brodo caldo a coprire.","Cuoci a fuoco basso 40 minuti, mescolando ogni tanto, e sala a fine cottura."]},
+{n:"Curry di ceci e spinaci",s:"c",k:"legumi",v:1,g:{ceci:120,spinaci:150,riso:70},t:"30 min",d:"cipolla, aglio, curry in polvere, olio, sale",p:["Soffriggi cipolla e aglio in olio con un cucchiaio di curry.","Aggiungi i ceci scolati e un bicchiere d’acqua, e cuoci 10 minuti.","Unisci gli spinaci e cuoci 3-4 minuti, salando.","Servi sul riso lessato a parte."]},
+{n:"Omelette ai funghi",s:"c",k:"uova",v:1,g:{uova:120,funghi:100,formaggio:20},t:"15 min",d:"burro o olio, sale, pepe",p:["Affetta i funghi e saltali 5 minuti con olio e sale.","Sbatti le uova con sale e pepe.","Versale in una padella calda con un po’ di burro.","Quando sono quasi cotte aggiungi funghi e formaggio, piega a metà e servi."]},
+{n:"Salmone al forno con patate e broccoli",s:"c",k:"pesce",v:0,g:{salmone:150,patate:200,broccoli:150},t:"40 min",d:"olio, limone, sale, pepe",p:["Scalda il forno a 200 °C. Taglia le patate a spicchi, condiscile con olio e sale e infornale 15 minuti.","Aggiungi in teglia i broccoli a cimette e il salmone con olio, sale e pepe.","Cuoci altri 12-15 minuti, finché il salmone si sfalda facilmente.","Servi con succo di limone."]},
+{n:"Merluzzo in padella con pomodori e patate",s:"c",k:"pesce",v:0,g:{merluzzo:180,pomodori:150,patate:200},t:"35 min",d:"olio, aglio, prezzemolo, sale",p:["Lessa le patate a pezzi in acqua salata per 15 minuti.","In padella scalda olio e aglio, aggiungi i pomodori a pezzi e cuoci 5 minuti.","Appoggia il merluzzo sui pomodori, sala, copri e cuoci 8-10 minuti a fuoco medio.","Servi con le patate e il prezzemolo tritato."]},
+{n:"Tacchino al limone con riso e carote",s:"c",k:"bianca",v:0,g:{tacchino:150,riso:70,carote:100},t:"30 min",d:"farina, olio, limone, sale",p:["Lessa il riso circa 12 minuti.","Taglia le carote a rondelle e cuocile in padella con olio, un po’ d’acqua e sale per 10 minuti.","Infarina le fette di tacchino e rosolale in olio 2-3 minuti per lato.","Aggiungi il succo di mezzo limone e un goccio d’acqua, cuoci 1 minuto e servi con riso e carote."]},
+{n:"Chili di fagioli con riso",s:"c",k:"legumi",v:1,g:{fagioli:150,passata:120,peperoni:80,cipolle:50,riso:60},t:"35 min",d:"olio, paprika, cumino, peperoncino, sale",p:["Soffriggi cipolla e peperoni a dadini in olio per 5 minuti.","Aggiungi paprika, cumino e peperoncino, poi passata e fagioli scolati.","Cuoci 20 minuti a fuoco basso, aggiungendo acqua se si asciuga.","Servi sul riso lessato."]},
+{n:"Tofu saltato con verdure e riso",s:"c",k:"legumi",v:1,g:{tofu:120,broccoli:120,carote:80,riso:70},t:"25 min",d:"olio, salsa di soia, aglio, zenzero (facoltativo)",p:["Lessa il riso circa 12 minuti.","Taglia il tofu a cubetti e rosolalo in olio finché è dorato, poi mettilo da parte.","Salta broccoli e carote a pezzetti con aglio per 6-7 minuti.","Unisci il tofu e 2 cucchiai di salsa di soia, mescola 1 minuto e servi sul riso."]},
+{n:"Krautfleckerl (pasta e cavolo)",s:"c",k:"cereali",v:1,g:{pasta:90,cavolo:200,cipolle:60},t:"35 min",d:"olio o burro, zucchero, cumino, sale, pepe",p:["Taglia il cavolo a quadretti e la cipolla a fettine.","Rosola la cipolla con un cucchiaino di zucchero finché si scurisce un poco.","Aggiungi il cavolo, cumino, sale e pepe, copri e cuoci 15-20 minuti mescolando.","Lessa la pasta corta (meglio Fleckerl) e uniscila al cavolo."]},
+{n:"Pollo al forno con cavoletti e patate",s:"c",k:"bianca",v:0,g:{cosce:250,cavoletti:150,patate:200},t:"60 min",d:"olio, aglio, timo o rosmarino, sale, pepe",p:["Scalda il forno a 200 °C.","Taglia le patate a pezzi e i cavoletti a metà.","Metti tutto in teglia con il pollo, olio, aglio, erbe, sale e pepe.","Cuoci 45-50 minuti, girando a metà, finché il pollo è dorato e i cavoletti sono teneri."]},
+{n:"Risotto ai porri",s:"c",k:"cereali",v:1,g:{riso:90,porri:150,formaggio:25},t:"30 min",d:"olio o burro, brodo, sale",p:["Taglia i porri a rondelle sottili e stufali in olio o burro per 5 minuti.","Aggiungi il riso e tostalo 2 minuti.","Versa il brodo caldo un mestolo alla volta e cuoci circa 16 minuti, mescolando.","A fuoco spento manteca con il formaggio grattugiato."]},
+{n:"Polpette di ricotta e spinaci al sugo",s:"c",k:"formaggi",v:1,g:{ricotta:120,spinaci:120,uova:30,passata:120,pane:30},t:"40 min",d:"pangrattato, olio, aglio, noce moscata, sale",p:["Lessa o salta gli spinaci, strizzali bene e tritali.","Impasta ricotta, spinaci, uovo, il pane sbriciolato, noce moscata e sale; se è morbido aggiungi pangrattato.","Forma delle palline e cuocile 15 minuti nella passata calda con aglio e olio, a fuoco basso e coperte.","Servi con il sugo."]},
+{n:"Cavolfiore gratinato con patate",s:"c",k:"formaggi",v:1,g:{cavolfiore:300,patate:120,formaggio:50,latte:80},t:"50 min",d:"burro, farina, noce moscata, sale",p:["Scalda il forno a 200 °C. Lessa cimette di cavolfiore e patate a fette per 8 minuti.","Sciogli una noce di burro, aggiungi un cucchiaio di farina e poi il latte, mescolando finché si addensa. Sala e aggiungi noce moscata.","Metti le verdure in teglia, versa la salsa e copri con il formaggio.","Gratina in forno 20 minuti."]},
+
+{n:"Mela e frutta secca",s:"s",k:"",v:1,g:{mele:150,noci:20},t:"2 min",d:"",p:["Taglia la mela a spicchi e accompagnala con una manciata di frutta secca."]},
+{n:"Pera e frutta secca",s:"s",k:"",v:1,g:{pere:150,noci:20},t:"2 min",d:"",p:["Taglia la pera a spicchi e accompagnala con una manciata di frutta secca."]},
+{n:"Yogurt e banana",s:"s",k:"",v:1,g:{yogurt:150,banane:100},t:"2 min",d:"",p:["Taglia la banana a rondelle e mescolala allo yogurt."]},
+{n:"Yogurt e arancia",s:"s",k:"",v:1,g:{yogurt:150,arance:150},t:"3 min",d:"",p:["Sbuccia l’arancia, tagliala a pezzetti e mescolala allo yogurt."]},
+{n:"Pane e formaggio",s:"s",k:"",v:1,g:{pane:50,formaggio:20},t:"2 min",d:"",p:["Una fetta di pane con una fetta di formaggio."]},
+{n:"Mandarini e frutta secca",s:"s",k:"",v:1,g:{mandarini:150,noci:20},t:"2 min",d:"",p:["Sbuccia due mandarini e accompagnali con una manciata di frutta secca."]},
+{n:"Pane e ricotta con mandarini",s:"b",k:"col",v:1,g:{pane:90,ricotta:60,mandarini:150},t:"5 min",d:"miele o marmellata (facoltativi)",p:["Taglia il pane a fette e tostalo se ti piace.","Spalma la ricotta e aggiungi un filo di miele o marmellata.","Servi con i mandarini sbucciati."]}
+];
+// contorni: v = verdura per pranzo e cena, f = frutta per colazione (porzione fissa per adulto)
+const SIDES=[
+{n:"Carote all’olio e limone",s:"v",g:{carote:150},t:"15 min",d:"olio, limone, sale",p:["Pela le carote e tagliale a rondelle.","Cuocile a vapore o in acqua 10 minuti, finché sono tenere.","Condiscile con olio, limone e sale."]},
+{n:"Zucchine saltate",s:"v",g:{zucchine:150},t:"10 min",d:"olio, aglio, sale",p:["Taglia le zucchine a rondelle.","Saltale in padella con olio e aglio per 6-8 minuti.","Sala a fine cottura."]},
+{n:"Spinaci saltati",s:"v",g:{spinaci:150},t:"8 min",d:"olio, aglio, sale",p:["Lava gli spinaci.","Saltali in padella con olio e aglio 3-4 minuti, finché appassiscono.","Sala e servi."]},
+{n:"Peperoni al forno",s:"v",g:{peperoni:150},t:"30 min",d:"olio, sale",p:["Scalda il forno a 200 °C.","Taglia i peperoni a falde e condiscili con olio e sale.","Cuoci 25 minuti."]},
+{n:"Insalata di carote e mela",s:"v",g:{carote:100,mele:50},t:"10 min",d:"limone, olio, sale",p:["Gratta le carote e taglia la mela a bastoncini.","Condisci con limone, olio e sale."]},
+{n:"Insalata verde",s:"v",g:{insalata:80,cetrioli:70},t:"5 min",d:"olio, aceto, sale",p:["Lava l’insalata e affetta il cetriolo.","Condisci con olio, aceto e sale."]},
+{n:"Insalata di pomodori",s:"v",g:{pomodori:150},t:"5 min",d:"olio, origano, sale",p:["Taglia i pomodori a spicchi.","Condisci con olio, origano e sale."]},
+{n:"Broccoli al vapore",s:"v",g:{broccoli:150},t:"10 min",d:"olio, limone, sale",p:["Dividi i broccoli in cimette.","Cuocili a vapore o in poca acqua 6-7 minuti.","Condisci con olio, limone e sale."]},
+{n:"Insalata di cavolo (Krautsalat)",s:"v",g:{cavolo:150},t:"15 min",d:"olio, aceto, cumino, sale",p:["Taglia il cavolo a striscioline sottili.","Sala e massaggia con le mani per 2 minuti, poi lascia riposare 10 minuti.","Condisci con olio, aceto e un pizzico di cumino."]},
+{n:"Cavolfiore al forno",s:"v",g:{cavolfiore:150},t:"30 min",d:"olio, curcuma o paprika, sale",p:["Dividi il cavolfiore in cimette e condiscile con olio, spezie e sale.","Cuoci in forno a 200 °C per 25 minuti."]},
+{n:"Una mela",s:"f",g:{mele:150},t:"1 min",d:"",p:["Lava la mela e tagliala a spicchi."]},
+{n:"Un’arancia",s:"f",g:{arance:150},t:"2 min",d:"",p:["Sbuccia l’arancia e dividila in spicchi."]},
+{n:"Una banana",s:"f",g:{banane:120},t:"1 min",d:"",p:["Sbuccia e mangia."]},
+{n:"Una pera",s:"f",g:{pere:150},t:"1 min",d:"",p:["Lava la pera e tagliala a spicchi."]},
+{n:"Cavoletti al forno",s:"v",g:{cavoletti:150},t:"30 min",d:"olio, sale, pepe",p:["Taglia i cavoletti a metà e condiscili con olio, sale e pepe.","Cuocili in forno a 200 °C per 25 minuti, finché sono dorati."]},
+{n:"Porri stufati",s:"v",g:{porri:150},t:"20 min",d:"olio o burro, sale",p:["Lava i porri e tagliali a rondelle.","Stufali in padella con olio o burro, un goccio d’acqua e sale per 12-15 minuti."]},
+{n:"Due mandarini",s:"f",g:{mandarini:150},t:"1 min",d:"",p:["Sbuccia i mandarini e dividili in spicchi."]}
+];
+
+// ---------- regole ----------
+const SLOT={b:{lab:"Colazione",kcal:450,oil:0},p:{lab:"Pranzo",kcal:750,oil:90},s:{lab:"Spuntino",kcal:200,oil:0},c:{lab:"Cena",kcal:700,oil:90}}; // per adulto: 2.100 kcal al giorno, olio ≈ 1 cucchiaio a piatto
+const ORDER=["b","p","s","c"];
+const REF_KCAL=2100,PROT_MIN=60,FV_MIN=400,LAMBDA=0.5; // LAMBDA: € di "costo" attribuiti a ogni kg di CO2e
+const PERS=[{id:"ad",lab:"Adulti",sub:"18 anni e più",f:1,act:1},{id:"te",lab:"Ragazzi",sub:"11–17 anni",f:1.1,act:1},{id:"ki",lab:"Bambini",sub:"4–10 anni",f:.7},{id:"to",lab:"Piccoli",sub:"1–3 anni",f:.45}];
+const ACT={l:{lab:"Leggera",f:.9},m:{lab:"Media",f:1},a:{lab:"Intensa",f:1.15}};
+// frequenze per 7 giorni (piatti principali); vengono scalate sui giorni scelti
+const CATS={legumi:{lab:"Legumi",min:3,max:6},pesce:{lab:"Pesce",min:2,max:3},bianca:{lab:"Carne bianca",min:1,max:3},rossa:{lab:"Carne rossa",min:0,max:1.5},proc:{lab:"Salumi",min:0,max:1},uova:{lab:"Uova",min:0,max:4},formaggi:{lab:"Formaggi",min:0,max:3}};
+const CATLAB={legumi:"legumi",pesce:"pesce",bianca:"carne bianca",rossa:"carne rossa",proc:"salumi",uova:"uova",formaggi:"formaggi",cereali:"cereali e verdure",col:"colazione"};
+const STORES=["Billa","Spar","Hofer","Lidl","Penny","Norma"];
+// pranzo dei giorni feriali (lunedì–venerdì) fuori casa: chi non mangia a casa
+const OUT={no:{lab:"Tutti a casa",ex:[]},ad:{lab:"Adulti fuori",ex:["ad"]},kids:{lab:"Bambini e ragazzi fuori",ex:["te","ki","to"]},all:{lab:"Tutti fuori",ex:["ad","te","ki","to"]}};
+// esigenze alimentari: sub = stesso ingrediente in versione adatta [nome, moltiplicatore di prezzo]; no = piatti esclusi se lo contengono;
+// drop = ingrediente tolto se è solo un condimento (≤ 30 g a persona e non nel nome del piatto), altrimenti piatto escluso
+const DIETS={
+lattosio:{lab:"Senza lattosio",sub:{latte:["Latte senza lattosio",1.25],yogurt:["Yogurt senza lattosio",1.3],mozzarella:["Mozzarella senza lattosio",1.3],ricotta:["Ricotta senza lattosio",1.4]}},
+glutine:{lab:"Senza glutine",sub:{pasta:["Pasta senza glutine",2.5],pane:["Pane senza glutine",2.5],couscous:["Couscous di mais (senza glutine)",2],gnocchi:["Gnocchi senza glutine",2],avena:["Fiocchi d’avena senza glutine",1.6]}},
+latticini:{lab:"Niente latticini",sub:{latte:["Bevanda di soia",1.5],yogurt:["Yogurt di soia",1.4]},drop:["formaggio","mozzarella","ricotta"]},
+noci:{lab:"Niente frutta secca",no:["noci"]},
+pesce:{lab:"Niente pesce",no:["tonno","salmone","merluzzo"]},
+uova:{lab:"Niente uova",drop:["uova"]},
+maiale:{lab:"Niente maiale",no:["maiale","prosciutto"],sub:{manzo:["Faschiertes di solo manzo",1.1]}}
+};
+// ingredienti senza quantità (dispensa o passaggi della ricetta) da adattare alle esigenze: [esigenza, parola cercata, consiglio]
+const DIETNOTE=[
+["glutine",/\bfarina\b/i,"farina senza glutine (di riso o mais)","gluten-free flour (rice or corn)"],
+["glutine",/\bpangrattato\b/i,"pangrattato senza glutine","gluten-free breadcrumbs"],
+["glutine",/\bpane raffermo\b/i,"pane raffermo senza glutine","gluten-free stale bread"],
+["glutine",/\bsalsa di soia\b/i,"salsa tamari senza glutine","gluten-free tamari sauce"],
+["glutine",/\b(dado|brodo)\b/i,"brodo o dado con scritto «senza glutine»","stock or stock cubes labelled “gluten-free”"],
+["glutine",/\bFleckerl\b/,"pasta corta senza glutine","gluten-free short pasta"],
+["latticini",/\bburro\b/i,"olio al posto del burro","oil instead of butter"],
+["latticini",/\blatte\b/i,"bevanda vegetale non zuccherata al posto del latte","unsweetened plant drink instead of milk"],
+["lattosio",/\blatte\b/i,"latte senza lattosio","lactose-free milk"]];
+const dietNote=x=>{if(!x)return"";const txt=[x.d||""].concat(x.p||[]).join(" "),seen=new Set(),out=[];
+ for(const [k,re,tip,en] of DIETNOTE){if(!P.diet.includes(k)||seen.has(tip))continue;if(k==="lattosio"&&P.diet.includes("latticini"))continue;if(/latte/.test(tip)&&x.g&&x.g.latte)continue;/* il latte con quantità è già sostituito nella lista */if(re.test(txt)){seen.add(tip);out.push(L(tip,en))}}
+ return out.length?`<p style="margin:6px 0 0"><b>${L("Per le tue esigenze:","For your needs:")}</b> ${L("usa","use")} ${out.join("; ")}.</p>`:""};
+const BASESTARCH=["pasta","riso","couscous","gnocchi"];
+// cene che si possono cucinare in doppia dose e mangiare il giorno dopo a pranzo
+const BATCH=new Set(["Pollo al forno con patate","Lonza di maiale con patate","Gulasch viennese","Polpette al sugo","Chili di fagioli con riso","Curry di ceci e spinaci","Parmigiana di zucchine","Cavolfiore gratinato con patate","Krautfleckerl (pasta e cavolo)","Pollo al forno con cavoletti e patate","Polpette di ricotta e spinaci al sugo"]);
+const SHOPS={1:"1 negozio",2:"2 negozi",9:"Tutti"};
+
+// ---------- utilità ----------
+const $=id=>document.getElementById(id);
+const eur=x=>LANG==="en"?(x<-.004?"-":"")+"€"+Math.abs(x).toFixed(2):x.toFixed(2).replace(".",",")+" €";
+const fmt=x=>Math.round(x).toLocaleString(LANG==="en"?"en-GB":"it-IT");
+const dc=s=>LANG==="en"?String(s):String(s).replace(".",","); // separatore decimale
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const today=()=>iso(new Date());
+const addD=(s,n)=>{const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return iso(d)};
+const fd=s=>s?s.slice(8)+"."+s.slice(5,7)+".":"?";
+const WD=["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"],MO=["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+const WD_EN=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const wd=s=>(LANG==="en"?WD_EN:WD)[new Date(s+"T12:00:00").getDay()];
+const LS={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){LS.fail=true;return false}},fail:false};
+
+// ---------- lingua: italiano / inglese ----------
+// I dati restano in italiano (nomi dei piatti e degli ingredienti fanno da chiave nei salvataggi): si traduce solo quello che si mostra.
+let LANG=(()=>{const s=LS.get("nc-lingua",null);if(s==="it"||s==="en")return s;const n=(navigator.languages&&navigator.languages[0])||navigator.language||"it";return /^it\b/i.test(n)?"it":"en"})();
+const L=(it,en)=>LANG==="en"?en:it;
+// etichette brevi: testo italiano → inglese
+const TR={
+"Pasta":"Pasta","Riso":"Rice","Passata di pomodoro":"Tomato passata","Formaggio":"Cheese","Funghi champignon":"Button mushrooms","Petto di pollo":"Chicken breast",
+"Pollo (cosce o intero)":"Chicken (legs or whole)","Lonza di maiale":"Pork loin","Zucchine":"Courgettes","Patate":"Potatoes","Uova":"Eggs","Cipolle":"Onions",
+"Lenticchie secche":"Dried lentils","Carote":"Carrots","Ceci (scatola)":"Chickpeas (tin)","Peperoni":"Peppers","Tonno in scatola":"Tinned tuna","Faschiertes (manzo o misto)":"Minced meat (beef or mixed)",
+"Spinaci":"Spinach","Pane":"Bread","Latte":"Milk","Yogurt":"Yogurt","Fiocchi d’avena":"Rolled oats","Arance":"Oranges","Mele":"Apples","Filetto di salmone":"Salmon fillet",
+"Filetto di merluzzo (Seelachs)":"Pollock fillet (Seelachs)","Petto di tacchino":"Turkey breast","Prosciutto cotto":"Cooked ham","Mozzarella":"Mozzarella","Fagioli (scatola)":"Beans (tin)",
+"Tofu":"Tofu","Gnocchi":"Gnocchi","Couscous":"Couscous","Broccoli":"Broccoli","Cavolfiore":"Cauliflower","Cavolo cappuccio":"White cabbage","Pomodori":"Tomatoes","Insalata":"Lettuce",
+"Cetrioli":"Cucumbers","Zucca":"Pumpkin","Banane":"Bananas","Pere":"Pears","Frutta secca (noci, mandorle)":"Nuts (walnuts, almonds)","Ricotta":"Ricotta",
+"Cavoletti di Bruxelles":"Brussels sprouts","Verdure da brodo (Suppengemüse)":"Soup vegetables (Suppengemüse)","Porri":"Leeks","Mandarini o clementine":"Mandarins or clementines",
+"Latte senza lattosio":"Lactose-free milk","Yogurt senza lattosio":"Lactose-free yogurt","Mozzarella senza lattosio":"Lactose-free mozzarella","Ricotta senza lattosio":"Lactose-free ricotta",
+"Pasta senza glutine":"Gluten-free pasta","Pane senza glutine":"Gluten-free bread","Couscous di mais (senza glutine)":"Corn couscous (gluten-free)","Gnocchi senza glutine":"Gluten-free gnocchi",
+"Fiocchi d’avena senza glutine":"Gluten-free rolled oats","Bevanda di soia":"Soy drink","Yogurt di soia":"Soy yogurt","Faschiertes di solo manzo":"Beef-only mince",
+"Colazione":"Breakfast","Pranzo":"Lunch","Spuntino":"Snack","Cena":"Dinner",
+"Adulti":"Adults","18 anni e più":"18 and over","Ragazzi":"Teens","11–17 anni":"11–17 years","Bambini":"Children","4–10 anni":"4–10 years","Piccoli":"Toddlers","1–3 anni":"1–3 years",
+"Leggera":"Light","Media":"Moderate","Intensa":"Intense",
+"Legumi":"Legumes","Pesce":"Fish","Carne bianca":"White meat","Carne rossa":"Red meat","Salumi":"Cured meats","Formaggi":"Cheese dishes",
+"legumi":"legumes","pesce":"fish","carne bianca":"white meat","carne rossa":"red meat","salumi":"cured meats","uova":"eggs","formaggi":"cheese","cereali e verdure":"grains and vegetables","colazione":"breakfast",
+"Tutti a casa":"Everyone at home","Adulti fuori":"Adults out","Bambini e ragazzi fuori":"Kids and teens out","Tutti fuori":"Everyone out",
+"Senza lattosio":"Lactose-free","Senza glutine":"Gluten-free","Niente latticini":"No dairy","Niente frutta secca":"No nuts","Niente pesce":"No fish","Niente uova":"No eggs","Niente maiale":"No pork",
+"1 negozio":"1 shop","2 negozi":"2 shops","Tutti":"All",
+"Sciarpa a righe":"Striped scarf","Per l’inverno viennese":"For the Viennese winter","Occhialini":"Little glasses","Per leggere i volantini":"For reading the leaflets",
+"Grembiule da cuoco":"Chef’s apron","Per chi cucina davvero":"For those who really cook","Cappello tirolese":"Tyrolean hat","Con la piuma":"With a feather",
+"Tappeto di muschio":"Moss rug","Rende la tana più calda":"Makes the den cosier","Lanterna":"Lantern","Per le sere d’inverno":"For winter evenings","Mini orto":"Mini veg patch","Germogli fuori dalla tana":"Sprouts outside the den",
+"Cucciolo":"Pup","Giovane":"Young mouse","Esperto della spesa":"Shopping expert","Gran Topo del Prater":"Grand Mouse of the Prater"};
+const tx=s=>LANG==="en"&&typeof s==="string"&&Object.hasOwn(TR,s)?TR[s]:s;
+// ricette e contorni in inglese: nome italiano → [nome, dalla dispensa, passaggi]
+const RX={
+"Porridge di avena e mela":["Oat porridge with apple","cinnamon, honey (optional)",["Pour the oats and milk into a small pan.","Cook on low heat for 5 minutes, stirring, until it thickens.","Dice the apple and add it on top, with cinnamon and honey if you like."]],
+"Porridge con pera":["Porridge with pear","cinnamon (optional)",["Cook the oats and milk in a small pan on low heat for 5 minutes, stirring.","Dice the pear.","Serve the porridge with the pear on top and a pinch of cinnamon."]],
+"Yogurt, avena e arancia":["Yogurt, oats and orange","honey (optional)",["Peel the oranges and cut them into small pieces.","Pour the yogurt into a bowl and add the oats.","Top with the orange and a drizzle of honey."]],
+"Yogurt con banana e avena":["Yogurt with banana and oats","cinnamon or honey (optional)",["Slice the banana.","Pour the yogurt into a bowl, add the oats and the banana.","Finish with cinnamon or a drizzle of honey."]],
+"Uova strapazzate con pane":["Scrambled eggs with bread","butter or oil, salt, pepper",["Beat the eggs with salt and pepper.","Heat the butter in a pan on low heat and pour in the eggs.","Stir gently until creamy and add the cheese at the end.","Serve with the bread, toasted if you like."]],
+"Pane, formaggio e arancia":["Bread, cheese and orange","butter (optional)",["Slice the bread and toast it if you like.","Slice the cheese and put it on the bread.","Serve with the oranges, peeled and in segments."]],
+"Toast prosciutto e formaggio":["Ham and cheese toastie","butter (optional)",["Fill the slices of bread with ham and cheese.","Toast them in a pan or toaster for 2-3 minutes per side, until the cheese melts."]],
+"Pasta al pomodoro":["Pasta with tomato sauce","oil, garlic, salt, basil",["Heat the oil with a clove of garlic, then add the passata and a pinch of salt.","Cook the sauce on medium heat for 15 minutes.","Boil the pasta al dente in salted water and keep a ladle of the cooking water.","Toss the pasta and sauce in the pan for 1 minute, adding the water if needed.","Serve with basil and grated cheese."]],
+"Risotto ai funghi":["Mushroom risotto","onion, stock, oil",["Slice the mushrooms and sauté them with oil and salt for 5 minutes. Set aside.","Toast the rice for 2 minutes with half a chopped onion.","Add the hot stock one ladle at a time and cook for about 16 minutes, stirring.","Add the mushrooms and, off the heat, stir in the cheese."]],
+"Pasta e ceci":["Pasta and chickpeas","oil, garlic, rosemary, salt",["Fry a clove of garlic in oil, then add the passata, the drained chickpeas and a glass of water.","Cook for 10 minutes, mashing some chickpeas with a fork.","Add short pasta and hot water little by little, like a risotto, for about 10 minutes.","Let it rest for 2 minutes and serve."]],
+"Pasta e fagioli":["Pasta and beans","oil, onion, rosemary, salt",["Fry diced onion and carrot in oil for 5 minutes.","Add the drained beans, passata, rosemary and hot water to cover. Cook for 10 minutes.","Blend half the beans to make the soup creamy.","Add short pasta and cook it in the soup, adding water if needed."]],
+"Spaghetti al tonno":["Spaghetti with tuna","oil, garlic, parsley, salt",["Fry a clove of garlic in oil and add the passata. Cook for 10 minutes.","Add the drained tuna and cook for 2 more minutes.","Boil the spaghetti al dente and toss it in the sauce.","Finish with chopped parsley."]],
+"Insalata di riso":["Rice salad","oil, lemon, salt",["Boil the rice, drain it and cool it under cold water.","Hard-boil the eggs for 9 minutes, peel them and cut them into wedges.","Cut the carrots into thin strips.","Mix everything with the drained tuna, oil, lemon juice and salt. Serve cold."]],
+"Zuppa di lenticchie":["Lentil soup","oil, bay leaf, salt",["Fry diced onion and carrots in oil for 5 minutes.","Add the rinsed lentils, the passata, a bay leaf and plenty of water to cover.","Cook on medium-low heat for 30-40 minutes, until the lentils are soft.","Salt at the end and serve with a drizzle of oil."]],
+"Frittata di patate e cipolle":["Potato and onion frittata","oil, salt",["Thinly slice the potatoes and the onion.","Cook them in a pan with oil, salt and a lid for 15 minutes, until soft.","Beat the eggs with a pinch of salt and pour them over the potatoes.","Cook covered on low heat for 8 minutes, flip it with a plate and cook for 4 more minutes."]],
+"Gnocchi al pomodoro e mozzarella":["Gnocchi with tomato and mozzarella","oil, garlic, basil, salt",["Heat the oil with a clove of garlic, add the passata and a pinch of salt and cook for 10 minutes.","Boil the gnocchi in salted water and drain them when they float.","Toss them in the sauce and add the diced mozzarella off the heat.","Cover for 1 minute so the mozzarella melts and serve with basil."]],
+"Couscous con verdure e ceci":["Couscous with vegetables and chickpeas","oil, salt, cumin or curry (optional)",["Dice the courgettes and peppers and sauté them with oil and salt for 8 minutes.","Add the drained chickpeas and heat for 2 minutes, with a pinch of cumin if you like.","Pour the same volume of salted boiling water over the couscous, cover for 5 minutes and fluff it with a fork.","Mix the couscous with the vegetables and chickpeas."]],
+"Insalata di fagioli e tonno":["Bean and tuna salad","oil, vinegar, salt",["Rinse and drain the beans.","Thinly slice the onion and leave it in cold water for 5 minutes to make it milder.","Mix the beans, drained tuna, onion and lettuce.","Dress with oil, vinegar and salt."]],
+"Caprese con pane":["Caprese with bread","oil, oregano or basil, salt",["Slice the tomatoes and mozzarella.","Alternate them on the plate and dress with oil, salt and basil or oregano.","Serve with the bread."]],
+"Pasta e broccoli":["Pasta with broccoli","oil, garlic, chilli (optional), salt",["Cut the broccoli into florets and boil them for 5 minutes in the salted pasta water.","Add the pasta to the same water and cook it al dente.","Meanwhile heat oil, garlic and chilli in a pan.","Drain the pasta and broccoli, toss them in the pan, mashing the broccoli a little, and serve with the cheese."]],
+"Minestrone":["Minestrone","oil, stock or stock cube, salt",["Dice all the vegetables.","Fry them in oil for 5 minutes, then add the passata and plenty of hot stock to cover.","Cook for 30 minutes on medium-low heat.","Add the drained beans and small pasta and cook for 10 more minutes. Salt and serve with a drizzle of oil."]],
+"Vellutata di zucca con ceci croccanti":["Pumpkin soup with crispy chickpeas","oil, stock, paprika, salt, pepper",["Peel the pumpkin and potatoes and cut them into cubes.","Fry the onion in oil, add the pumpkin and potatoes and cover with hot stock. Cook for 20-25 minutes.","Meanwhile dry the chickpeas and toast them in a pan with a drizzle of oil and paprika until crispy.","Blend the soup, season with salt and pepper and serve with the chickpeas on top."]],
+"Insalata di couscous, pomodori e cetrioli":["Couscous salad with tomatoes and cucumber","oil, lemon, mint or parsley, salt",["Pour the same volume of salted boiling water over the couscous, cover for 5 minutes and fluff it with a fork. Let it cool.","Dice the tomatoes, cucumbers and cheese.","Mix everything with oil, lemon juice, herbs and salt."]],
+"Pasta ricotta e spinaci":["Pasta with ricotta and spinach","oil, garlic, nutmeg, salt, pepper",["Sauté the spinach in a pan with oil and garlic for 3-4 minutes.","In a bowl mash the ricotta with salt, pepper, nutmeg and a ladle of hot pasta water.","Boil the pasta al dente and drain it.","Mix the pasta, spinach and ricotta cream and serve straight away."]],
+"Pasta zucca e ricotta":["Pasta with pumpkin and ricotta","oil, onion, sage or rosemary, salt",["Dice the pumpkin and cook it in a pan with oil, onion, sage and a little water for 15 minutes, until soft.","Mash part of it with a fork to make a cream.","Boil the pasta al dente and add it to the pumpkin with a ladle of the cooking water.","Off the heat add the ricotta by the spoonful and serve."]],
+"Ragù di lenticchie":["Lentil ragù","oil, bay leaf, salt",["Finely chop the soup vegetables (carrot, celery, leek, parsley) and fry them in oil for 5 minutes.","Add the rinsed lentils, the passata, the bay leaf and water to cover.","Cook for 30 minutes on low heat, adding water if needed, until the lentils are soft. Salt.","Boil the pasta al dente and dress it with the ragù."]],
+"Zuppa di porri, patate e fagioli":["Leek, potato and bean soup","oil, stock, bay leaf, salt, pepper",["Wash the leeks well and slice them into rounds; dice the potatoes.","Soften the leeks in oil for 5 minutes, then add the potatoes, bay leaf and hot stock to cover.","Cook for 20 minutes, add the drained beans and cook for 5 more minutes.","Blend part of the soup to make it creamy, season with salt and pepper."]],
+"Pollo al forno con patate":["Roast chicken with potatoes","oil, rosemary, garlic, salt, pepper",["Heat the oven to 200 °C.","Cut the potatoes into pieces and put them in a tray with the chicken legs, oil, salt, pepper, rosemary and garlic.","Cook for 50-60 minutes, turning everything halfway through.","The chicken is ready when the juices run clear and the skin is golden."]],
+"Lonza di maiale con patate":["Pork loin with potatoes","oil, rosemary, garlic, salt",["Heat the oven to 200 °C. Cut the potatoes and onions into wedges and roast them in a tray with oil, salt and rosemary for 15 minutes.","Brown the loin in a pan for 3 minutes per side.","Lay it on the potatoes and cook for 25-30 minutes (about 70 °C in the centre).","Let it rest for 5 minutes before slicing."]],
+"Riso con pollo e peperoni":["Rice with chicken and peppers","oil, onion, paprika, salt",["Cut the chicken into bite-sized pieces and the peppers into strips.","Brown the chicken in oil with the onion and a teaspoon of paprika for 6 minutes.","Add the peppers and cook for 5-7 minutes, adding salt.","Boil the rice for about 12 minutes, drain it, add it to the pan and toss for 2 minutes."]],
+"Parmigiana di zucchine":["Courgette parmigiana","oil, basil, salt",["Heat the oven to 190 °C.","Cut the courgettes into long slices, dress them with oil and salt and bake them for 10 minutes.","Cook the passata for 10 minutes with basil and salt.","In a dish layer courgettes, sauce and cheese, finishing with cheese.","Bake for 25 minutes until golden."]],
+"Polpette al sugo":["Meatballs in tomato sauce","stale bread, milk, parsley, garlic, oil, salt",["Soak a little stale bread in milk and squeeze it out.","Mix the meat with the bread, the egg, parsley and salt, and shape it into balls.","Brown them in oil for 5 minutes, then add the passata with a clove of garlic.","Cook covered on low heat for 20 minutes."]],
+"Gulasch viennese":["Viennese goulash","oil, sweet paprika, garlic, caraway, stock, salt",["Fry the sliced onions in oil for 8 minutes.","Add a tablespoon of sweet paprika, then the meat, and brown for 5 minutes.","Add the peppers and diced potatoes, garlic, caraway and hot stock to cover.","Cook on low heat for 40 minutes, stirring now and then, and salt at the end."]],
+"Curry di ceci e spinaci":["Chickpea and spinach curry","onion, garlic, curry powder, oil, salt",["Fry onion and garlic in oil with a tablespoon of curry powder.","Add the drained chickpeas and a glass of water, and cook for 10 minutes.","Add the spinach and cook for 3-4 minutes, adding salt.","Serve over rice boiled separately."]],
+"Omelette ai funghi":["Mushroom omelette","butter or oil, salt, pepper",["Slice the mushrooms and sauté them for 5 minutes with oil and salt.","Beat the eggs with salt and pepper.","Pour them into a hot pan with a little butter.","When almost set add the mushrooms and cheese, fold in half and serve."]],
+"Salmone al forno con patate e broccoli":["Baked salmon with potatoes and broccoli","oil, lemon, salt, pepper",["Heat the oven to 200 °C. Cut the potatoes into wedges, dress them with oil and salt and bake for 15 minutes.","Add the broccoli florets and the salmon to the tray with oil, salt and pepper.","Cook for another 12-15 minutes, until the salmon flakes easily.","Serve with lemon juice."]],
+"Merluzzo in padella con pomodori e patate":["Pan-cooked pollock with tomatoes and potatoes","oil, garlic, parsley, salt",["Boil the potatoes in pieces in salted water for 15 minutes.","In a pan heat oil and garlic, add the chopped tomatoes and cook for 5 minutes.","Lay the fish on the tomatoes, salt, cover and cook for 8-10 minutes on medium heat.","Serve with the potatoes and chopped parsley."]],
+"Tacchino al limone con riso e carote":["Lemon turkey with rice and carrots","flour, oil, lemon, salt",["Boil the rice for about 12 minutes.","Slice the carrots into rounds and cook them in a pan with oil, a little water and salt for 10 minutes.","Dust the turkey slices with flour and brown them in oil for 2-3 minutes per side.","Add the juice of half a lemon and a splash of water, cook for 1 minute and serve with the rice and carrots."]],
+"Chili di fagioli con riso":["Bean chilli with rice","oil, paprika, cumin, chilli, salt",["Fry the diced onion and peppers in oil for 5 minutes.","Add paprika, cumin and chilli, then the passata and drained beans.","Cook for 20 minutes on low heat, adding water if it dries out.","Serve over boiled rice."]],
+"Tofu saltato con verdure e riso":["Stir-fried tofu with vegetables and rice","oil, soy sauce, garlic, ginger (optional)",["Boil the rice for about 12 minutes.","Cut the tofu into cubes and brown it in oil until golden, then set it aside.","Stir-fry the broccoli and carrots in small pieces with garlic for 6-7 minutes.","Add the tofu and 2 tablespoons of soy sauce, stir for 1 minute and serve over the rice."]],
+"Krautfleckerl (pasta e cavolo)":["Krautfleckerl (pasta and cabbage)","oil or butter, sugar, caraway, salt, pepper",["Cut the cabbage into squares and the onion into slices.","Brown the onion with a teaspoon of sugar until it darkens a little.","Add the cabbage, caraway, salt and pepper, cover and cook for 15-20 minutes, stirring.","Boil the short pasta (Fleckerl is best) and mix it with the cabbage."]],
+"Pollo al forno con cavoletti e patate":["Roast chicken with Brussels sprouts and potatoes","oil, garlic, thyme or rosemary, salt, pepper",["Heat the oven to 200 °C.","Cut the potatoes into pieces and the sprouts in half.","Put everything in a tray with the chicken, oil, garlic, herbs, salt and pepper.","Cook for 45-50 minutes, turning halfway, until the chicken is golden and the sprouts are tender."]],
+"Risotto ai porri":["Leek risotto","oil or butter, stock, salt",["Slice the leeks thinly and soften them in oil or butter for 5 minutes.","Add the rice and toast it for 2 minutes.","Pour in the hot stock one ladle at a time and cook for about 16 minutes, stirring.","Off the heat stir in the grated cheese."]],
+"Polpette di ricotta e spinaci al sugo":["Ricotta and spinach balls in tomato sauce","breadcrumbs, oil, garlic, nutmeg, salt",["Boil or sauté the spinach, squeeze it well and chop it.","Mix the ricotta, spinach, egg, crumbled bread, nutmeg and salt; if the mixture is soft add breadcrumbs.","Shape it into balls and cook them for 15 minutes in the hot passata with garlic and oil, on low heat and covered.","Serve with the sauce."]],
+"Cavolfiore gratinato con patate":["Cauliflower and potato gratin","butter, flour, nutmeg, salt",["Heat the oven to 200 °C. Boil cauliflower florets and sliced potatoes for 8 minutes.","Melt a knob of butter, add a tablespoon of flour and then the milk, stirring until it thickens. Add salt and nutmeg.","Put the vegetables in a dish, pour over the sauce and cover with the cheese.","Bake for 20 minutes."]],
+"Mela e frutta secca":["Apple and nuts","",["Cut the apple into wedges and serve it with a handful of nuts."]],
+"Pera e frutta secca":["Pear and nuts","",["Cut the pear into wedges and serve it with a handful of nuts."]],
+"Yogurt e banana":["Yogurt and banana","",["Slice the banana and stir it into the yogurt."]],
+"Yogurt e arancia":["Yogurt and orange","",["Peel the orange, cut it into small pieces and stir it into the yogurt."]],
+"Pane e formaggio":["Bread and cheese","",["A slice of bread with a slice of cheese."]],
+"Mandarini e frutta secca":["Mandarins and nuts","",["Peel two mandarins and serve them with a handful of nuts."]],
+"Pane e ricotta con mandarini":["Bread and ricotta with mandarins","honey or jam (optional)",["Slice the bread and toast it if you like.","Spread the ricotta and add a drizzle of honey or jam.","Serve with the peeled mandarins."]],
+"Carote all’olio e limone":["Carrots with oil and lemon","oil, lemon, salt",["Peel the carrots and slice them into rounds.","Steam or boil them for 10 minutes, until tender.","Dress them with oil, lemon and salt."]],
+"Zucchine saltate":["Sautéed courgettes","oil, garlic, salt",["Slice the courgettes into rounds.","Sauté them in a pan with oil and garlic for 6-8 minutes.","Salt at the end."]],
+"Spinaci saltati":["Sautéed spinach","oil, garlic, salt",["Wash the spinach.","Sauté it in a pan with oil and garlic for 3-4 minutes, until wilted.","Salt and serve."]],
+"Peperoni al forno":["Roasted peppers","oil, salt",["Heat the oven to 200 °C.","Cut the peppers into strips and dress them with oil and salt.","Roast for 25 minutes."]],
+"Insalata di carote e mela":["Carrot and apple salad","lemon, oil, salt",["Grate the carrots and cut the apple into sticks.","Dress with lemon, oil and salt."]],
+"Insalata verde":["Green salad","oil, vinegar, salt",["Wash the lettuce and slice the cucumber.","Dress with oil, vinegar and salt."]],
+"Insalata di pomodori":["Tomato salad","oil, oregano, salt",["Cut the tomatoes into wedges.","Dress with oil, oregano and salt."]],
+"Broccoli al vapore":["Steamed broccoli","oil, lemon, salt",["Cut the broccoli into florets.","Steam them or cook them in a little water for 6-7 minutes.","Dress with oil, lemon and salt."]],
+"Insalata di cavolo (Krautsalat)":["Cabbage salad (Krautsalat)","oil, vinegar, caraway, salt",["Cut the cabbage into thin strips.","Salt it and massage it with your hands for 2 minutes, then let it rest for 10 minutes.","Dress with oil, vinegar and a pinch of caraway."]],
+"Cavolfiore al forno":["Roasted cauliflower","oil, turmeric or paprika, salt",["Cut the cauliflower into florets and dress them with oil, spices and salt.","Roast at 200 °C for 25 minutes."]],
+"Una mela":["An apple","",["Wash the apple and cut it into wedges."]],
+"Un’arancia":["An orange","",["Peel the orange and divide it into segments."]],
+"Una banana":["A banana","",["Peel and eat."]],
+"Una pera":["A pear","",["Wash the pear and cut it into wedges."]],
+"Cavoletti al forno":["Roasted Brussels sprouts","oil, salt, pepper",["Cut the sprouts in half and dress them with oil, salt and pepper.","Roast at 200 °C for 25 minutes, until golden."]],
+"Porri stufati":["Braised leeks","oil or butter, salt",["Wash the leeks and slice them into rounds.","Braise them in a pan with oil or butter, a splash of water and salt for 12-15 minutes."]],
+"Due mandarini":["Two mandarins","",["Peel the mandarins and divide them into segments."]]};
+const rn=n=>LANG==="en"&&RX[n]?RX[n][0]:n;          // nome del piatto da mostrare
+const rd=r=>LANG==="en"&&RX[r.n]?RX[r.n][1]:r.d;    // ingredienti dalla dispensa
+const rp=r=>LANG==="en"&&RX[r.n]?RX[r.n][2]:r.p;    // passaggi
+const ingN=i=>tx(I[i][0]);                           // nome dell'ingrediente
+// testi fissi della pagina (elementi con data-i / data-ia)
+const STATIC_EN={brand:"Nocciola, smart grocery shopping in Vienna",payoff:"smart shopping · Wien",sections:"Sections",tMenu:"Menu",tSpesa:"Shopping",tEq:"Balance",tOff:"Deals",tTana:"Den",
+heroA:"Nocciola’s tips",mascotA:"Nocciola the mouse: open the den",kpisA:"Summary",famH:"Who eats at home?",cfgL:"Menu settings",actL:"Physical activity (adults and teens)",daysL:"Menu days",
+dtL:"Shopping day",budL:"Weekly budget",budP:"none",outL:"Lunch, Monday to Friday",shopsL:"Shops to visit",prioL:"Priority",dietL:"Dietary needs",vgL:"Vegetarian only",
+bcL:"Cook once, eat twice <span class=\"muted small\">(double portion at dinner, next day’s lunch)</span>",menuH:"This week’s menu",
+menuLead:"Portions are already calculated for your family. Tap “Recipe” for ingredients and steps, or “I don’t like it” to change dish. When you are happy with it, confirm it: it then stays the same all week.",
+listH:"Shopping list",listLead:"Whole packs, grouped by shop. Tick what is already in your trolley.",cpB:"Copy the list",rsB:"Clear ticks",
+eqH:"Balance and sustainability",eqLead:"How the dishes are spread across the week compared with the recommended frequencies, and the menu’s impact on the environment.",
+freqH:"Frequency this week",freqN:"The green zone is the recommended range for the number of days chosen. Main dishes are counted (and eggs at breakfast too).",dailyH:"Each day, per adult",
+eqNote:"Indicative references: Italian healthy eating guidelines (CREA) and the Austrian food pyramid. An adult with moderate activity needs ≈ 2,100 kcal a day (average of women and men); teens ×1.1, children aged 4–10 ×0.7, toddlers aged 1–3 ×0.45. Calories, protein and CO₂ are estimates based on average ingredient values. This is not a personalised diet plan: for special needs, pregnancy or illness ask a doctor or dietitian.",
+tanaH:"Nocciola’s den",tanaLead:"Nocciola is a thrifty little mouse who saves hazelnuts for the winter. Every meal you cook from the confirmed menu grows the stash.",
+offH:"Deals",thShop:"Shop",thProd:"Product",thPrice:"Price",thDisc:"Discount",thEnd:"Valid",thAct:"Actions",addS:"Add a deal you saw in a shop",fromL:"From",toL:"To",addB:"Add",
+datiS:"Your data on this device: save or restore",datiP:"Profile, confirmed week, pantry, den, deals you added and excluded dishes stay only in this browser. Save them to move them to another phone or browser, or before clearing your browsing data.",
+expB:"Prepare the data to save",expFB:"Download as a file",ioL:"Data (copy this text, or paste the saved text here)",ioF:"Open a saved file",impB:"Restore this data",impY:"Yes, replace the current data",
+foot:"Reference prices are estimates for Vienna; deals come from the Vienna websites and leaflets of Billa, Hofer, Lidl, Penny and Spar (no loyalty-card or app deals) and are valid only on the days shown. Deals you add and your preferences stay only on this device."};
+const ORIG=new Map();
+function applyStatic(){
+ document.documentElement.lang=LANG;
+ document.querySelectorAll("[data-i]").forEach(el=>{if(!ORIG.has(el))ORIG.set(el,el.innerHTML);const en=STATIC_EN[el.dataset.i];el.innerHTML=LANG==="en"&&en?en:ORIG.get(el)});
+ document.querySelectorAll("[data-ia]").forEach(el=>el.dataset.ia.split(";").forEach(pair=>{const [a,k]=pair.split(":"),key=el.dataset.ia+"|"+a;
+  if(!ORIG.has(el))ORIG.set(el,{});const o=ORIG.get(el);if(!(a in o))o[a]=el.getAttribute(a);const en=STATIC_EN[k];el.setAttribute(a,LANG==="en"&&en?en:o[a])}));
+ document.querySelectorAll("#lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===LANG));
+}
+const kc=g=>{let s=0;for(const i in g)s+=g[i]*I[i][3]/100;return s};
+const pr=g=>{let s=0;for(const i in g)s+=g[i]*I[i][4]/100;return s};
+const fv=g=>{let s=0;for(const i in g)if(I[i][7]!=="x")s+=g[i];return s};
+const fr=g=>{let s=0;for(const i in g)if(I[i][7]==="f")s+=g[i];return s};
+const scale=(g,f)=>{const o={};for(const i in g)o[i]=Math.round(g[i]*f/5)*5;return o};
+const inSeason=(i,m)=>{const s=SEAS[i];if(!s)return false;return s.split(",").some(r=>{const [a,b]=r.split("-").map(Number);return a<=b?m>=a&&m<=b:m>=a||m<=b})};
+const packLabel=x=>x.pk===0?`${qty(x.i,x.buy||x.g)} ${L("a peso","loose")}`:`${x.np} × ${packTxt(x.i,x.pk)}`;
+const packTxt=(i,pk)=>i==="uova"?`${pk/60} ${L("uova","eggs")}`:i==="latte"?`${dc((pk/1000).toString())} l`:qty("_",pk);
+const qty=(i,g)=>i==="uova"?Math.max(1,Math.round(g/60))+(Math.round(g/60)===1?L(" uovo"," egg"):L(" uova"," eggs")):i==="latte"?(g>=1000?dc((g/1000).toFixed(1))+" l":Math.round(g/10)*10+" ml"):g>=1000?dc((g/1000).toFixed(2).replace(/\.?0+$/,""))+" kg":Math.round(g)+" g";
+const unit=i=>i==="uova"?L("uova","eggs"):i==="latte"?"ml":"g";
+const LONG=i=>I[i][6]===0&&i!=="latte"; // si conserva oltre la settimana: l'avanzo passa in dispensa
+function needSide(r){return r.s==="b"?fr(r.g)<100:(r.s==="p"||r.s==="c")?fv(r.g)<200:false}
+// porzione per un adulto adattata al pasto (slot può essere diverso da r.s per gli avanzi: cena di ieri → pranzo)
+const portion=(r,slot)=>{const s=slot||r.s,sl=SLOT[s],need=needSide(r),target=sl.kcal-sl.oil-(need?45:0),up=s==="s"?1.25:s==="b"?1.2:Object.keys(r.g).some(i=>BASESTARCH.includes(i))?1.2:1.35,f=Math.min(up,Math.max(.8,target/kc(r.g)));return scale(r.g,f)};
+
+// ---------- stato ----------
+const P=Object.assign({ad:2,te:0,ki:0,to:0,act:"m",d:5,w:2,veg:false,tab:"menu",out:"no",bud:0,diet:[],shops:9,bc:true},LS.get("nc-profilo",{}));
+if(!Array.isArray(P.diet))P.diet=[];if(!OUT[P.out])P.out="no";if(!SHOPS[P.shops])P.shops=9;
+let FEED=BASE;
+let MINE=LS.get("sm-mie",[]);if(!Array.isArray(MINE))MINE=[];
+const HID=new Set(LS.get("sm-nascoste",[])),EX=new Set(LS.get("sm-escluse",[])),CHK=new Set(LS.get("sm-spunte",[]));
+let CONF=LS.get("nc-settimana",null);         // settimana confermata: menu e lista bloccati
+let PANTRY=LS.get("nc-dispensa",{});          // dispensa: grammi per ingrediente
+if(typeof PANTRY!=="object"||Array.isArray(PANTRY))PANTRY={};
+let PINS=LS.get("nc-cambi",null);             // piatti scelti a mano con "Cambia": {t, map:{"giorno-pasto": nome}}
+let ASK=false,OPEN=null;
+// giorno della spesa: si ricorda quello scelto finché non è passato
+$("dt").value=typeof P.dt==="string"&&P.dt>=today()?P.dt:today();$("dt").min=today();
+const saveP=()=>{P.dt=$("dt").value;LS.set("nc-profilo",P)};
+const household=(ex=[])=>{const a=ACT[P.act].f;return PERS.reduce((s,p)=>ex.includes(p.id)?s:s+(P[p.id]||0)*p.f*(p.act?a:1),0)};
+const people=()=>PERS.reduce((s,p)=>s+(P[p.id]||0),0);
+const kids=()=>(P.ki||0)+(P.to||0)>0;
+
+// esigenze alimentari attive
+let SUB={},SUBTYPE={},NO=new Set(),DROP=new Set();
+function dietSetup(){SUB={};SUBTYPE={};NO=new Set();DROP=new Set();
+for(const [k,d] of Object.entries(DIETS)){if(!P.diet.includes(k))continue;for(const [i,sub] of Object.entries(d.sub||{})){SUB[i]=sub;SUBTYPE[i]=k;}(d.no||[]).forEach(x=>NO.add(x));(d.drop||[]).forEach(x=>DROP.add(x))}
+if((P.to||0)>0)NO.add("noci"); // frutta secca intera: rischio di soffocamento sotto i 4-5 anni
+}
+const nm=i=>SUB[i]?SUB[i][0]:I[i][0];
+const pantryKey=i=>SUBTYPE[i]?SUBTYPE[i]+":"+i:i;
+const pantryProduct=key=>{
+ const [kind,i]=key.split(":");
+ return i&&DIETS[kind]?.sub?.[i]?[i,DIETS[kind].sub[i][0]]:I[key]?[key,I[key][0]]:null;
+};
+const usablePantry=()=>Object.fromEntries(Object.keys(I).map(i=>[i,PANTRY[pantryKey(i)]||0]));
+const ref=i=>I[i][1]*(SUB[i]?SUB[i][1]:1);
+const adapt=r=>{const g={},dropped=[];for(const i in r.g){if(DROP.has(i)&&r.g[i]<=30&&!r.n.toLowerCase().includes(I[i][0].toLowerCase())){dropped.push(i);continue}if(NO.has(i)||DROP.has(i))return null;g[i]=r.g[i]}return Object.assign({},r,{g,dropped})};
+
+// g (facoltativo): grammi della confezione in offerta; 0 = venduto a peso (sfuso o al banco)
+const valid=o=>!!(o&&STORES.includes(o.s)&&Object.hasOwn(I,o.i)&&Number.isFinite(o.p)&&o.p>0&&/^\d{4}-\d\d-\d\d$/.test(o.d||"")&&/^\d{4}-\d\d-\d\d$/.test(o.a||"")&&o.d<=o.a&&(o.g==null||(Number.isFinite(o.g)&&o.g>=0&&o.g<=20000)));
+const oid=o=>[o.s,o.i,o.d,o.a,o.p].join("|");
+const ALL=()=>FEED.offers.filter(valid).filter(o=>!HID.has(oid(o))).concat(MINE.map((o,k)=>Object.assign({},o,{u:1,k})).filter(valid));
+const ok=(o,t)=>o.d<=t&&o.a>=t;
+const limits=(d,veg,nofish)=>{const L={};for(const k in CATS){const c=CATS[k];let mn=c.min?Math.max(1,Math.round(c.min*d/7)):0,mx=Math.max(1,Math.round(c.max*d/7));if(veg&&["pesce","bianca","rossa","proc"].includes(k)){mn=0;mx=0}if(nofish&&k==="pesce"){mn=0;mx=0}if(veg&&k==="legumi")mn=Math.max(1,Math.round(4*d/7));L[k]={min:mn,max:mx}}return L};
+
+// ---------- motore del menu ----------
+// Sceglie i piatti uno alla volta: costo della spesa (confezioni intere, tolto quello che è in dispensa)
+// − peso × risparmio delle offerte + CO2 + penalità di equilibrio, varietà e sicurezza.
+// o.pins: piatti scelti a mano; o.stores: negozi ammessi per le offerte; o.batch: cucina una volta, mangia due.
+function compute(t,o){
+const {d,veg,w}=o,lam=o.lam==null?LAMBDA:o.lam,mo=+t.slice(5,7),L=limits(d,veg,NO.has("tonno")),PAN=o.pantry||{},PIN=o.pins||{};
+const best={};ALL().forEach(x=>{if(o.stores&&!o.stores.has(x.s))return;if(!SUB[x.i]&&ok(x,t)&&x.p<ref(x.i)&&(!best[x.i]||x.p<best[x.i].p))best[x.i]=x});
+const eff=i=>best[i]?best[i].p:ref(i);
+const co2k=i=>(I[i][7]!=="x"&&SEAS[i]&&!inSeason(i,mo))?2.5:I[i][5];
+const used=[];
+// confezione: quella vera dell'offerta se nota (g), altrimenti una tipica (I[i][2]); a peso → si compra quanto serve (arrotondato a 50 g)
+// se la confezione in offerta è grande (es. 4 lattine) e ne serve poca, può costare meno la confezione normale: scelgo la spesa più bassa
+const take=(need,pk)=>{if(need<=0)return {np:0,buy:0,pk};if(pk===0){const buy=Math.ceil(need/50-1e-9)*50;return {np:1,buy,pk}}const np=Math.ceil(need/pk-1e-9);return {np,buy:np*pk,pk}};
+const buyQty=(i,need)=>{const b=best[i],plain=Object.assign(take(need,I[i][2]),{price:ref(i),off:false});if(!b)return plain;
+ const o=Object.assign(take(need,Number.isFinite(b.g)?b.g:I[i][2]),{price:b.p,off:true,real:Number.isFinite(b.g)});return o.buy*o.price<=plain.buy*plain.price+1e-9?o:plain};
+const basket=E=>{const a={};E.forEach(e=>{for(const i in e.g)a[i]=(a[i]||0)+e.g[i]*e.n});let c=0;for(const i in a){const q=buyQty(i,Math.max(0,a[i]-(PAN[i]||0)));c+=q.buy/1000*q.price}return c};
+const sav=(g,n)=>{let s=0;for(const i in g)if(best[i])s+=g[i]*n/1000*(ref(i)-best[i].p);return s};
+const co2=g=>{let s=0;for(const i in g)s+=g[i]/1000*co2k(i);return s};
+const score=(g,p,n)=>basket(used.concat([{g,n}]))+p-w*sav(g,n)+lam*co2(g)*n;
+const RCa=RC.map(adapt).filter(r=>r&&(!veg||r.v)),SIDa=SIDES.map(adapt).filter(Boolean);
+const isKids=kids(),tunaMax=Math.max(1,Math.round(d/7)),batchMax=Math.max(1,Math.round(d/3));let tuna=0,batches=0;
+const rep1=o.relax?20:50,rep2=o.relax?15:60;
+const hist={b:[],p:[],s:[],c:[],side:[]},cnt={},dish={},days=[],forced={};
+const nHome=household(),nLunch=household(OUT[P.out].ex);
+const nFor=(k,sl)=>{const dow=new Date(addD(t,k)+"T12:00:00").getDay();return sl==="p"&&dow>=1&&dow<=5?nLunch:nHome};
+for(let k=0;k<d;k++){
+ const meals=[],dayCats=[];
+ for(const sl of ORDER){
+  const n=nFor(k,sl),key=k+"-"+sl;
+  if(n<.001){meals.push({sl,out:true});continue}
+  let R=null,G=null,leftover=false;
+  const pinned=PIN[key]&&!EX.has(PIN[key])&&RCa.find(r=>r.n===PIN[key]&&r.s===sl);
+  if(pinned){R=pinned;G=portion(R)}
+  else if(forced[key]){R=forced[key];G=portion(R,sl);leftover=true}
+  else{
+   const pool=RCa.filter(r=>r.s===sl&&!EX.has(r.n));
+   let bs=1e9;
+   for(const r of pool){
+    const g=portion(r),h=hist[sl];let p=0;
+    if(h[h.length-1]===r.n)p+=rep1;else if(h.slice(-3).includes(r.n))p+=4;
+    if((dish[r.n]||0)>=2)p+=rep2;else if(dish[r.n])p+=5;
+    const lim=L[r.k];if(lim){const c=cnt[r.k]||0;if(c>=lim.max)p+=100;else if(c<lim.min)p-=6}
+    if(r.k&&r.k!=="cereali"&&r.k!=="col"&&dayCats.includes(r.k))p+=8;
+    if(isKids&&r.g.tonno&&tuna>=tunaMax)p+=100; // tonno: al massimo una volta a settimana con bambini (mercurio)
+    let sc;
+    if(o.batch&&sl==="c"&&BATCH.has(r.n)&&batches<batchMax&&k+1<d&&!PIN[(k+1)+"-p"]&&nFor(k+1,"p")>.001){
+     // doppia dose: conto anche la porzione di domani a pranzo, meno quanto costerebbe un pranzo normale (≈ 1 € a porzione) e un piccolo premio per il tempo risparmiato
+     const n2=nFor(k+1,"p"),g2=portion(r,"p");sc=basket(used.concat([{g,n},{g:g2,n:n2}]))+p-w*(sav(g,n)+sav(g2,n2))+lam*(co2(g)*n+co2(g2)*n2)-1*n2-1;
+    }else sc=score(g,p,n);
+    if(sc<bs){bs=sc;R=r;G=g}
+   }
+  }
+  if(!R){meals.push({sl,none:true});continue}
+  used.push({g:G,n});hist[sl].push(R.n);dish[R.n]=(dish[R.n]||0)+1;if(R.k){cnt[R.k]=(cnt[R.k]||0)+1;dayCats.push(R.k)}if(R.g.tonno)tuna++;
+  let double=false;
+  if(o.batch&&sl==="c"&&!leftover&&BATCH.has(R.n)&&batches<batchMax&&k+1<d&&!PIN[(k+1)+"-p"]&&nFor(k+1,"p")>.001){forced[(k+1)+"-p"]=R;batches++;double=true}
+  let side=null;
+  if(needSide(R)){const ty=sl==="b"?"f":"v";let sp=SIDa.filter(x=>x.s===ty&&!EX.has(x.n));if(!sp.length)sp=SIDa.filter(x=>x.s===ty);let b2=1e9;for(const x of sp){const p=hist.side.slice(-3).includes(x.n)?3:0,sc=score(x.g,p,n);if(sc<b2){b2=sc;side=x}}if(side){used.push({g:side.g,n});hist.side.push(side.n)}}
+  let kcal=kc(G)+(side?kc(side.g):0)+SLOT[sl].oil,bread=0;const def=SLOT[sl].kcal-kcal;
+  if(def>60&&sl!=="s"){bread=Math.min(80,Math.max(30,Math.round(def/2.6/10)*10));used.push({g:{pane:bread},n});kcal+=bread*2.6}
+  const all=Object.assign({},G);if(side)for(const i in side.g)all[i]=(all[i]||0)+side.g[i];if(bread)all.pane=(all.pane||0)+bread;
+  let cost=0;for(const i in all)cost+=all[i]*n/1000*eff(i);
+  meals.push({sl,r:R,g:G,side,bread,all,kcal,prot:pr(all),fv:fv(all),cost,n,dropped:R.dropped,leftover,double,pinned:!!pinned});
+ }
+ const home=meals.filter(m=>m.r);
+ days.push({meals,kcal:home.reduce((a,m)=>a+m.kcal,0),target:home.reduce((a,m)=>a+SLOT[m.sl].kcal,0),outK:meals.filter(m=>m.out).reduce((a,m)=>a+SLOT[m.sl].kcal,0),prot:home.reduce((a,m)=>a+m.prot,0),fv:home.reduce((a,m)=>a+m.fv,0),cost:home.reduce((a,m)=>a+m.cost,0)});
+}
+// dose totale da cucinare per le cene doppie (stasera + pranzo di domani)
+days.forEach((day,k)=>day.meals.forEach(m=>{if(!m.double)return;const nx=days[k+1]&&days[k+1].meals.find(x=>x.sl==="p");const tot={};for(const i in m.g)tot[i]=m.g[i]*m.n;if(nx&&nx.r)for(const i in nx.g)tot[i]=(tot[i]||0)+nx.g[i]*nx.n;m.batchTot=tot}));
+const agg={};used.forEach(e=>{for(const i in e.g)agg[i]=(agg[i]||0)+e.g[i]*e.n});
+const items=[];let tt=0,bb=0,ww=0,CO=0,pa=0,pt=0;
+for(const i in agg){const g=agg[i],pan=PAN[i]||0,fromP=Math.min(g,pan),need=g-fromP,q=buyQty(i,need),{np,buy,pk}=q,c=buy/1000*q.price,left=buy-need+(pan-fromP),real=!!q.real,bo=q.off?best[i]:null;
+ tt+=c;bb+=take(need,I[i][2]).buy/1000*ref(i);ww+=left/1000*q.price;CO+=g/1000*co2k(i);const p=g*I[i][4]/100;pt+=p;if(ANIMAL.has(i))pa+=p;
+ items.push({i,panKey:pantryKey(i),nm:nm(i),g,pk,np,buy,real,c,left,fromP,s:bo?bo.s:"",off:bo?{s:bo.s,p:bo.p,a:bo.a,pc:Math.round((1-bo.p/ref(i))*100)}:null,sv:bo?Math.max(0,take(need,I[i][2]).buy/1000*ref(i)-c):0})}
+const bestS={};for(const i in best)bestS[i]={s:best[i].s,p:best[i].p,pc:Math.round((1-best[i].p/ref(i))*100)};
+return {t,d,days,best:bestS,mo,items,tt,bb,ww,co2:CO,plant:pt?1-pa/pt:0,cnt,L,nHome,pan:Object.assign({},PAN),diet:P.diet.map(k=>DIETS[k]&&DIETS[k].lab).filter(Boolean),toddler:(P.to||0)>0,kids:isKids,batches};
+}
+// ---------- ottimizzazione ----------
+// Il motore sceglie i piatti uno alla volta (veloce ma miope). Poi un secondo passaggio prova a sostituire un piatto alla volta
+// e tiene il cambio solo se la settimana intera migliora: totale della spesa (confezioni intere) più le penalità di equilibrio e varietà.
+function violations(R){
+let v=0;for(const k in CATS){const c=R.cnt[k]||0,l=R.L[k];v+=Math.max(0,l.min-c)+Math.max(0,c-l.max)}
+const cnt={};let rep=0;
+R.days.forEach((d,k)=>d.meals.forEach(m=>{if(!m.r||m.leftover)return;cnt[m.r.n]=(cnt[m.r.n]||0)+1;if(k>0){const p=R.days[k-1].meals.find(x=>x.sl===m.sl);if(p&&p.r&&!p.leftover&&p.r.n===m.r.n)rep++}}));
+for(const n in cnt)if(cnt[n]>2)rep+=cnt[n]-2;
+let tv=0;if(kids()){let tuna=0;R.days.forEach(d=>d.meals.forEach(m=>{if(m.r&&!m.leftover&&m.g&&m.g.tonno)tuna++}));tv=Math.max(0,tuna-Math.max(1,Math.round(R.d/7)))}
+return v*20+rep*15+tv*50;
+}
+const objective=(R,o)=>{const lam=o.lam==null?LAMBDA:o.lam;return R.tt-(o.w||0)*(R.bb-R.tt)+lam*R.co2+violations(R)};
+function improve(t,o,R,lock){
+let best=R,bestF=objective(R,o);
+const eff=i=>best.best[i]?best.best[i].p:ref(i);
+for(let pass=0;pass<2;pass++){
+ let changed=false;
+ const keys=[];best.days.forEach((d,k)=>d.meals.forEach(m=>{if(m.r&&!m.leftover&&!lock[k+"-"+m.sl])keys.push([k,m.sl])}));
+ for(const [k,sl] of keys){
+  const m=best.days[k].meals.find(x=>x.sl===sl);if(!m||!m.r||m.leftover)continue;
+  const n=m.n,cands=RC.map(adapt).filter(r=>r&&r.s===sl&&(!P.veg||r.v)&&!EX.has(r.n)&&r.n!==m.r.n)
+   .map(r=>{const g=portion(r);let c=0;for(const i in g)c+=g[i]*n/1000*eff(i);return [r,c]}).sort((a,b)=>a[1]-b[1]).slice(0,3);
+  for(const [r] of cands){const pins=picks(best);pins[k+"-"+sl]=r.n;const R2=compute(t,Object.assign({},o,{pins}));const f=objective(R2,o);if(f<bestF-.05){best=R2;bestF=f;changed=true;break}}
+ }
+ if(!changed)break;
+}
+return best;
+}
+// menu completo: due versioni ottimizzate (offerte e prezzo più basso), negozi da girare, budget.
+// "Spendere il meno possibile" non costa mai più di "Sfruttare le offerte": se il menu delle offerte è più economico, si usa quello.
+// Le due versioni si calcolano insieme e restano in memoria: cambiare priorità o budget non ricalcola nulla.
+const PLANCACHE=new Map();
+const planKey=(t,x)=>JSON.stringify([t,x,P.ad,P.te,P.ki,P.to,P.act,P.d,P.veg,P.out,P.diet,P.shops,P.bc,[...EX],PINS,PANTRY,MINE,[...HID],FEED.updated]);
+const planReady=(t,x={})=>PLANCACHE.has(planKey(t,x));
+function plan(t,x={}){
+const k=planKey(t,x);let pair=PLANCACHE.get(k);
+if(!pair){pair=planPair(t,x);PLANCACHE.set(k,pair);if(PLANCACHE.size>40)PLANCACHE.delete(PLANCACHE.keys().next().value)}
+const {Roff,Rlow}=pair,Rmin=Rlow.tt<=Roff.tt?Rlow:Roff,B=+P.bud||0;
+let R=P.w===2?Roff:Rmin,mode=0;
+if(B>0&&R.tt>B){if(Rmin.tt<R.tt){R=Rmin;mode=1}if(R.tt>B){const R2=pair.relax();if(R2.tt<R.tt){R=R2;mode=2}}}
+return Object.assign({},R,{mode,cheap:Rmin.tt,offTot:Roff.tt,offSave:Roff.bb-Roff.tt,minSave:Rmin.bb-Rmin.tt,budget:B,shop:pair.shop});
+}
+function planPair(t,x){
+const lock=x.pins||(PINS&&PINS.t===t?PINS.map:{}),fast=!!x.fast;
+const base={d:P.d,veg:P.veg,pantry:x.pantry||usablePantry(),pins:lock,batch:x.nobatch?false:!!P.bc};
+const run=o=>{const R=compute(t,o);return fast?R:improve(t,o,R,lock)};
+let shop=null;
+if(P.shops<9){const R0=compute(t,Object.assign({},base,{w:2})),by={};R0.items.forEach(it=>{if(it.off)by[it.s]=(by[it.s]||0)+it.sv});const ranked=Object.keys(by).sort((a,b)=>by[b]-by[a]);
+ shop={stores:ranked.slice(0,P.shops),diff:0};
+ if(ranked.length>P.shops){base.stores=new Set(ranked.slice(0,P.shops));shop.diff=compute(t,Object.assign({},base,{w:2})).tt-R0.tt}}
+let relaxed=null;
+return {Roff:run(Object.assign({},base,{w:2})),Rlow:run(Object.assign({},base,{w:0,lam:0})),shop,relax:()=>relaxed||(relaxed=run(Object.assign({},base,{w:0,lam:0,relax:true})))};
+}
+
+// ---------- settimana confermata ----------
+const serialize=R=>JSON.parse(JSON.stringify(Object.assign({},R,{days:R.days.map(d=>Object.assign({},d,{meals:d.meals.map(m=>m.r?Object.assign({},m,{r:m.r.n,side:m.side?m.side.n:null,sideG:m.side?m.side.g:null}):m)}))})));
+const hydrate=S=>{const R=JSON.parse(JSON.stringify(S));R.days.forEach(d=>d.meals.forEach(m=>{if(!m.r)return;const r=RC.find(x=>x.n===m.r)||{n:m.r,s:m.sl,k:"",t:"",d:"",p:[]};m.r=Object.assign({},r,{g:m.g});if(m.side){const s=SIDES.find(x=>x.n===m.side)||{n:m.side,d:"",p:[]};m.side=Object.assign({},s,{g:m.sideG||s.g})}}));return R};
+const lastDay=R=>addD(R.t,R.d-1);
+const picks=R=>{const m={};R.days.forEach((d,k)=>d.meals.forEach(x=>{if(x.r&&!x.leftover)m[k+"-"+x.sl]=x.r.n}));return m};
+
+// ---------- pannello famiglia ----------
+function renderFam(){
+$("fam").innerHTML=PERS.map(p=>`<div class="who"><div class="t">${tx(p.lab)}<small>${tx(p.sub)}</small></div><div class="step"><button data-p="${p.id}" data-d="-1" aria-label="${L("Uno in meno","One fewer")}: ${tx(p.lab)}" ${(P[p.id]||0)===0||(people()===1&&(P[p.id]||0)===1)?"disabled":""}>−</button><output class="num" aria-live="polite">${P[p.id]||0}</output><button data-p="${p.id}" data-d="1" aria-label="${L("Uno in più","One more")}: ${tx(p.lab)}" ${(P[p.id]||0)>=8?"disabled":""}>+</button></div></div>`).join("");
+$("act").innerHTML=Object.keys(ACT).map(k=>`<button data-act="${k}" aria-pressed="${P.act===k}">${tx(ACT[k].lab)}</button>`).join("");
+$("days").innerHTML=[3,4,5,6,7].map(k=>`<button data-days="${k}" aria-pressed="${P.d===k}">${k}</button>`).join("");
+$("out").innerHTML=Object.keys(OUT).map(k=>`<button data-out="${k}" aria-pressed="${P.out===k}">${tx(OUT[k].lab)}</button>`).join("");
+$("shops").innerHTML=Object.keys(SHOPS).map(k=>`<button data-shops="${k}" aria-pressed="${P.shops===+k}">${tx(SHOPS[k])}</button>`).join("");
+$("prio").innerHTML=`<button data-w="2" aria-pressed="${P.w===2}">${L("Sfruttare le offerte","Make the most of deals")}</button><button data-w="0" aria-pressed="${P.w===0}">${L("Spendere il meno possibile","Spend as little as possible")}</button>`;
+$("diet").innerHTML=Object.keys(DIETS).map(k=>`<button data-diet="${k}" aria-pressed="${P.diet.includes(k)}">${tx(DIETS[k].lab)}</button>`).join("");
+$("bud").value=P.bud?P.bud:"";
+$("vg").checked=!!P.veg;$("bc").checked=!!P.bc;
+const n=household();
+$("need").innerHTML=L(`Fabbisogno della famiglia: circa <b class="num">${fmt(n*REF_KCAL)} kcal</b> al giorno, pari a <b class="num">${dc(n.toFixed(1))}</b> porzioni da adulto. Le quantità di ogni ricetta sono calcolate su questo.${(P.to||0)>0?" Con bimbi di 1–3 anni niente frutta secca intera negli spuntini.":""}${kids()?" Con bambini il tonno è al massimo una volta a settimana.":""}`,
+ `Family needs: about <b class="num">${fmt(n*REF_KCAL)} kcal</b> a day, equal to <b class="num">${dc(n.toFixed(1))}</b> adult portions. The quantities in every recipe are based on this.${(P.to||0)>0?" With toddlers aged 1–3 there are no whole nuts in the snacks.":""}${kids()?" With children, tuna is served at most once a week.":""}`);
+$("cfg").disabled=!!CONF;
+$("lock").hidden=!CONF;
+if(CONF)$("lock").innerHTML=L(`La settimana è confermata: per cambiare famiglia o impostazioni usa <b>Rifai il menu</b> nella scheda Menu. Puoi comunque cambiare singoli piatti.`,`The week is confirmed: to change the family or settings use <b>Redo the menu</b> in the Menu tab. You can still change single dishes.`);
+}
+const clearPins=()=>{PINS=null;LS.set("nc-cambi",null);OPEN=null};
+$("fam").onclick=e=>{const b=e.target.closest("button[data-p]");if(!b)return;const k=b.dataset.p;P[k]=Math.max(0,Math.min(8,(P[k]||0)+ +b.dataset.d));if(people()===0)P[k]=1;update()};
+$("act").onclick=e=>{const b=e.target.closest("button");if(b){P.act=b.dataset.act;update()}};
+$("days").onclick=e=>{const b=e.target.closest("button");if(b){P.d=+b.dataset.days;clearPins();update()}};
+$("out").onclick=e=>{const b=e.target.closest("button");if(b){P.out=b.dataset.out;update()}};
+$("shops").onclick=e=>{const b=e.target.closest("button");if(b){P.shops=+b.dataset.shops;update()}};
+$("prio").onclick=e=>{const b=e.target.closest("button");if(b){P.w=+b.dataset.w;update()}};
+$("diet").onclick=e=>{const b=e.target.closest("button");if(!b)return;const k=b.dataset.diet;P.diet=P.diet.includes(k)?P.diet.filter(x=>x!==k):P.diet.concat([k]);update()};
+$("bud").onchange=()=>{const v=parseFloat(String($("bud").value).replace(",","."));P.bud=v>0?Math.round(v*100)/100:0;update()};
+$("vg").onchange=()=>{P.veg=$("vg").checked;update()};
+$("bc").onchange=()=>{P.bc=$("bc").checked;update()};
+$("dt").onchange=()=>{clearPins();update()};
+
+// ---------- schede ----------
+const TABS=["menu","spesa","equilibrio","offerte","tana"];
+function showTab(t){if(!TABS.includes(t))t="menu";P.tab=t;saveP();TABS.forEach(x=>{$("v-"+x).hidden=x!==t;const b=$("t-"+x);b.setAttribute("aria-selected",x===t);b.setAttribute("aria-controls","v-"+x);b.tabIndex=x===t?0:-1})}
+// tastiera sulle schede: frecce sinistra/destra (anche su/giù), Home e Fine
+document.querySelector(".tabs").addEventListener("keydown",e=>{const cur=e.target.closest(".tab"),i=TABS.indexOf(cur?cur.dataset.tab:P.tab);let j=null;
+ if(e.key==="ArrowRight"||e.key==="ArrowDown")j=(i+1)%TABS.length;else if(e.key==="ArrowLeft"||e.key==="ArrowUp")j=(i-1+TABS.length)%TABS.length;else if(e.key==="Home")j=0;else if(e.key==="End")j=TABS.length-1;
+ if(j===null)return;e.preventDefault();showTab(TABS[j]);$("t-"+TABS[j]).focus()});
+document.querySelector(".tabs").onclick=e=>{const b=e.target.closest(".tab");if(!b)return;showTab(b.dataset.tab);window.scrollTo({top:$("v-"+b.dataset.tab).offsetTop-80,behavior:"smooth"})};
+
+// ---------- alternative per "Cambia" ----------
+function alternatives(R,k,sl){
+const day=R.days[k],cur=day&&day.meals.find(m=>m.sl===sl);if(!cur||!cur.r)return [];
+const eff=i=>R.best[i]?R.best[i].p:ref(i),n=cur.n,isKids=kids();
+const weekCount={};R.days.forEach(d=>d.meals.forEach(m=>{if(m.r)weekCount[m.r.n]=(weekCount[m.r.n]||0)+1}));
+const tunaUsed=R.days.some(d=>d.meals.some(m=>m.r&&m.r.g&&m.r.g.tonno&&m!==cur));
+return RC.map(adapt).filter(r=>r&&r.s===sl&&(!P.veg||r.v)&&!EX.has(r.n)&&r.n!==cur.r.n&&(weekCount[r.n]||0)<2&&!(isKids&&r.g.tonno&&tunaUsed))
+ .filter(r=>{const l=R.L[r.k];if(!l||r.k===cur.r.k)return true;return (R.cnt[r.k]||0)+1<=l.max})
+ .map(r=>{const g=portion(r);let c=0,deal=[];for(const i in g){c+=g[i]*n/1000*eff(i);if(R.best[i])deal.push(i)}
+  const lc=R.L[cur.r.k],breaks=r.k!==cur.r.k&&lc&&(R.cnt[cur.r.k]||0)-1<lc.min?tx(CATS[cur.r.k].lab).toLowerCase():"";
+  return {r,g,c,kcal:kc(g)+SLOT[sl].oil,deal,same:r.k===cur.r.k,breaks}})
+ .sort((a,b)=>(!!a.breaks-!!b.breaks)*10+(b.same-a.same)*.8+(a.c-b.c)).slice(0,3);
+}
+
+// ---------- disegno ----------
+let LAST=null;
+// dopo ogni ridisegno il focus della tastiera torna sullo stesso controllo (o sul suo equivalente ricreato)
+const FOCUS_ATTR=["data-cook","data-swap","data-pick","data-pan","data-del","data-c","data-ex","data-k","data-id","data-p","data-days","data-act","data-out","data-shops","data-w","data-diet","data-tab"];
+function focusKey(){const a=document.activeElement;if(!a||a===document.body)return null;if(a.id)return "#"+CSS.escape(a.id);for(const n of FOCUS_ATTR)if(a.hasAttribute(n))return `[${n}="${CSS.escape(a.getAttribute(n))}"]`+(n==="data-pick"&&a.dataset.key?`[data-key="${CSS.escape(a.dataset.key)}"]`:"");return null}
+function render(){const f=focusKey();renderCore();if(f&&(!document.activeElement||document.activeElement===document.body)){const el=document.querySelector(f);if(el&&!el.disabled)el.focus({preventScroll:true})}}
+function renderCore(){
+dietSetup();
+if(CONF)settleWeek();
+const conf=!!CONF;
+// prima un menu veloce, poi quello ottimizzato appena pronto (resta in memoria)
+const t0=$("dt").value||today(),busy=!conf&&!planReady(t0);
+const R=conf?hydrate(CONF.R):plan(t0,busy?{fast:true}:{}),t=R.t;LAST={R,t,busy};
+// testo di riserva di "Copia la lista": se la lista è cambiata, quello vecchio sparisce
+{const ta=document.getElementById("cpta");if(ta&&ta.dataset.sig!==listSig(R)){ta.remove();$("cpmsg").textContent=""}}
+if(busy){clearTimeout(render.tm);render.tm=setTimeout(()=>{plan(t0);render()},30)}
+if(conf)$("dt").value=t;
+const avgK=R.days.reduce((a,x)=>a+(x.target?x.kcal/x.target*(x.target+x.outK):x.outK),0)/R.d,avgP=R.days.reduce((a,x)=>a+x.prot,0)/R.d,avgF=R.days.reduce((a,x)=>a+x.fv,0)/R.d;
+const missing=R.days.some(day=>day.meals.some(m=>m.none));
+const save=R.bb-R.tt,end=lastDay(R),ended=today()>end,B=R.budget||0;
+const pinned=!conf&&PINS&&PINS.t===t&&Object.keys(PINS.map||{}).length;
+// giorno migliore (solo se il menu è ancora libero)
+// prima una stima veloce per ogni giorno, poi il calcolo completo solo per il giorno più promettente
+let bt=t,bc=R.tt;if(!conf&&!pinned){const here=plan(t,{fast:true}).tt;let cand=null,cv=here-1;for(let k=0;k<7;k++){const ds=addD(today(),k);if(ds===t)continue;const c=plan(ds,{fast:true}).tt;if(c<cv){cv=c;cand=ds}}if(cand){bc=R.tt-(here-cv);bt=cand}}
+// numeri chiave
+const kOk=Math.abs(avgK-REF_KCAL)/REF_KCAL<.08,over=B>0&&R.tt>B+.005;
+const ppl=people(),pplTxt=L(`${ppl} ${ppl===1?"persona":"persone"}`,`${ppl} ${ppl===1?"person":"people"}`),daysTxt=L(`${R.d} giorni`,`${R.d} days`);
+$("kpis").innerHTML=`<div class="kpi${over?" over":""}"><div class="l">${L("Spesa","Shopping")}</div><div class="v num">${eur(R.tt)}</div><div class="s">${B?`budget ${eur(B)} ${over?L("– superato","– over"):"✓"}`:`${daysTxt}, ${pplTxt}`}</div></div>
+<div class="kpi save"><div class="l">${L("Risparmio stimato","Estimated savings")}</div><div class="v num">${eur(save)}</div><div class="s">${R.bb>0?Math.round(save/R.bb*100):0}% ${L("rispetto ai prezzi medi","compared with average prices")}</div></div>
+<div class="kpi"><div class="l">${L("Energia","Energy")}</div><div class="v num">${fmt(avgK)}</div><div class="s">${L("kcal al giorno per adulto","kcal a day per adult")} ${kOk?"✓":L("(obiettivo 2.100)","(target 2,100)")}</div></div>
+<div class="kpi"><div class="l">${L("CO₂ stimata","Estimated CO₂")}</div><div class="v num">${dc((R.co2/R.d/Math.max(.45,R.nHome)).toFixed(1))} kg</div><div class="s">${L("al giorno per adulto","a day per adult")} · ${Math.round(R.plant*100)}% ${L("proteine vegetali","plant protein")}</div></div>`;
+// totale stimato in alto nel menu (come nel mockup della brand identity)
+$("sumbar").innerHTML=`<span class="lab">${L("Spesa stimata","Estimated shopping")}</span><span class="tot num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.5l2.2 10.5h10.6L20.5 7H7"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></svg>${eur(R.tt)}</span><span class="sv">${daysTxt} · ${pplTxt} · ${L("risparmio stimato con le offerte","estimated savings from deals")} <b>${eur(save)}</b>${B?` · budget ${eur(B)}${over?L(" superato"," exceeded"):L(" rispettato"," met")}`:""}</span>`;
+// consigli di Nocciola
+const tips=[];
+if(missing)tips.push(["warn",L("Manca almeno un piatto adatto. Controlla le esigenze e i piatti esclusi prima di confermare.","At least one suitable dish is missing. Check your dietary needs and excluded dishes before confirming.")]);
+if(LS.fail)tips.unshift(["warn",L("Questo browser non sta salvando i dati (modalità privata o memoria piena?): profilo, settimana e dispensa potrebbero perdersi alla chiusura.","This browser is not saving data (private mode or storage full?): profile, week and pantry may be lost when you close it.")]);
+if(conf&&ended)tips.push(["warn",L(`La settimana confermata è finita (${wd(end)} ${fd(end)}): rifai il menu, quello che avanza e si conserva passa in dispensa.`,`The confirmed week has ended (${wd(end)} ${fd(end)}): redo the menu, and leftovers that keep will move to the pantry.`)]);
+if(over)tips.push(["warn",L(`Con queste impostazioni il menu più economico costa <b>${eur(R.tt)}</b>, cioè ${eur(R.tt-B)} sopra il budget. Prova con meno giorni o segna i pranzi fuori casa.`,`With these settings the cheapest menu costs <b>${eur(R.tt)}</b>, which is ${eur(R.tt-B)} over budget. Try fewer days or mark lunches eaten out.`)]);
+else if(B&&R.mode>0)tips.push(["good",L(`Per stare nei <b>${eur(B)}</b> ho scelto piatti più economici${R.mode>1?" e ripetuto qualche piatto in più":""}.`,`To stay within <b>${eur(B)}</b> I chose cheaper dishes${R.mode>1?" and repeated a few more dishes":""}.`)]);
+if(R.shop&&R.shop.stores.length)tips.push(["good",L(`Spesa in <b>${R.shop.stores.join(" e ")}</b>${R.shop.stores.length===1?" (anche tutto il resto)":""}${R.shop.diff>.3?`: circa ${eur(R.shop.diff)} in più che girando tutti i negozi, ma risparmi il viaggio.`:": quasi lo stesso prezzo che girando tutti i negozi."}`,
+ `Shop at <b>${R.shop.stores.join(" and ")}</b>${R.shop.stores.length===1?" (everything else too)":""}${R.shop.diff>.3?`: about ${eur(R.shop.diff)} more than visiting every shop, but you save the trip.`:": almost the same price as visiting every shop."}`)]);
+if(!conf&&!pinned&&bt!==t)tips.push(["warn",L(`Se fai la spesa <b>${wd(bt)} ${fd(bt)}</b> risparmi circa <b>${eur(R.tt-bc)}</b> in più grazie alle offerte di quel giorno. <button class="linkbtn" data-dt="${bt}">Usa quel giorno</button>`,`If you shop on <b>${wd(bt)} ${fd(bt)}</b> you save about <b>${eur(R.tt-bc)}</b> more thanks to that day’s deals. <button class="linkbtn" data-dt="${bt}">Use that day</button>`)]);
+if(R.batches){const diff=conf?0:plan(t,{fast:true}).tt-plan(t,{fast:true,nobatch:true}).tt;tips.push(["good",L(`<b>${R.batches} ${R.batches===1?"cena":"cene"} in doppia dose</b>: cucini una volta e il giorno dopo a pranzo è già pronto.${diff>.5?` Costa circa ${eur(diff)} in più che cucinare ogni giorno: se preferisci, disattivalo nelle impostazioni.`:diff<-.5?` E risparmi anche ${eur(-diff)}.`:""}`,
+ `<b>${R.batches} double-portion ${R.batches===1?"dinner":"dinners"}</b>: cook once and the next day’s lunch is ready.${diff>.5?` It costs about ${eur(diff)} more than cooking every day: if you prefer, turn it off in the settings.`:diff<-.5?` And you also save ${eur(-diff)}.`:""}`)])}
+if(!conf&&R.cheap!=null){
+ if(P.w===2&&R.offTot-R.cheap>.3)tips.push(["",L(`Con “Spendere il meno possibile” spenderesti <b>${eur(R.cheap)}</b> (${eur(R.offTot-R.cheap)} in meno), ma con meno prodotti in offerta. Qui usi più sconti: risparmio stimato ${eur(R.offSave)} invece di ${eur(R.minSave)}.`,
+  `With “Spend as little as possible” you would spend <b>${eur(R.cheap)}</b> (${eur(R.offTot-R.cheap)} less), but with fewer products on offer. Here you use more discounts: estimated savings ${eur(R.offSave)} instead of ${eur(R.minSave)}.`)]);
+ else if(P.w===0)tips.push(["good",L(`È il menu più economico che ho trovato per queste regole: <b>${eur(R.tt)}</b>${R.offTot-R.tt>.3?` (con “Sfruttare le offerte” sarebbero ${eur(R.offTot)})`:""}.`,`This is the cheapest menu I found for these rules: <b>${eur(R.tt)}</b>${R.offTot-R.tt>.3?` (with “Make the most of deals” it would be ${eur(R.offTot)})`:""}.`)]);
+}
+tips.push(save>.5?["good",L(`Le offerte valide ${wd(t)} ti fanno risparmiare circa <b>${eur(save)}</b> (stima su prezzi medi).`,`Deals valid on ${wd(t)} save you about <b>${eur(save)}</b> (estimate based on average prices).`)]:["",L(`Per ${wd(t)} ci sono poche offerte utili: il menu usa soprattutto prezzi normali.`,`There are few useful deals for ${wd(t)}: the menu mostly uses regular prices.`)]);
+const panUsed=R.items.filter(x=>x.fromP>0).length;if(panUsed)tips.push(["good",L(`<b>Hai usato ciò che avevi in dispensa!</b> ${panUsed} ${panUsed===1?"prodotto entra":"prodotti entrano"} nel menu senza ricomprarli.`,`<b>You used what you had in the pantry!</b> ${panUsed} ${panUsed===1?"product goes":"products go"} into the menu without buying them again.`)]);
+const issues=Object.keys(CATS).filter(k=>{const c=R.cnt[k]||0,l=R.L[k];return c<l.min||c>l.max});
+tips.push(issues.length?["warn",L(`Attenzione all’equilibrio: ${issues.map(k=>CATS[k].lab.toLowerCase()).join(", ")} fuori dalle frequenze consigliate (forse per piatti cambiati, esclusi o esigenze alimentari).`,`Watch the balance: ${issues.map(k=>tx(CATS[k].lab).toLowerCase()).join(", ")} outside the recommended frequency (perhaps because of changed or excluded dishes or dietary needs).`)]
+ :["good",L(`Menu bilanciato: legumi ${R.cnt.legumi||0} volte${R.L.pesce.max?`, pesce ${R.cnt.pesce||0}`:""}, frutta e verdura in media <b>${fmt(avgF)} g</b> al giorno per adulto.`,`Balanced menu: legumes ${R.cnt.legumi||0} times${R.L.pesce.max?`, fish ${R.cnt.pesce||0}`:""}, fruit and vegetables on average <b>${fmt(avgF)} g</b> a day per adult.`)]);
+if(!conf&&!tips.some(x=>x[0]==="warn"))tips.push(["",L(`Ti piace il menu? <b>Confermalo</b>: così non cambia più fino a ${wd(end)} e la lista resta quella.`,`Do you like the menu? <b>Confirm it</b>: it then stays the same until ${wd(end)} and so does the list.`)]);
+const tt0=tanaTip(R);if(tt0)tips.unshift(tt0);
+const order=(tt0?[tt0]:[]).concat(tips.slice(tt0?1:0).filter(x=>x[0]==="warn"),tips.slice(tt0?1:0).filter(x=>x[0]!=="warn"));
+$("tips").innerHTML=order.slice(0,3).map(([c,x])=>`<li><span class="dot ${c}"></span><span>${x}</span></li>`).join("");
+$("hello").textContent=conf?L(`La tua settimana: ${fd(t)}–${fd(end)}`,`Your week: ${fd(t)}–${fd(end)}`):L(`Ecco il menu dal ${fd(t)}`,`Here is the menu from ${fd(t)}`);
+// barra della settimana
+$("wk").className="wk"+(conf?" on":"");
+$("wk").innerHTML=conf
+ ?(ASK?`<span><b>${L("Rifare il menu?","Redo the menu?")}</b> ${L("Quello attuale e le spunte della lista verranno sostituiti.","The current menu and the list ticks will be replaced.")}${ended?L(" Gli avanzi a lunga conservazione passano in dispensa."," Long-life leftovers move to the pantry."):""}</span><span class="acts"><button class="btn" id="redo-yes">${L("Sì, rifai","Yes, redo")}</button><button class="btn ghost" id="redo-no">${L("Annulla","Cancel")}</button></span>`
+  :`<span>✓ <b>${L("Settimana confermata","Week confirmed")}</b> · ${wd(t)} ${fd(t)} – ${wd(end)} ${fd(end)} · ${L("Menu e lista non cambiano più, salvo i piatti che cambi tu.","Menu and list no longer change, except for dishes you change yourself.")}</span><span class="acts"><button class="btn ghost" id="redo">${L("Rifai il menu","Redo the menu")}</button></span>`)
+ :`<span>${pinned?`${L(`Hai scelto tu ${Object.values(PINS.map).length?"alcuni piatti":""}: il resto del menu resta com’è.`,`You picked ${Object.values(PINS.map).length?"some dishes":""} yourself: the rest of the menu stays as it is.`)} <button class="linkbtn" id="unpin">${L("Torna al menu proposto","Back to the suggested menu")}</button>`:LAST.busy?L("Sto cercando il menu più conveniente…","Looking for the best-value menu…"):L("Questo menu può ancora cambiare se modifichi le impostazioni o arrivano offerte nuove.","This menu can still change if you edit the settings or new deals arrive.")}</span><span class="acts"><button class="btn" id="confirm" ${LAST.busy||missing?"disabled":""}>${L("Conferma questa settimana","Confirm this week")}</button></span>`;
+// menu
+$("menu").innerHTML=R.days.map((day,k)=>{const ds=addD(t,k),kr=day.target?day.kcal/day.target:1;return `<article class="day"><div class="dayh"><h3>${wd(ds)} ${fd(ds)}</h3><div class="meta"><span class="pill ${Math.abs(kr-1)<.08?"good":"warn"} num">${fmt(day.kcal)} kcal${day.outK?L(" a casa"," at home"):""}</span><span class="pill num">${fmt(day.prot)} g ${L("proteine","protein")}</span><span class="pill ${day.fv>=FV_MIN||day.outK?"good":"warn"} num">${fmt(day.fv)} g ${L("frutta e verdura","fruit and veg")}</span><span class="pill num">${eur(day.cost)}</span></div></div>${day.meals.map(m=>mealHTML(m,R,k)).join("")}</article>`}).join("");
+$("exl").innerHTML=EX.size?`${L("Piatti che non ti piacciono:","Dishes you don’t like:")} ${[...EX].map(x=>`${esc(rn(x))} ${conf?"":`<button class="linkbtn" data-in="${esc(x)}">${L("rimetti","put back")}</button>`}`).join(" · ")}`:"";
+// lista
+const grp={};R.items.filter(x=>x.np>0).forEach(x=>{(grp[x.s]=grp[x.s]||[]).push(x)});
+const one=R.shop&&R.shop.stores.length===1?R.shop.stores[0]:"";
+const gorder=Object.keys(grp).sort((a,b)=>(a==="")-(b==="")||a.localeCompare(b));
+const fromPan=R.items.filter(x=>x.fromP>0);
+$("list").innerHTML=gorder.map(s=>`<section class="store"><h3><span>${s?esc(s)+(one?L(" – offerte"," – deals"):""):(one?`${esc(one)} – ${L("tutto il resto","everything else")}`:L("Qualsiasi negozio","Any shop"))}</span><span class="num">${eur(grp[s].reduce((a,x)=>a+x.c,0))}</span></h3>${grp[s].sort((a,b)=>tx(a.nm).localeCompare(tx(b.nm))).map(x=>`<label class="item"><input type="checkbox" data-c="${x.i}" ${CHK.has(x.i)?"checked":""}><div class="t"><b>${esc(tx(x.nm))}</b> · ${packLabel(x)}<span>${L("Usi","You use")} ${qty(x.i,x.g)}${x.fromP?L(` (di cui ${qty(x.i,x.fromP)} dalla dispensa)`,` (${qty(x.i,x.fromP)} of it from the pantry)`):""}${x.left>=50?L(` · avanzano ${qty(x.i,x.left)}`,` · ${qty(x.i,x.left)} left over`)+(I[x.i][6]?L(` (congela o usa entro ${I[x.i][6]} giorni)`,` (freeze or use within ${I[x.i][6]} days)`):""):""}${x.off?L(` · offerta −${x.off.pc}% fino al ${fd(x.off.a)}`,` · deal −${x.off.pc}% until ${fd(x.off.a)}`):""}</span></div><span class="p num">${eur(x.c)}</span></label>`).join("")}</section>`).join("")
++(fromPan.some(x=>x.np===0)?`<section class="store"><h3><span>${L("Già in casa (dalla dispensa)","Already at home (from the pantry)")}</span><span class="num">${eur(0)}</span></h3>${fromPan.filter(x=>x.np===0).map(x=>`<div class="item"><div class="t"><b>${esc(tx(x.nm))}</b><span>${L(`Usi ${qty(x.i,x.g)} di quello che hai`,`You use ${qty(x.i,x.g)} of what you have`)}</span></div></div>`).join("")}</section>`:"")
++(R.items.some(x=>x.np>0)?`<p class="note">${L("Confezioni: per le offerte con il peso indicato nel volantino uso la confezione vera (“a peso” = sfuso o al banco, compri quanto serve); per il resto una confezione tipica, quindi numero di confezioni e totale sono indicativi.","Packs: for deals whose weight is shown in the leaflet I use the real pack (“loose” = sold by weight or at the counter, you buy what you need); otherwise a typical pack, so the number of packs and the total are approximate.")}</p>`:"")
++`<p class="small muted">${L(`Totale ${eur(R.tt)}; ai prezzi medi stimati sarebbe ${eur(R.bb)}. Valore di quello che avanza: ${eur(R.ww)}. Olio, sale e spezie non sono inclusi.`,`Total ${eur(R.tt)}; at estimated average prices it would be ${eur(R.bb)}. Value of what is left over: ${eur(R.ww)}. Oil, salt and spices are not included.`)}</p>`;
+renderPantry(conf);
+// equilibrio
+$("freq").innerHTML=Object.keys(CATS).filter(k=>R.L[k].max>0).map(k=>{const c=R.cnt[k]||0,l=R.L[k],top=Math.max(l.max+1,c,4),st=c<l.min?"warn":c>l.max?"bad":"";return `<span>${tx(CATS[k].lab)}</span><div class="track" role="img" aria-label="${tx(CATS[k].lab)}: ${L(`${c} volte, consigliato da ${l.min} a ${l.max}`,`${c} times, recommended ${l.min} to ${l.max}`)}"><span class="zone" style="left:${l.min/top*100}%;width:${Math.max(4,(l.max-l.min)/top*100)}%"></span><span class="fill ${st}" style="width:calc(${Math.min(c,top)/top*100}% - 4px);${c?"":"display:none"}"></span></div><span class="num small">${c} <span class="muted">/ ${l.min}–${l.max}</span></span>`}).join("");
+const row=(l,v,okk)=>`<div class="stat"><span>${l}</span><span class="pill ${okk?"good":"warn"} num">${v}</span></div>`;
+const homeShare=R.days.reduce((a,x)=>a+x.target,0)/(R.d*REF_KCAL)||1;
+$("daily").innerHTML=row(L("Energia","Energy"),`${fmt(avgK)} kcal (${L("obiettivo","target")} ${fmt(REF_KCAL)})`,kOk)+row(L("Proteine (pasti a casa)","Protein (meals at home)"),`${fmt(avgP)} g (${L("almeno","at least")} ${fmt(PROT_MIN*homeShare)})`,avgP>=PROT_MIN*homeShare-1)+row(L("Frutta e verdura (a casa)","Fruit and veg (at home)"),`${fmt(avgF)} g (${L("almeno","at least")} ${fmt(FV_MIN*homeShare)})`,avgF>=FV_MIN*homeShare-1)+row(L("Proteine vegetali","Plant protein"),`${Math.round(R.plant*100)}% ${L("del totale","of the total")}`,R.plant>=.4)
++`<p class="note">${L("Una porzione da adulto è la base: per i bambini l’app riduce le quantità in proporzione al loro fabbisogno. Olio d’oliva conteggiato: circa un cucchiaio per pranzo e cena.","An adult portion is the basis: for children the app reduces quantities in proportion to their needs. Olive oil is counted: about one tablespoon at lunch and dinner.")}${R.days.some(x=>x.outK)?L(" I pranzi fuori casa sono contati come pasto completo nell’energia e restano fuori da proteine e verdura."," Lunches eaten out count as a full meal for energy and are left out of protein and vegetables."):""}${R.toddler?L(" Con bimbi di 1–3 anni la frutta secca intera è esclusa (rischio di soffocamento): se la usi, tritala."," With toddlers aged 1–3 whole nuts are excluded (choking risk): if you use them, chop them."):""}${R.kids?L(" Con bambini il tonno è al massimo una volta a settimana per limitare il mercurio."," With children, tuna is served at most once a week to limit mercury."):""}${R.diet.length?L(` Esigenze alimentari attive: ${R.diet.join(", ").toLowerCase()}.`,` Active dietary needs: ${R.diet.map(tx).join(", ").toLowerCase()}.`):""}</p>`;
+offersView(t);
+renderFam();
+renderTana(R);
+}
+function mealHTML(m,R,k){
+const sl=tx(SLOT[m.sl].lab);
+if(!m.r)return `<div class="meal out"><div class="slot">${sl}</div><div class="body"><div class="name">${m.out?L("Fuori casa","Eating out"):L("Nessun piatto adatto alle tue esigenze","No dish suits your needs")}</div></div><div class="side"></div></div>`;
+const r=m.r,n=m.n,chips=[],key=k+"-"+m.sl;
+if(m.leftover)chips.push(`<span class="pill good">${L("già pronto: avanzo di ieri sera","ready: last night’s leftovers")}</span>`);
+if(m.double)chips.push(`<span class="pill good">${L("doppia dose: domani a pranzo","double portion: tomorrow’s lunch")}</span>`);
+if(m.pinned)chips.push(`<span class="pill">${L("scelto da te","your pick")}</span>`);
+for(const i in m.all){if(R.best[i])chips.push(`<span class="pill deal">${esc(R.best[i].s)} −${R.best[i].pc}% ${esc(tx(nm(i)).toLowerCase())}</span>`)}
+const seas=Object.keys(m.all).filter(i=>I[i][7]!=="x"&&inSeason(i,R.mo)&&i!=="cipolle"&&i!=="carote");if(seas.length)chips.push(`<span class="pill good">${L("di stagione","in season")}</span>`);
+const list=(g,mult)=>Object.keys(g).map(i=>`${esc(tx(nm(i)).toLowerCase())} ${qty(i,g[i]*mult)}`).join(", ");
+const steps=x=>`<ol>${rp(x).map(s=>`<li>${s}</li>`).join("")}</ol>`;
+const who=n<household()-.001?` <span class="muted">${L("(solo chi è a casa)","(only those at home)")}</span>`:"";
+const rdr=rd(r);
+const recipe=m.leftover
+ ?`<p style="margin:0"><b>${L("Niente da cucinare:","Nothing to cook:")}</b> ${L("scalda la parte messa da parte ieri sera","heat up the portion set aside last night")} (${list(m.g,n)}).</p>`
+ :`<p style="margin:0"><b>${L("Per la tua famiglia","For your family")}${who}:</b> ${list(m.g,n)}${rdr?`. <span class="muted">${L("Dalla dispensa:","From the cupboard:")} ${rdr}.</span>`:""}</p>${m.double&&m.batchTot?`<p style="margin:6px 0 0"><b>${L("Cucina la doppia dose:","Cook a double portion:")}</b> ${list(m.batchTot,1)}. ${L("Metti da parte una metà in frigo per il pranzo di domani.","Put half aside in the fridge for tomorrow’s lunch.")}</p>`:""}${m.dropped&&m.dropped.length?`<p style="margin:6px 0 0">${L(`<b>Senza ${m.dropped.map(i=>I[i][0].toLowerCase()).join(" e ")}</b>, per le tue esigenze: salta quel passaggio.`,`<b>Without ${m.dropped.map(i=>ingN(i).toLowerCase()).join(" and ")}</b>, for your needs: skip that step.`)}</p>`:""}${dietNote(r)}${steps(r)}`;
+
+const ds=addD(R.t,k),cw=CONF?TANA.cooked[weekId()]||{}:null,isDone=!!(cw&&cw[key]);
+const canSwap=!m.leftover&&!isDone;
+const cookBtn=CONF?`<br><button class="cook" data-cook="${key}" aria-pressed="${isDone}" ${ds>today()?`disabled title="${L("Si può segnare da","Can be ticked from")} ${wd(ds)}"`:""}>✓ ${m.leftover?L("Mangiato","Eaten"):L("Cucinato","Cooked")}</button>`:"";
+let alts="";
+if(OPEN===key&&canSwap&&PEND&&PEND.key===key){const p=PEND;alts=`<div class="alts" role="group" aria-label="${L("Anteprima del cambio","Change preview")}"><b>${L(`Cambiare “${esc(rn(r.n))}” con “${esc(rn(p.name))}”?`,`Replace “${esc(rn(r.n))}” with “${esc(rn(p.name))}”?`)}</b>
+<p class="small" style="margin:0">${p.lines.length?`${L("Cambiano anche:","Also changing:")} ${p.lines.map(esc).join("; ")}.`:L("Gli altri pasti restano uguali.","The other meals stay the same.")}${p.add.length?` ${L("In lista si aggiunge:","Added to the list:")} ${p.add.map(x=>esc(tx(x).toLowerCase())).join(", ")}.`:""}${p.rem.length?` ${L("Non serve più:","No longer needed:")} ${p.rem.map(x=>esc(tx(x).toLowerCase())).join(", ")}.`:""} ${L("Spesa:","Shopping:")} ${p.delta>=0?"+":"−"}${eur(Math.abs(p.delta))} (${L("totale","total")} ${eur(p.tot)}).</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" data-pick="${esc(p.name)}" data-key="${key}">${L("Conferma il cambio","Confirm the change")}</button><button class="btn ghost small" data-unpend="1">${L("Annulla","Cancel")}</button></div></div>`}
+else if(OPEN===key&&canSwap){const A=alternatives(R,k,m.sl);alts=`<div class="alts"><b>${L(`Al posto di “${esc(rn(r.n))}”:`,`Instead of “${esc(rn(r.n))}”:`)}</b>${A.length?A.map(a=>`<div class="alt"><div><span class="name">${esc(rn(a.r.n))}</span><span class="small muted"> · ${tx(CATLAB[a.r.k]||"")} · ${fmt(a.kcal)} kcal · ${eur(a.c)}</span>${a.deal.length?` <span class="pill deal">${L("in offerta:","on offer:")} ${a.deal.map(i=>esc(tx(nm(i)).toLowerCase())).join(", ")}</span>`:""}${a.breaks?` <span class="pill warn">${a.breaks} ${L("sotto il consigliato","below recommended")}</span>`:""}</div><button class="btn small" data-pick="${esc(a.r.n)}" data-key="${key}">${L("Scegli","Choose")}</button></div>`).join(""):`<p class="small muted" style="margin:6px 0 0">${L("Nessuna alternativa adatta a questo pasto con le tue regole.","No suitable alternative for this meal with your rules.")}</p>`}<button class="linkbtn small" data-close="1">${L("Chiudi","Close")}</button></div>`}
+return `<div class="meal${isDone?" done":""}"><div class="slot">${sl}<i class="num">${fmt(m.kcal)} kcal</i></div><div class="body"><div class="name">${m.leftover?L("Avanzo: ","Leftovers: "):""}${rn(r.n)}</div>${m.side||m.bread?`<div class="extra">${m.side?"+ "+rn(m.side.n):""}${m.side&&m.bread?" · ":""}${m.bread?`+ ${esc(tx(nm("pane")).toLowerCase())} (${m.bread} g ${L("a persona adulta","per adult")})`:""}</div>`:""}${chips.length?`<div class="chips">${chips.join("")}</div>`:""}
+<details class="rec"><summary>${m.leftover?L("Come fare","What to do"):L("Ricetta · ","Recipe · ")+r.t}</summary><div class="in">${recipe}${m.side?`<p style="margin:8px 0 0"><b>${rn(m.side.n)}:</b> ${list(m.side.g,n)}${rd(m.side)?`; ${rd(m.side)}`:""}.</p>${dietNote(m.side)}${steps(m.side)}`:""}${m.bread?`<p style="margin:8px 0 0"><b>${esc(tx(nm("pane")))}:</b> ${qty("pane",m.bread*n)} ${L("in tutto","in total")}.</p>`:""}</div></details>${alts}</div>
+<div class="side"><span class="num">${eur(m.cost)}</span>${cookBtn}${canSwap?`<br><button class="x chg" data-swap="${key}" aria-expanded="${OPEN===key}">${L("Cambia","Change")}</button>`:""}${CONF||m.leftover?"":`<br><button class="x" data-ex="${esc(r.n)}" aria-label="${L("Non mi piace","I don’t like it")}: ${esc(rn(r.n))}">${L("Non mi piace","I don’t like it")}</button>`}</div></div>`;
+}
+// settimana confermata: prima di cambiare un piatto mostro cosa cambia (altri pasti, avanzi, spesa) e chiedo conferma
+let PEND=null;
+const mealName=m=>!m?"—":m.r?(m.leftover?L("avanzo di ","leftovers of ")+rn(m.r.n):rn(m.r.n)):m.out?L("fuori casa","eating out"):L("nessun piatto","no dish");
+function previewDish(key,name){
+const R=hydrate(CONF.R),map=picks(R);map[key]=name;const N=plan(R.t,{pins:map,pantry:R.pan||{}}),lines=[];
+R.days.forEach((d,k)=>d.meals.forEach(m=>{const k2=k+"-"+m.sl;if(k2===key)return;const n=N.days[k]&&N.days[k].meals.find(x=>x.sl===m.sl);const a=mealName(m),b=mealName(n);
+ if(a!==b)lines.push(`${wd(addD(R.t,k))} · ${tx(SLOT[m.sl].lab).toLowerCase()}: ${a} → ${b}`)}));
+const newItems=N.items.filter(x=>x.np>0).map(x=>x.i),oldItems=R.items.filter(x=>x.np>0).map(x=>x.i);
+const add=newItems.filter(i=>!oldItems.includes(i)).map(nm),rem=oldItems.filter(i=>!newItems.includes(i)).map(nm);
+PEND={key,name,N,lines,add,rem,delta:N.tt-R.tt,tot:N.tt};
+}
+function pickDish(key,name){
+if(CONF&&TANA.cooked[weekId()]?.[key])return;
+if(CONF){if(!PEND||PEND.key!==key||PEND.name!==name){previewDish(key,name);render();return}
+ CONF={...CONF,R:serialize(PEND.N)};PEND=null;LS.set("nc-settimana",CONF)}
+else{const t=LAST.t,map=PINS&&PINS.t===t?Object.assign({},PINS.map):picks(LAST.R);map[key]=name;PINS={t,map};LS.set("nc-cambi",PINS)}
+OPEN=null;render();
+}
+$("menu").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.cook){const [k,sl]=b.dataset.cook.split("-");toggleCook(+k,sl);return}
+ if(b.dataset.swap){OPEN=OPEN===b.dataset.swap?null:b.dataset.swap;PEND=null;render();return}
+ if(b.dataset.close){OPEN=null;PEND=null;render();return}
+ if(b.dataset.unpend){PEND=null;render();return}
+ if(b.dataset.pick){pickDish(b.dataset.key,b.dataset.pick);return}
+ const x=b.dataset.ex;if(!x||CONF)return;EX.add(x);LS.set("sm-escluse",[...EX]);if(PINS&&PINS.map)for(const k in PINS.map)if(PINS.map[k]===x)delete PINS.map[k];LS.set("nc-cambi",PINS);render()};
+$("exl").onclick=e=>{const x=e.target.dataset.in;if(!x||CONF)return;EX.delete(x);LS.set("sm-escluse",[...EX]);render()};
+$("tips").onclick=e=>{const x=e.target.dataset.dt;if(!x)return;$("dt").value=x;clearPins();update()};
+$("wk").onclick=e=>{const id=e.target.id;
+ if(id==="confirm"&&LAST&&!LAST.busy&&!LAST.R.days.some(day=>day.meals.some(m=>m.none))){CONF={R:serialize(LAST.R),at:today(),id:Date.now().toString(36),inventory:{...PANTRY}};LS.set("nc-settimana",CONF);onConfirmTana(LAST.R);clearPins();CHK.clear();LS.set("sm-spunte",[]);render()}
+ else if(id==="unpin"){clearPins();render()}
+ else if(id==="redo"){ASK=true;render()}
+ else if(id==="redo-no"){ASK=false;render()}
+ else if(id==="redo-yes"){settleWeek();if(today()>lastDay(CONF.R)){const np={...PANTRY},original=CONF.inventory||CONF.R.pan||{};
+   for(const x of CONF.R.items){
+    const key=x.panKey||(x.nm===I[x.i][0]?x.i:null);
+    if(!key||(PANTRY[key]||0)!==(original[key]||0))continue;
+    if(LONG(x.i)&&x.left>=20)np[key]=Math.round(x.left);else delete np[key];
+   }
+   PANTRY=np;LS.set("nc-dispensa",PANTRY)}
+  CONF=null;LS.set("nc-settimana",null);ASK=false;clearPins();CHK.clear();LS.set("sm-spunte",[]);$("dt").value=today();update()}};
+
+// ---------- dispensa ----------
+function renderPantry(conf){
+const plab=key=>tx(pantryProduct(key)[1]);
+const pk=Object.keys(PANTRY).filter(key=>pantryProduct(key)&&PANTRY[key]>0)
+ .sort((a,b)=>plab(a).localeCompare(plab(b)));
+const options=[...new Set([...Object.keys(I),...Object.keys(SUB).map(pantryKey)])]
+ .sort((a,b)=>plab(a).localeCompare(plab(b)));
+$("pantry").innerHTML=`<section class="card"><h3>${L("La tua dispensa","Your pantry")}</h3><p class="small muted" style="margin:0 0 10px">${L("Quello che hai già in casa. Il menu lo usa per primo e non lo mette nella lista.","What you already have at home. The menu uses it first and leaves it off the list.")}${conf?L(" La settimana è confermata: le modifiche valgono dal prossimo menu."," The week is confirmed: changes apply from the next menu."):""}</p>
+${pk.length?`<ul class="pl">${pk.map(key=>{
+ const [i]=pantryProduct(key),label=plab(key),shown=Math.round(PANTRY[key]/(i==="uova"?60:1));
+ return `<li><span>${esc(label)}</span><span class="pq"><input type="number" min="0" step="${i==="uova"?1:50}" value="${shown}" data-pan="${key}" aria-label="${L("Quantità di","Quantity of")} ${esc(label)}" class="num"> ${unit(i)} <button class="x" data-del="${key}" aria-label="${L("Togli","Remove")} ${esc(label)}">✕</button></span></li>`;
+}).join("")}</ul>`:`<p class="small muted">${L("Vuota.","Empty.")}</p>`}
+<div class="add"><label class="field" for="pa-i">${L("Aggiungi","Add")}<select id="pa-i">${options.map(key=>`<option value="${key}">${esc(plab(key))}</option>`).join("")}</select></label><label class="field" for="pa-q">${L("Quantità","Quantity")}<span class="eurin"><input id="pa-q" type="number" min="0" step="50" placeholder="${L("es. 500","e.g. 500")}"> <span id="pa-u">g</span></span></label><button class="btn" id="pa-add">${L("Aggiungi","Add")}</button>${pk.length?`<button class="btn ghost" id="pan-clear">${L("Svuota la dispensa","Empty the pantry")}</button>`:""}</div></section>`;
+$("pa-i").onchange=()=>{
+ const [i]=pantryProduct($("pa-i").value);
+ $("pa-u").textContent=unit(i);
+ $("pa-q").step=i==="uova"?1:50;
+};
+$("pa-i").onchange();
+}
+const panGrams=(i,v)=>i==="uova"?v*60:v;
+$("pantry").onclick=e=>{const id=e.target.id;
+ if(id==="pan-clear"){PANTRY={};LS.set("nc-dispensa",PANTRY);render()}
+ else if(id==="pa-add"){const key=$("pa-i").value,v=parseFloat($("pa-q").value);if(!(v>0))return;const [i]=pantryProduct(key);PANTRY[key]=(PANTRY[key]||0)+panGrams(i,v);LS.set("nc-dispensa",PANTRY);render()}
+ else if(e.target.dataset.del){delete PANTRY[e.target.dataset.del];LS.set("nc-dispensa",PANTRY);render()}};
+$("pantry").onchange=e=>{const key=e.target.dataset.pan;if(!key)return;const [i]=pantryProduct(key),v=parseFloat(e.target.value);if(v>0)PANTRY[key]=panGrams(i,v);else delete PANTRY[key];LS.set("nc-dispensa",PANTRY);render()};
+$("list").onchange=e=>{const c=e.target.dataset.c;if(!c)return;e.target.checked?CHK.add(c):CHK.delete(c);LS.set("sm-spunte",[...CHK])};
+$("rs").onclick=()=>{CHK.clear();LS.set("sm-spunte",[]);render()};
+$("cp").onclick=async()=>{if(!LAST)return;const {R,t}=LAST,g={},one=R.shop&&R.shop.stores.length===1?R.shop.stores[0]:"";R.items.filter(x=>x.np>0).forEach(x=>{const s=x.s||(one||L("Qualsiasi negozio","Any shop"));(g[s]=g[s]||[]).push(x)});
+const txt=L(`Lista della spesa Nocciola – ${wd(t)} ${fd(t)} (${people()} persone, ${R.d} giorni)\n`,`Nocciola shopping list – ${wd(t)} ${fd(t)} (${people()} people, ${R.d} days)\n`)+Object.keys(g).sort().map(s=>`\n${s.toUpperCase()}\n`+g[s].map(x=>`- ${tx(x.nm)}: ${packLabel(x)} (${eur(x.c)})`).join("\n")).join("\n")+`\n\n${L("Totale stimato","Estimated total")}: ${eur(R.tt)}`;
+const m=$("cpmsg");try{await navigator.clipboard.writeText(txt);m.textContent=L("Lista copiata: incollala dove vuoi.","List copied: paste it wherever you like.")}catch(err){let ta=document.getElementById("cpta");if(!ta){ta=document.createElement("textarea");ta.id="cpta";ta.rows=10;ta.setAttribute("aria-label",L("Lista della spesa da copiare","Shopping list to copy"));$("list").before(ta)}ta.value=txt;ta.dataset.sig=listSig(R);ta.focus();ta.select();m.textContent=L("Copia il testo selezionato qui sotto.","Copy the selected text below.")}};
+// la firma comprende la lingua: cambiando lingua il testo di riserva (nella lingua vecchia) sparisce
+function listSig(R){return LANG+"|"+R.t+"|"+R.items.filter(x=>x.np>0).map(x=>x.i+":"+x.np+":"+(x.buy||0)+":"+(x.s||"")).join(",")}
+
+// ---------- offerte ----------
+function offersView(t){
+const all=ALL(),act=all.filter(o=>ok(o,t)),up=all.filter(o=>o.d>t),good=o=>o.p<I[o.i][1];
+const rows=act.concat(up).sort((a,b)=>(a.d>t)-(b.d>t)||good(b)-good(a)||a.s.localeCompare(b.s)||ingN(a.i).localeCompare(ingN(b.i)));
+$("ob").innerHTML=rows.map(o=>{const on=ok(o,t),sc=Math.round((1-o.p/I[o.i][1])*100);return `<tr role="row" class="${on&&sc>0?"":"later"}"><td role="cell">${esc(o.s)}</td><td role="cell">${ingN(o.i)}${o.g!=null?` <span class="small muted">· ${o.g?packTxt(o.i,o.g):L("a peso","loose")}</span>`:""}${o.u?` <span class="small muted">${L("(tua)","(yours)")}</span>`:""}</td><td role="cell" class="num">${eur(o.p)}/${o.i==="latte"?"l":"kg"}</td><td role="cell">${sc>0?`<span class="pill deal">−${sc}%</span>`:`<span class="pill warn">${L("più cara del solito","dearer than usual")}</span>`}</td><td role="cell" class="num">${on?L(`fino al ${fd(o.a)}`,`until ${fd(o.a)}`):L(`dal ${wd(o.d)} ${fd(o.d)} al ${fd(o.a)}`,`from ${wd(o.d)} ${fd(o.d)} to ${fd(o.a)}`)}</td><td role="cell"><button class="x" style="margin:0" ${o.u?`data-k="${o.k}"`:`data-id="${esc(oid(o))}"`}>${o.u?L("Elimina","Delete"):L("Nascondi","Hide")}</button></td></tr>`}).join("")||`<tr role="row"><td role="cell" colspan="6" class="muted">${L("Nessuna offerta valida per questa data.","No deals valid for this date.")}</td></tr>`;
+const actG=act.filter(good),st=[...new Set(actG.map(o=>o.s))],age=FEED.updated?(new Date(today())-new Date(FEED.updated))/864e5:99,bad=act.length-actG.length;
+$("src").innerHTML=L(`Spesa di ${wd(t)} ${fd(t)}: <b>${actG.length}</b> offerte convenienti${st.length?" ("+st.join(", ")+")":""}${bad?`, ${bad} più care del prezzo medio (non usate)`:""}${up.length?`, ${up.length} in arrivo`:""}. Dati aggiornati al ${fd(FEED.updated)}${age>8?" – <b>dati vecchi, potrebbero mancare offerte nuove</b>":""} Il prezzo medio di confronto è una stima.`,
+ `Shopping on ${wd(t)} ${fd(t)}: <b>${actG.length}</b> good deals${st.length?" ("+st.join(", ")+")":""}${bad?`, ${bad} dearer than the average price (not used)`:""}${up.length?`, ${up.length} coming up`:""}. Data updated on ${fd(FEED.updated)}${age>8?" – <b>old data, new deals may be missing</b>":""}. The average comparison price is an estimate.`);
+$("hid").innerHTML=HID.size?`${L(`${HID.size} offerte nascoste.`,`${HID.size} hidden deals.`)} <button class="linkbtn" id="unhide">${L("Mostrale di nuovo","Show them again")}</button>`:"";
+}
+$("ns").innerHTML=STORES.map(s=>`<option>${s}</option>`).join("");
+// elenco dei prodotti e unità del prezzo: dipendono dalla lingua
+const npUnit=()=>{$("np-u").textContent=$("ni").value==="latte"?L("€ al litro","€ per litre"):L("€ al kg","€ per kg")};
+function fillProducts(){const cur=$("ni").value;$("ni").innerHTML=Object.keys(I).sort((a,b)=>ingN(a).localeCompare(ingN(b))).map(k=>`<option value="${k}">${ingN(k)}</option>`).join("");if(cur)$("ni").value=cur;npUnit()}
+fillProducts();
+$("ob").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.k!==undefined){MINE.splice(+b.dataset.k,1);LS.set("sm-mie",MINE)}else if(b.dataset.id){HID.add(b.dataset.id);LS.set("sm-nascoste",[...HID])}render()};
+$("hid").onclick=e=>{if(e.target.id!=="unhide")return;HID.clear();LS.set("sm-nascoste",[]);render()};
+$("ni").addEventListener("change",npUnit);
+$("add").onclick=()=>{const p=Math.round(parseFloat(String($("np").value).replace(",","."))*100)/100,d=$("nd").value,a=$("na").value,u=$("ni").value==="latte"?L("al litro","per litre"):L("al kg","per kg");if(!(p>=0.1&&p<1000)){$("addmsg").textContent=L(`Inserisci il prezzo ${u}: almeno 0,10 €.`,`Enter the price ${u}: at least €0.10.`);return}if(!d||!a||d>a){$("addmsg").textContent=L("Inserisci le date di inizio e fine (la fine dopo l’inizio).","Enter the start and end dates (the end after the start).");return}$("addmsg").textContent="";MINE.push({s:$("ns").value,i:$("ni").value,p,d,a,u:1});LS.set("sm-mie",MINE);$("np").value="";render()};
+
+// ---------- la tana di Nocciola (il gioco) ----------
+// Regole: si premiano abitudini vere (pasti cucinati, verdura, dispensa usata, settimane seguite), mai acquisti.
+// Nocciola non si ammala e non muore: al massimo ha fame o sonnecchia.
+const TANA=Object.assign({nocciole:0,feed:70,fedAt:Date.now(),seen:Date.now(),cooked:{},tried:[],album:[],owned:[],worn:[],weeks:[],bonus:{},log:[],paid:{}},LS.get("nc-tana",{}));
+if(!TANA.paid||typeof TANA.paid!=="object")TANA.paid={};
+if(TANA.bacche){TANA.nocciole+=TANA.bacche;delete TANA.bacche} // v08 contava in bacche: diventano nocciole
+const SLEEPY=Date.now()-(TANA.seen||Date.now())>3*864e5;TANA.seen=Date.now();
+let GAIN=null; // ultima ricompensa, per il messaggio
+const saveT=()=>LS.set("nc-tana",TANA);saveT();
+const SHOP=[{id:"sciarpa",lab:"Sciarpa a righe",p:20,k:"wear",d:"Per l’inverno viennese"},{id:"occhiali",lab:"Occhialini",p:25,k:"wear",d:"Per leggere i volantini"},{id:"grembiule",lab:"Grembiule da cuoco",p:30,k:"wear",d:"Per chi cucina davvero"},{id:"cappello",lab:"Cappello tirolese",p:40,k:"wear",d:"Con la piuma"},{id:"tappeto",lab:"Tappeto di muschio",p:25,k:"home",d:"Rende la tana più calda"},{id:"lanterna",lab:"Lanterna",p:35,k:"home",d:"Per le sere d’inverno"},{id:"orto",lab:"Mini orto",p:60,k:"home",d:"Germogli fuori dalla tana"}];
+const STAGES=[[0,"Cucciolo"],[2,"Giovane"],[6,"Esperto della spesa"],[12,"Gran Topo del Prater"]];
+const FACTS={zucchine:"In Austria si raccolgono da giugno a settembre; d’inverno arrivano da serre o da lontano.",peperoni:"Di stagione da luglio a ottobre. Quelli rossi sono semplicemente più maturi di quelli verdi.",pomodori:"Di stagione da luglio a settembre; fuori stagione crescono spesso in serre riscaldate.",cetrioli:"Sono fatti per oltre il 90% di acqua.",insalata:"Dura di più avvolta in un panno umido, in frigo.",spinaci:"Hanno due stagioni: la primavera e l’autunno.",broccoli:"Anche il gambo si mangia: pelalo e taglialo a rondelle.",cavolfiore:"Le foglie verdi intorno sono buone al forno.",cavolo:"Il cavolo cappuccio dura settimane in frigo: perfetto per non sprecare.",zucca:"Intera si conserva per mesi in un posto fresco e asciutto.",funghi:"Gli champignon si coltivano tutto l’anno, al chiuso.",carote:"Togli il ciuffo verde: così si conservano più a lungo.",cipolle:"Tienile al buio e lontano dalle patate.",mele:"In Stiria c’è perfino una Strada delle mele.",pere:"Maturano anche dopo la raccolta: lasciale qualche giorno fuori dal frigo.",arance:"Arrivano dal sud Europa; la stagione va da novembre ad aprile."};
+const FACTS_EN={zucchine:"In Austria they are harvested from June to September; in winter they come from greenhouses or from far away.",peperoni:"In season from July to October. Red ones are simply riper than green ones.",pomodori:"In season from July to September; out of season they often grow in heated greenhouses.",cetrioli:"They are more than 90% water.",insalata:"It keeps longer wrapped in a damp cloth in the fridge.",spinaci:"It has two seasons: spring and autumn.",broccoli:"The stalk is edible too: peel it and slice it into rounds.",cavolfiore:"The green leaves around it are tasty roasted.",cavolo:"White cabbage keeps for weeks in the fridge: perfect for avoiding waste.",zucca:"A whole pumpkin keeps for months in a cool, dry place.",funghi:"Button mushrooms are grown indoors all year round.",carote:"Cut off the green tops: they keep longer that way.",cipolle:"Keep them in the dark and away from potatoes.",mele:"Styria even has an Apple Road.",pere:"They keep ripening after picking: leave them out of the fridge for a few days.",arance:"They come from southern Europe; the season runs from November to April."};
+const fact=i=>LANG==="en"&&FACTS_EN[i]?FACTS_EN[i]:FACTS[i];
+const hunger=()=>Math.max(0,Math.min(100,TANA.feed-(Date.now()-TANA.fedAt)/36e5*2)); // si svuota in circa 2 giorni senza pasti cucinati
+const stage=()=>{let s=STAGES[0];for(const x of STAGES)if(TANA.weeks.length>=x[0])s=x;return s};
+// weekBase: periodo (giorno di conferma | inizio menu) per premi e sfide; weekId: la singola conferma, per le spunte "Cucinato"
+// (rifare e riconfermare lo stesso giorno non deve riportare le spunte del menu precedente né dare due volte gli stessi premi)
+const weekBase=()=>CONF?CONF.at+"|"+CONF.R.t:null;
+const weekId=()=>CONF?weekBase()+(CONF.id?"|"+CONF.id:""):null;
+const gain=(n,why)=>{TANA.nocciole+=n;TANA.log.unshift({d:today(),n,why});TANA.log=TANA.log.slice(0,30);GAIN={n,why}};
+const homeMeals=R=>R.days.reduce((a,d)=>a+d.meals.filter(m=>m.r).length,0);
+const CHALL=[
+{id:"cook",lab:R=>L(`Cucina ${Math.ceil(homeMeals(R)*.7)} pasti del menu`,`Cook ${Math.ceil(homeMeals(R)*.7)} meals from the menu`),goal:R=>Math.ceil(homeMeals(R)*.7),prog:(R,c)=>Object.keys(c).length},
+{id:"veg",lab:R=>L(`${Math.max(2,Math.round(R.d*.6))} giornate intere con almeno 400 g di frutta e verdura`,`${Math.max(2,Math.round(R.d*.6))} full days with at least 400 g of fruit and vegetables`),goal:R=>Math.max(2,Math.round(R.d*.6)),prog:(R,c,w)=>Object.keys(TANA.bonus).filter(k=>k.startsWith(w+"|fv|")).length},
+{id:"leg",lab:R=>L(`Cucina ${Math.max(2,Math.min(3,R.cnt.legumi||0))} piatti con i legumi`,`Cook ${Math.max(2,Math.min(3,R.cnt.legumi||0))} dishes with legumes`),goal:R=>Math.max(2,Math.min(3,R.cnt.legumi||0)),prog:(R,c)=>R.days.reduce((a,d,k)=>a+d.meals.filter(m=>m.r&&m.r.k==="legumi"&&c[k+"-"+m.sl]).length,0),ok:R=>(R.cnt.legumi||0)>=2},
+{id:"new",lab:()=>L("Prova 2 piatti che non hai mai cucinato","Try 2 dishes you have never cooked"),goal:()=>2,prog:(R,c,w)=>Object.keys(TANA.bonus).filter(k=>k.startsWith(w+"|new|")).length}
+];
+const challenge=R=>{const w=weekBase();if(!w)return null;let h=0;for(const ch of w)h=(h*31+ch.charCodeAt(0))>>>0;const list=CHALL.filter(c=>!c.ok||c.ok(R));const c=list[h%list.length],ck=TANA.cooked[weekId()]||{};return {c,lab:c.lab(R),goal:c.goal(R),prog:Math.min(c.goal(R),c.prog(R,ck,w)),done:!!TANA.bonus[w+"|sfida"]}};
+const checkChallenge=R=>{const ch=challenge(R);if(ch&&!ch.done&&ch.prog>=ch.goal){TANA.bonus[weekBase()+"|sfida"]=1;gain(15,L("Sfida della settimana completata","Weekly challenge completed"))}};
+function toggleCook(k,sl){
+if(!CONF||!LAST)return;const w=weekId(),b=weekBase(),c=TANA.cooked[w]=TANA.cooked[w]||{},key=k+"-"+sl,pk=b+"|"+key,R=LAST.R,day=R.days[k],m=day&&day.meals.find(x=>x.sl===sl);if(!m||!m.r)return;
+if(c[key]){delete c[key];if(TANA.paid[pk]===w){delete TANA.paid[pk];TANA.nocciole=Math.max(0,TANA.nocciole-1)}GAIN=null;saveT();render();return}
+c[key]=today();
+// una sola nocciola per giorno e pasto, anche se il menu è stato rifatto e riconfermato
+if(!TANA.paid[pk]){TANA.paid[pk]=w;gain(1,`${tx(SLOT[sl].lab)}: ${m.leftover?L("avanzo","leftovers"):rn(m.r.n)}`)}
+TANA.feed=Math.min(100,hunger()+25);TANA.fedAt=Date.now();
+if(!m.leftover&&!TANA.tried.includes(m.r.n)){TANA.tried.push(m.r.n);TANA.bonus[b+"|new|"+m.r.n]=1;gain(2,`${L("Piatto nuovo","New dish")}: ${rn(m.r.n)}`)}
+for(const i in m.all)if(FACTS[i]&&inSeason(i,R.mo)&&!TANA.album.includes(i)){TANA.album.push(i);gain(1,`${L("Figurina di stagione","Seasonal card")}: ${ingN(i)}`)}
+const keys=day.meals.filter(x=>x.r).map(x=>k+"-"+x.sl);
+if(keys.every(x=>c[x])&&day.fv>=FV_MIN&&!TANA.bonus[b+"|fv|"+k]){TANA.bonus[b+"|fv|"+k]=1;gain(2,L("Giornata piena di frutta e verdura","A day full of fruit and vegetables"))}
+checkChallenge(R);saveT();render();
+}
+function onConfirmTana(R){const w=weekBase(),used=R.items.filter(x=>x.fromP>0).length;if(used&&!TANA.bonus[w+"|pan"]){TANA.bonus[w+"|pan"]=1;gain(3*used,L(`${used} ${used===1?"prodotto":"prodotti"} dalla dispensa`,`${used} ${used===1?"product":"products"} from the pantry`))}saveT()}
+// fine settimana confermata: se hai cucinato almeno il 70% dei pasti, la settimana conta per la crescita
+function settleWeek(){
+if(!CONF)return;const w=weekId(),b=weekBase(),R=hydrate(CONF.R);
+// premio finale una sola volta per periodo (anche se lo stesso periodo è stato confermato più volte); le spunte contano per la conferma attuale
+if(today()<=lastDay(R)||TANA.bonus[w+"|end"]||TANA.bonus[b+"|end"])return;
+TANA.bonus[w+"|end"]=1;TANA.bonus[b+"|end"]=1;const tot=homeMeals(R),done=Object.keys(TANA.cooked[w]||{}).length,ratio=tot?done/tot:0;
+if(ratio>=.7&&!TANA.weeks.includes(b)){TANA.weeks.push(b);gain(10,L("Settimana seguita","Week followed"));const s=Math.floor((R.bb-R.tt)*ratio/5)*5;if(s>=5)gain(s,L(`Circa ${eur((R.bb-R.tt)*ratio)} risparmiati con le offerte`,`About ${eur((R.bb-R.tt)*ratio)} saved with deals`));GAIN={n:10+(s>=5?s:0),why:L(`settimana seguita al ${Math.round(ratio*100)}%${s>=5?` e circa ${eur((R.bb-R.tt)*ratio)} risparmiati`:""}`,`week ${Math.round(ratio*100)}% followed${s>=5?` and about ${eur((R.bb-R.tt)*ratio)} saved`:""}`)}}
+else TANA.log.unshift({d:today(),n:0,why:L(`Settimana seguita al ${Math.round(ratio*100)}%: per farla contare serve il 70%`,`Week ${Math.round(ratio*100)}% followed: it needs 70% to count`)});
+saveT();
+}
+const health=R=>{const issues=Object.keys(CATS).filter(k=>{const c=R.cnt[k]||0,l=R.L[k];return c<l.min||c>l.max}).length,avgF=R.days.reduce((a,x)=>a+x.fv,0)/R.d;return Math.round(.4*Math.max(0,100-issues*25)+.3*Math.min(100,avgF/4)+.3*Math.min(100,R.plant*200))};
+const mood=()=>{const h=hunger();if(SLEEPY&&!GAIN)return "sleepy";if(GAIN&&GAIN.n>=10)return "proud";if(h<25)return "hungry";return "happy"};
+// Nocciola il topino: di fronte, con la nocciola in mano (come lo scoiattolo delle prime versioni). Umori e accessori.
+const FUR="#c4895a",FUR2="#a8703f",CREAM="#f8e4ca",PINK="#f4bda4",INK="#30221b";
+function critter(md,worn){
+const W=new Set(worn||[]);
+const eyes=md==="sleepy"
+ ?`<path d="M45 52 Q50 55.5 55 52 M65 52 Q70 55.5 75 52" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/>`
+ :md==="happy"
+ // contento: occhi chiusi a mezzaluna, come nell'illustrazione del marchio
+ ?`<path d="M44.5 53 Q50 46.5 55.5 53 M64.5 53 Q70 46.5 75.5 53" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>`
+ :`<circle cx="50" cy="51" r="${md==="proud"?5:4.6}" fill="${INK}"/><circle cx="51.8" cy="49.2" r="1.6" fill="#fff"/><circle cx="70" cy="51" r="${md==="proud"?5:4.6}" fill="${INK}"/><circle cx="71.8" cy="49.2" r="1.6" fill="#fff"/>`;
+const mouth=md==="hungry"?`<ellipse cx="60" cy="67" rx="2.6" ry="2.2" fill="${INK}"/>`
+ :md==="sleepy"?`<path d="M57 66 Q60 67.5 63 66" fill="none" stroke="${INK}" stroke-width="1.4" stroke-linecap="round"/>`
+ // contento e fiero: bocca aperta con la linguetta
+ :`<path d="M53 65 Q60 64 67 65 Q66 ${md==="proud"?75:73} 60 ${md==="proud"?75:73} Q54 ${md==="proud"?75:73} 53 65 Z" fill="#5b2a1e"/><ellipse cx="60" cy="${md==="proud"?72:70.5}" rx="3.6" ry="2.2" fill="#ec8f8f"/>`;
+const extra=md==="sleepy"?`<text x="84" y="26" font-size="12" font-family="sans-serif" font-weight="800" fill="#8a7a6a">z</text><text x="93" y="15" font-size="15" font-family="sans-serif" font-weight="800" fill="#8a7a6a">z</text>`
+ :md==="hungry"?`<g class="belly-r"><path d="M80 94 q3 -3 6 0 q3 3 6 0" fill="none" stroke="#b0571d" stroke-width="1.8" stroke-linecap="round"/><path d="M84 87 q3 -3 6 0" fill="none" stroke="#b0571d" stroke-width="1.8" stroke-linecap="round"/></g>`
+ :md==="proud"?`<g fill="#e3b341"><path d="M96 22 l2.2 5.2 5.4 .8 -4 3.6 1 5.4 -4.6 -2.8 -4.6 2.8 1 -5.4 -4 -3.6 5.4 -.8z"/><path d="M20 30 l1.6 3.8 4 .6 -3 2.6 .8 4 -3.4 -2 -3.4 2 .8 -4 -3 -2.6 4 -.6z"/></g>`:"";
+// nocciola in mano: nella fame la guarda e non la mangia (la scorta è sacra)
+const nut=`<ellipse cx="60" cy="88" rx="9.5" ry="10" fill="#7b4419"/><ellipse cx="57" cy="90" rx="2.4" ry="3.6" fill="#9c5b26" opacity=".75"/><path d="M50.5 84 Q60 72 69.5 84 Q60 80 50.5 84 Z" fill="#6f9a3a"/>`;
+return `<g class="tailw"><path d="M80 104 C100 108 110 92 102 82 C96 75 88 80 93 86" fill="none" stroke="#d9938f" stroke-width="3.6" stroke-linecap="round"/></g>
+<ellipse cx="60" cy="90" rx="25" ry="24" fill="${FUR}"/>
+<ellipse cx="60" cy="96" rx="16" ry="16" fill="${CREAM}"/>
+${W.has("grembiule")?`<path d="M45 84 L75 84 L73 110 L47 110 Z" fill="#fbf8f2" stroke="#ddd5c6"/><rect x="54" y="98" width="12" height="7" rx="2" fill="none" stroke="#ddd5c6"/>`:""}
+<ellipse cx="48" cy="112" rx="9" ry="4.6" fill="${PINK}"/><ellipse cx="72" cy="112" rx="9" ry="4.6" fill="${PINK}"/>
+<g class="ears"><circle cx="35" cy="34" r="17" fill="${FUR}"/><circle cx="35" cy="34" r="11" fill="${PINK}"/><circle cx="85" cy="34" r="17" fill="${FUR}"/><circle cx="85" cy="34" r="11" fill="${PINK}"/></g>
+<ellipse cx="60" cy="56" rx="27" ry="24" fill="${FUR}"/>
+<ellipse cx="60" cy="64" rx="14" ry="10" fill="${CREAM}"/>
+${eyes}
+<ellipse cx="44" cy="62" rx="4.6" ry="3" fill="${PINK}" opacity=".7"/><ellipse cx="76" cy="62" rx="4.6" ry="3" fill="${PINK}" opacity=".7"/>
+<ellipse cx="60" cy="60" rx="3.8" ry="2.9" fill="#e07f86"/>
+<g stroke="${INK}" stroke-width=".9" stroke-linecap="round" opacity=".55"><path d="M50 62 L35 59 M50 65 L35 66 M70 62 L85 59 M70 65 L85 66"/></g>
+${mouth}
+${W.has("occhiali")?`<circle cx="50" cy="51" r="8" fill="none" stroke="#2b2b2b" stroke-width="1.6"/><circle cx="70" cy="51" r="8" fill="none" stroke="#2b2b2b" stroke-width="1.6"/><path d="M58 51 L62 51" stroke="#2b2b2b" stroke-width="1.6"/>`:""}
+${W.has("cappello")?`<path d="M42 38 Q60 14 78 38 Z" fill="#2f5d3a"/><rect x="38" y="35" width="44" height="5.5" rx="2.7" fill="#24482d"/><path d="M72 30 Q82 18 86 10" stroke="#d9b44a" stroke-width="2.4" fill="none" stroke-linecap="round"/>`:""}
+${W.has("sciarpa")?`<path d="M38 72 Q60 84 82 72 L83 80 Q60 92 37 80 Z" fill="#c8453b"/><path d="M74 78 L80 98 L73 99 L69 81 Z" fill="#c8453b"/><path d="M46 77 L47 82 M54 79 L54 85 M62 80 L62 86 M70 79 L69 84" stroke="#fbf8f2" stroke-width="1.8"/>`:""}
+<ellipse cx="49" cy="86" rx="5.5" ry="4.6" fill="${FUR2}"/><ellipse cx="71" cy="86" rx="5.5" ry="4.6" fill="${FUR2}"/>
+${nut}
+<ellipse cx="50.5" cy="88" rx="4.4" ry="3.8" fill="${FUR2}"/><ellipse cx="69.5" cy="88" rx="4.4" ry="3.8" fill="${FUR2}"/>
+${extra}`;
+}
+const critterSVG=(md,worn)=>`<svg class="critter ${md}" viewBox="0 0 120 120" role="img" aria-label="${L("Nocciola il topino","Nocciola the mouse")}, ${(LANG==="en"?{happy:"happy",hungry:"hungry",sleepy:"sleepy",proud:"proud"}:{happy:"contento",hungry:"affamato",sleepy:"assonnato",proud:"fiero"})[md]}">${critter(md,worn)}</svg>`;
+function denSVG(md){
+const own=new Set(TANA.owned),n=Math.min(36,Math.ceil(TANA.nocciole/3));
+// mucchio di nocciole: righe dal basso verso l'alto
+const pile=[];let j=0;for(let row=0;row<8&&j<n;row++){const cnt=8-row;for(let c=0;c<cnt&&j<n;c++,j++)pile.push(`<circle cx="${226+row*6+c*12}" cy="${154-row*10}" r="6" fill="${(row+c)%3?"#8a4f1f":"#a8622c"}"/><circle cx="${224+row*6+c*12}" cy="${152-row*10}" r="1.6" fill="#e9c79d" opacity=".9"/>`)}
+const month=new Date().getMonth()+1,winter=month===12||month<=2,advent=month===12;
+return `<svg class="den" viewBox="0 0 320 180" role="img" aria-label="${L(`La tana di Nocciola con ${TANA.nocciole} nocciole`,`Nocciola’s den with ${TANA.nocciole} hazelnuts`)}">
+<rect width="320" height="180" fill="#8a6a50"/>
+<path d="M0 0 H320 V26 Q240 40 160 30 Q80 20 0 34 Z" fill="${winter?"#eef3f6":"#7aa35a"}"/>
+<g stroke="#5c4433" stroke-width="2" fill="none" opacity=".7"><path d="M40 30 q6 18 -4 30"/><path d="M120 28 q-4 14 6 26"/><path d="M200 30 q8 10 2 24"/><path d="M290 30 q-6 16 4 26"/></g>
+<path d="M18 176 Q16 64 160 58 Q304 64 302 176 Z" fill="#e8d6bf"/>
+<path d="M30 176 Q30 76 160 72 Q290 76 290 176 Z" fill="#f1e4d1"/>
+${own.has("tappeto")?`<ellipse cx="120" cy="160" rx="70" ry="12" fill="#6f9a52"/><ellipse cx="120" cy="160" rx="56" ry="8" fill="#86b067"/>`:""}
+${own.has("lanterna")?`<circle cx="62" cy="104" r="22" fill="#ffd77a" opacity=".25"/><rect x="55" y="96" width="14" height="18" rx="3" fill="#d9a441"/><rect x="58" y="99" width="8" height="12" rx="2" fill="#fff1b8"/><path d="M62 96 v-8" stroke="#5c4433" stroke-width="2"/>`:""}
+${own.has("orto")?`<g transform="translate(250 22)"><path d="M0 8 q2 -10 6 -12 M6 8 q-1 -8 6 -12 M14 8 q2 -9 8 -10" stroke="#3f7d3a" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="7" cy="-5" r="3" fill="#e0573f"/></g>`:""}
+${advent?`<g transform="translate(150 86)"><rect x="-6" y="0" width="12" height="22" rx="2" fill="#c8453b"/><path d="M0 0 q-3 -6 0 -10 q3 4 0 10z" fill="#ffb84d"/></g>`:""}
+${pile.join("")}
+<svg class="critter" x="62" y="38" width="146" height="146" viewBox="0 0 120 120">${critter(md,TANA.worn)}</svg>
+</svg>`;
+}
+function renderTana(R){
+const md=mood(),h=Math.round(hunger()),hl=health(R),st=stage(),w=weekId(),ck=w?TANA.cooked[w]||{}:{},tot=homeMeals(R),done=Object.keys(ck).length;
+$("hero-mascot").innerHTML=critterSVG(md,TANA.worn);
+const say=(LANG==="en"?{happy:"I’m happy! My stash grows when you cook the menu.",hungry:"I’m a bit peckish… Tick the meals you cook and my tummy fills up.",sleepy:"Mmh… I was dozing. Welcome back!",proud:"What a week! Look at all these hazelnuts."}
+ :{happy:"Sono contento! La mia scorta cresce quando cucini il menu.",hungry:"Ho un languorino… Segna i pasti che cucini e mi riempio la pancia.",sleepy:"Mmh… sonnecchiavo. Bentornato!",proud:"Che settimana! Guarda quante nocciole."})[md];
+const ch=challenge(R);
+const next=STAGES.find(x=>x[0]>TANA.weeks.length);
+const bar=(v,cls)=>`<div class="bar"><span class="${cls||""}" style="width:${Math.max(2,v)}%"></span></div>`;
+const nuts=n=>n===1?L("nocciola","hazelnut"):L("nocciole","hazelnuts");
+const earn=LANG==="en"?[["Menu meal cooked",1],["Dish never cooked before",2],["Day with at least 400 g of fruit and vegetables",2],["Each pantry product used",3],["Week followed (at least 70% of meals)",10],["Every €5 saved with deals, in a followed week",5],["Weekly challenge",15]]
+ :[["Pasto del menu cucinato",1],["Piatto mai cucinato prima",2],["Giornata con almeno 400 g di frutta e verdura",2],["Ogni prodotto della dispensa usato",3],["Settimana seguita (almeno 70% dei pasti)",10],["Ogni 5 € risparmiati con le offerte, in una settimana seguita",5],["Sfida della settimana",15]];
+$("tana").innerHTML=`<div class="tana-top">
+<div class="scene">${denSVG(md)}<div class="cap"><span><b>Nocciola</b> · ${tx(st[1])}</span><span class="small muted">${say}</span></div></div>
+<div class="card"><h3>${L("Come sta","How Nocciola is doing")}</h3>
+<div class="meter"><span>${L("Pancia","Tummy")}</span>${bar(h,h<25?"bad":h<50?"warn":"")}<span class="num small">${h}%</span></div>
+<div class="meter"><span>${L("Salute","Health")}</span>${bar(hl,hl<50?"warn":"")}<span class="num small">${hl}%</span></div>
+<div class="meter"><span>${L("Scorta","Stash")}</span><span class="berries num">${TANA.nocciole} <span class="small muted" style="font-family:var(--f-body);font-weight:600">${nuts(TANA.nocciole)}</span></span><span></span></div>
+${GAIN?`<div class="gainbox gain">+${GAIN.n} ${nuts(GAIN.n)} · ${esc(GAIN.why)}</div>`:""}
+<p class="small muted" style="margin:10px 0 0">${L(`La pancia si svuota in circa due giorni senza pasti cucinati. La salute segue l’equilibrio del menu. Crescita: ${TANA.weeks.length} ${TANA.weeks.length===1?"settimana seguita":"settimane seguite"}${next?`, “${next[1]}” a ${next[0]}`:""}.`,
+ `The tummy empties in about two days without cooked meals. Health follows the balance of the menu. Growth: ${TANA.weeks.length} ${TANA.weeks.length===1?"week":"weeks"} followed${next?`, “${tx(next[1])}” at ${next[0]}`:""}.`)}</p></div></div>
+<div class="tgrid">
+<div class="card sfida"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6M10 17h4"/></svg>${L("Sfida della settimana","Weekly challenge")}</h3>${!CONF?`<p class="small muted" style="margin:0">${L("Conferma la settimana nella scheda Menu: Nocciola sceglierà una sfida e potrai segnare i pasti cucinati.","Confirm the week in the Menu tab: Nocciola will pick a challenge and you can tick the meals you cook.")}</p>`:`<p style="margin:0 0 8px"><b>${esc(ch.lab)}</b> · ${L("premio 15 nocciole","reward 15 hazelnuts")}</p><div class="meter"><span>${ch.prog} / ${ch.goal}</span>${bar(ch.prog/ch.goal*100)}<span class="small">${ch.done?L("✓ fatta","✓ done"):""}</span></div><p class="small muted" style="margin:6px 0 0">${L(`Pasti cucinati questa settimana: ${done} di ${tot}. Con almeno il 70% la settimana conta per far crescere Nocciola.`,`Meals cooked this week: ${done} of ${tot}. With at least 70% the week counts towards Nocciola’s growth.`)}</p>`}</div>
+<div class="card"><h3>${L("Negozio della tana","Den shop")}</h3><div class="shop">${SHOP.map(s=>{const own=TANA.owned.includes(s.id),wear=TANA.worn.includes(s.id);return `<div class="sitem"><b>${tx(s.lab)}</b><span class="small muted">${tx(s.d)}</span>${own?(s.k==="wear"?`<button class="btn ghost small" data-wear="${s.id}">${wear?L("Togli","Take off"):L("Indossa","Wear")}</button>`:`<span class="small" style="color:var(--good);font-weight:700">${L("Nella tana ✓","In the den ✓")}</span>`):`<button class="btn small" data-buy="${s.id}" ${TANA.nocciole<s.p?"disabled":""}>${s.p} ${nuts(s.p)}</button>`}</div>`}).join("")}</div></div>
+<div class="card"><h3>${L("Album di stagione","Seasonal album")} · ${TANA.album.length}/${Object.keys(FACTS).length}</h3><p class="small muted" style="margin:0 0 8px">${L("Ogni frutto o verdura di stagione che cucini sblocca la sua figurina.","Every seasonal fruit or vegetable you cook unlocks its card.")}</p><div class="album">${Object.keys(FACTS).sort((a,b)=>ingN(a).localeCompare(ingN(b))).map(i=>TANA.album.includes(i)?`<div class="card2 on"><b>${ingN(i)}</b>${fact(i)}</div>`:`<div class="card2 off"><b>?</b>${inSeason(i,new Date().getMonth()+1)?L("Di stagione ora: cucinala per scoprirla.","In season now: cook it to discover it."):L(`Di stagione: mesi ${SEAS[i].replace(/-/g,"–").replace(/,/g,", ")}.`,`In season: months ${SEAS[i].replace(/-/g,"–").replace(/,/g,", ")}.`)}</div>`).join("")}</div></div>
+<div class="card"><h3>${L("Come si guadagnano le nocciole","How to earn hazelnuts")}</h3><ul class="log">${earn.map(([t,n])=>`<li><span>${t}</span><b>+${n}</b></li>`).join("")}</ul><p class="small muted" style="margin:8px 0 0">${L("Le nocciole premiano quello che fai, non quello che compri: comprare di più non ne fa guadagnare.","Hazelnuts reward what you do, not what you buy: buying more does not earn any.")}</p></div>
+${TANA.log.length?`<div class="card"><h3>${L("Diario","Diary")}</h3><ul class="log">${TANA.log.slice(0,8).map(x=>`<li><span>${fd(x.d)} · ${esc(x.why)}</span><b>${x.n?"+"+x.n:""}</b></li>`).join("")}</ul></div>`:""}
+</div>`;
+}
+$("tana").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.buy){const s=SHOP.find(x=>x.id===b.dataset.buy);if(!s||TANA.nocciole<s.p||TANA.owned.includes(s.id))return;TANA.nocciole-=s.p;TANA.owned.push(s.id);if(s.k==="wear")TANA.worn.push(s.id);TANA.log.unshift({d:today(),n:0,why:L(`Comprato: ${s.lab} (−${s.p} nocciole)`,`Bought: ${tx(s.lab)} (−${s.p} hazelnuts)`)});GAIN=null;saveT();render()}
+ if(b.dataset.wear){const id=b.dataset.wear;TANA.worn=TANA.worn.includes(id)?TANA.worn.filter(x=>x!==id):TANA.worn.concat([id]);saveT();render()}};
+$("hero-mascot").onclick=()=>{showTab("tana");window.scrollTo({top:$("v-tana").offsetTop-80,behavior:"smooth"})};
+const tanaTip=R=>{const md=mood();if(!CONF)return ["",L("Conferma la settimana e segna i pasti che cucini: io, Nocciola il topino, metto da parte nocciole nella tana.","Confirm the week and tick the meals you cook: I, Nocciola the mouse, will save hazelnuts in my den.")];if(GAIN)return ["good",L(`+${GAIN.n} ${GAIN.n===1?"nocciola":"nocciole"} per la tana: ${esc(GAIN.why)}.`,`+${GAIN.n} ${GAIN.n===1?"hazelnut":"hazelnuts"} for the den: ${esc(GAIN.why)}.`)];if(md==="hungry")return ["warn",L("Ho un languorino… Quando cucini un pasto del menu, segnalo con “Cucinato”.","I’m a bit peckish… When you cook a meal from the menu, tick it with “Cooked”.")];if(md==="sleepy")return ["",L("Mmh, sonnecchiavo! Bentornato nella tana.","Mmh, I was dozing! Welcome back to the den.")];return null};
+
+function update(){saveP();render()}
+// ---------- salva / ripristina i dati del dispositivo ----------
+const DATA_KEYS=["nc-profilo","nc-settimana","nc-dispensa","nc-cambi","nc-tana","sm-mie","sm-nascoste","sm-escluse","sm-spunte","nc-lingua"];
+const dataDump=()=>{const data={};for(const k of DATA_KEYS){const v=LS.get(k,null);if(v!==null)data[k]=v}return JSON.stringify({app:"nocciola",v:1,at:new Date().toISOString().slice(0,16),data})};
+// file da scaricare: nella pagina pubblicata su claude.ai passa dalla funzione "downloads" (con conferma), altrove (PWA, locale) da un normale download
+const IN_ART=!!(window.claude&&typeof window.claude.use==="function");let DL=null;
+if(IN_ART)window.claude.use("downloads").then(d=>{DL=d}).catch(()=>{});
+$("exp").onclick=()=>{const txt=dataDump();$("io").value=txt;$("io").focus();$("io").select();$("exp-file").hidden=IN_ART&&!DL;
+ const ok=()=>{$("expmsg").textContent=L("Dati copiati negli appunti. Puoi anche copiarli dal riquadro qui sotto.","Data copied to the clipboard. You can also copy it from the box below.")};
+ const keep=()=>{$("expmsg").textContent=L("Copia il testo selezionato qui sotto e conservalo.","Copy the selected text below and keep it safe.")};
+ try{navigator.clipboard.writeText(txt).then(ok,keep)}catch(e){keep()}};
+const noDL=()=>L("Il download non è possibile qui: copia il testo del riquadro.","Downloading is not possible here: copy the text in the box.");
+// il file è sempre un backup nuovo dei dati attuali (non il testo del riquadro, che può essere stato modificato)
+$("exp-file").onclick=()=>{const name=`nocciola-dati-${today()}.json`,txt=dataDump();
+ if(DL){DL.save({filename:name,data:txt}).then(()=>{$("expmsg").textContent=L("File salvato.","File saved.")},e=>{$("expmsg").textContent=e&&e.code==="declined"?L("Salvataggio annullato.","Saving cancelled."):noDL()});return}
+ if(IN_ART){$("expmsg").textContent=noDL();return}
+ // app Android: il file passa al ponte nativo (finestra «Salva» di Android)
+ if(window.NocciolaAndroid&&typeof window.NocciolaAndroid.saveFile==="function"){try{window.NocciolaAndroid.saveFile(name,txt);$("expmsg").textContent=L("Scegli dove salvare il file.","Choose where to save the file.")}catch(e){$("expmsg").textContent=noDL()}return}
+ try{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([txt],{type:"application/json"}));a.download=`nocciola-dati-${today()}.json`;document.body.append(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}catch(e){$("expmsg").textContent=noDL()}};
+// risposta dell'app Android dopo la finestra «Salva»
+window.nocciolaSaved=ok=>{$("expmsg").textContent=ok?L("File salvato.","File saved."):L("Salvataggio annullato.","Saving cancelled.")};
+$("io-file").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(f.size>2e6){$("impmsg").textContent=L("File troppo grande.","File too large.");return}f.text().then(t=>{$("io").value=t;$("impmsg").textContent=L("File letto: premi «Ripristina questi dati».","File read: press “Restore this data”.")})};
+// controllo di ogni gruppo prima del ripristino: se qualcosa non torna, i dati attuali restano intatti
+const isObj=x=>!!x&&typeof x==="object"&&!Array.isArray(x);
+const isStrArr=x=>Array.isArray(x)&&x.every(v=>typeof v==="string");
+const isNum=x=>typeof x==="number"&&Number.isFinite(x)&&x>=0;
+// controlli anche sui valori ammessi e sulle strutture annidate (un salvataggio incompleto non deve arrivare alla conferma)
+const opt=(x,f)=>x===undefined||f(x);
+const isFin=x=>typeof x==="number"&&Number.isFinite(x);
+const isDate=x=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(x);
+const isGr=x=>isObj(x)&&Object.values(x).every(isFin);
+const okProfile=x=>isObj(x)&&["ad","te","ki","to"].every(k=>opt(x[k],v=>Number.isInteger(v)&&v>=0&&v<=8))&&!(["ad","te","ki","to"].every(k=>x[k]!==undefined)&&x.ad+x.te+x.ki+x.to===0)
+ &&opt(x.d,v=>Number.isInteger(v)&&v>=1&&v<=7)&&opt(x.w,isNum)&&opt(x.bud,v=>isNum(v)&&v<=1e5)&&opt(x.shops,v=>Object.hasOwn(SHOPS,v))
+ &&opt(x.act,v=>Object.hasOwn(ACT,v))&&opt(x.out,v=>Object.hasOwn(OUT,v))&&opt(x.tab,v=>typeof v==="string")&&opt(x.dt,v=>v===""||isDate(v))
+ &&opt(x.diet,v=>isStrArr(v)&&v.every(k=>Object.hasOwn(DIETS,k)))&&["veg","bc"].every(k=>opt(x[k],v=>typeof v==="boolean"));
+const okMeal=m=>isObj(m)&&Object.hasOwn(SLOT,m.sl)&&(m.out||m.none||(typeof m.r==="string"&&isGr(m.g)&&opt(m.all,isGr)&&["kcal","cost"].every(k=>opt(m[k],isFin))&&(m.side==null||typeof m.side==="string")));
+const okWeekR=R=>isObj(R)&&isDate(R.t)&&Array.isArray(R.days)&&R.days.length>=1&&R.days.length<=14&&R.d===R.days.length&&R.days.every(d=>isObj(d)&&Array.isArray(d.meals)&&d.meals.length>0&&d.meals.every(okMeal)&&["kcal","target","prot","fv","cost"].every(k=>isFin(d[k])))
+ &&Array.isArray(R.items)&&R.items.every(it=>isObj(it)&&Object.hasOwn(I,it.i)&&typeof it.nm==="string"&&["g","np","c"].every(k=>isFin(it[k])))&&["tt","bb"].every(k=>isFin(R[k]))&&opt(R.pan,isGr)
+ &&isObj(R.L)&&Object.keys(CATS).every(k=>isObj(R.L[k])&&isFin(R.L[k].min)&&isFin(R.L[k].max))&&isGr(R.cnt)&&isObj(R.best)&&isStrArr(R.diet);
+const okTana=x=>isObj(x)&&["nocciole","feed","fedAt","seen"].every(k=>opt(x[k],isNum))&&["tried","album","owned","worn","weeks"].every(k=>opt(x[k],isStrArr))
+ &&["cooked","bonus","paid"].every(k=>opt(x[k],isObj))&&opt(x.log,v=>Array.isArray(v)&&v.every(l=>isObj(l)&&typeof l.d==="string"&&isFin(l.n)&&typeof l.why==="string"));
+const CHECK={
+ "nc-profilo":okProfile,
+ "nc-settimana":x=>x===null||(isObj(x)&&isDate(x.at)&&okWeekR(x.R)&&opt(x.id,v=>typeof v==="string")&&opt(x.inventory,isGr)&&(()=>{try{hydrate(x.R);return true}catch(e){return false}})()),
+ "nc-dispensa":x=>isObj(x)&&Object.values(x).every(isNum),
+ "nc-cambi":x=>x===null||(isObj(x)&&isDate(x.t)&&isObj(x.map)&&Object.values(x.map).every(v=>typeof v==="string")),
+ "nc-tana":okTana,
+ "sm-mie":x=>Array.isArray(x)&&x.every(valid),
+ "sm-nascoste":isStrArr,"sm-escluse":isStrArr,"sm-spunte":isStrArr,
+ "nc-lingua":x=>x==="it"||x==="en"};
+let IMP=null;
+$("imp").onclick=()=>{IMP=null;$("imp-yes").hidden=true;let j;try{j=JSON.parse($("io").value)}catch(e){$("impmsg").textContent=L("Il testo non è valido: incolla tutto il testo salvato.","The text is not valid: paste all of the saved text.");return}
+ if(!isObj(j)||j.app!=="nocciola"||!isObj(j.data)){$("impmsg").textContent=L("Non sono dati di Nocciola.","This is not Nocciola data.");return}
+ if(j.v!==undefined&&j.v!==1){$("impmsg").textContent=L("Questi dati vengono da una versione dell’app più recente: aggiorna la pagina e riprova.","This data comes from a newer version of the app: reload the page and try again.");return}
+ const data={},bad=[];for(const k of DATA_KEYS)if(Object.hasOwn(j.data,k)){if(CHECK[k](j.data[k]))data[k]=j.data[k];else bad.push(k)}
+ if(bad.length){$("impmsg").textContent=L(`Il salvataggio è danneggiato (${bad.join(", ")}): non lo ripristino, i tuoi dati attuali restano com’erano.`,`The backup is damaged (${bad.join(", ")}): I won’t restore it, your current data stays as it was.`);return}
+ if(!Object.keys(data).length){$("impmsg").textContent=L("Nel testo non ci sono dati da ripristinare.","There is no data to restore in the text.");return}
+ IMP=data;$("imp-yes").hidden=false;$("impmsg").textContent=L(`Trovati ${Object.keys(data).length} gruppi di dati${j.at?` (salvati il ${fd(String(j.at).slice(0,10))})`:""}: sostituiranno quelli di questo browser.`,`Found ${Object.keys(data).length} data groups${j.at?` (saved on ${fd(String(j.at).slice(0,10))})`:""}: they will replace the ones in this browser.`)};
+// ripristino tutto o niente: prima una copia dei dati attuali; se una scrittura fallisce, rimetto la copia
+// (solo i gruppi toccati dal ripristino; gli altri non vengono mai cambiati) e controllo davvero il risultato
+$("imp-yes").onclick=()=>{if(!IMP)return;const keys=DATA_KEYS.filter(k=>Object.hasOwn(IMP,k)),old={};
+ try{for(const k of DATA_KEYS)old[k]=localStorage.getItem(k)}catch(e){$("impmsg").textContent=L("Il browser non permette di salvare i dati qui.","The browser does not allow saving data here.");return}
+ let ok=true;for(const k of keys){if(!LS.set(k,IMP[k])){ok=false;break}}
+ if(ok){location.reload();return}
+ const cur=k=>{try{return localStorage.getItem(k)}catch(e){return undefined}};
+ // prima tolgo i gruppi che prima non c'erano (libera spazio), poi rimetto gli altri
+ for(const k of keys)if(old[k]===null&&cur(k)!==null){try{localStorage.removeItem(k)}catch(e){}}
+ for(const k of keys)if(old[k]!==null&&cur(k)!==old[k]){try{localStorage.setItem(k,old[k])}catch(e){try{localStorage.removeItem(k);localStorage.setItem(k,old[k])}catch(e2){}}}
+ const lost=keys.filter(k=>cur(k)!==old[k]);IMP=null;$("imp-yes").hidden=true;
+ if(!lost.length){$("impmsg").textContent=L("Il browser non ha salvato i dati (modalità privata o memoria piena?): non ho cambiato niente, i tuoi dati sono quelli di prima.","The browser did not save the data (private mode or storage full?): nothing was changed, your data is the same as before.");return}
+ // non sono riuscito a rimettere tutto: nel riquadro lascio una copia completa dei dati di prima, da conservare
+ const prev={};for(const k of DATA_KEYS){let v=null;try{v=JSON.parse(old[k])}catch(e){}if(v!==null)prev[k]=v}
+ $("io").value=JSON.stringify({app:"nocciola",v:1,at:new Date().toISOString().slice(0,16),data:prev});
+ $("impmsg").textContent=L(`Il browser non ha salvato i dati e non sono riuscito a rimettere tutti quelli di prima (${lost.join(", ")}). Nel riquadro qui sopra c’è una copia completa dei tuoi dati di prima: copiala e conservala, poi riprova più tardi con «Ripristina questi dati».`,`The browser did not save the data and I could not put back all of the previous data (${lost.join(", ")}). The box above holds a complete copy of your previous data: copy it and keep it, then try again later with “Restore this data”.`)};
+
+// versione del feed: data + revisione (rev = ora di scrittura): così una rettifica nello stesso giorno sostituisce la precedente
+const feedKey=j=>(j.updated||"")+"|"+(j.rev||"");
+function refresh(){fetch("offers.json",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(j=>{if(j&&Array.isArray(j.offers)&&feedKey(j)>feedKey(FEED)){FEED=j;render()}}).catch(()=>{})}
+// cambio lingua: testi fissi, elenchi e pagina ridisegnati subito, scelta ricordata
+$("lang").onclick=e=>{const b=e.target.closest("button[data-lang]");if(!b||b.dataset.lang===LANG)return;LANG=b.dataset.lang;LS.set("nc-lingua",LANG);applyStatic();fillProducts();$("addmsg").textContent="";$("expmsg").textContent="";$("impmsg").textContent="";$("cpmsg").textContent="";render()};
+applyStatic();fillProducts();
+showTab(P.tab);update();refresh();
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)refresh()});
+if("serviceWorker" in navigator&&isSecureContext&&/^https?:$/.test(location.protocol)&&window.top===window)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+</body>
+</html>
